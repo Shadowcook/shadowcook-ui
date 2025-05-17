@@ -13,6 +13,8 @@ const BASE_URL = process.env.BASE_URL ?? '';
 const USERNAME = process.env.SC_USER ?? '';
 const PASSWORD = process.env.SC_PASS ?? '';
 
+console.log(`Using endpoint: ${BASE_URL}`)
+
 const jar = new CookieJar();
 const client: AxiosInstance = wrapper(axios.create({
     baseURL: BASE_URL,
