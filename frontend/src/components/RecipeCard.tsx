@@ -1,5 +1,6 @@
 import style from "./RecipeCard.module.css"
 import {Link} from 'react-router-dom';
+import no_thumbnail from "../assets/no_thumbnail.png";
 
 type RecipeCardProps = {
     id: number;
@@ -15,7 +16,7 @@ export function RecipeCard(recipe: RecipeCardProps) {
         <Link className={style.cardLink}
             to={`/category/${recipe.categoryId}/recipe/${recipe.id}`}>
             <div className={style.cardFrame}>
-                <div className="thumbnailFrame"><img src={recipe.thumbnail} alt={recipe.name}/> </div>
+                <div className="thumbnailFrame"><img src={no_thumbnail} alt={recipe.name}/> </div>
                 <div className="recipeDataFrame">
                     <h3>{recipe.name}</h3>
                     <span>{recipe.description}</span>
