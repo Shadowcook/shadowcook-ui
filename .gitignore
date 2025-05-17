@@ -1,0 +1,11 @@
+.idea/
+.vite/
+node_modules/
+backend/node_modules
+backend/.env
+backend/
+frontend/node_modules
+frontend/.env.local
+frontend/.env.production
+frontend/dist
+frontend/.gitignore

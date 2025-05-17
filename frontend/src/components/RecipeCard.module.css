@@ -1,0 +1,34 @@
+.cardFrame {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 1.25rem;
+}
+
+.cardFrame:hover {
+    background-color: #d9d9d9;
+}
+
+.cardLink:link,
+.cardLink:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+.thumbnailFrame {
+    width: 120px; /* oder z. B. 30% */
+    height: 120px;
+    background-color: #ddd; /* nur als Platzhalter */
+    flex-shrink: 0; /* verhindert, dass das Thumbnail schmaler wird */
+}
+
+.recipeDataFrame {
+    flex: 1; /* nimmt den restlichen Platz ein */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

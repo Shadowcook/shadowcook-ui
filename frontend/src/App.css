@@ -1,0 +1,82 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+#rootContent {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#headerFrame {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Linksbündig + Rechtsbündig */
+  height: 120px;
+  background-color: #ddd;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.header-left,
+.header-center,
+.header-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.header-center {
+  justify-content: center;
+}
+
+.header-left {
+  justify-content: flex-start;
+}
+
+.header-right {
+  justify-content: flex-end;
+}
+
+.logo {
+  max-height: 80px;
+  height: auto;
+}
+
+.text-logo {
+  max-height: 100px;
+  height: auto;
+}
+
+#footerFrame {
+  height: 40px;
+  background-color: #ccc;
+  text-align: left;
+  padding: 1rem;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+#breadcrumbFrame {
+  background-color: #f0f0f0;
+  padding: 1rem;
+}
+
+#categoryFrame {
+  width: 15rem;
+  background-color: #f0f0f0;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+#recipeFrame {
+  flex: 1;
+  background-color: #fff;
+  padding: 1rem;
+  overflow-y: auto;
+}

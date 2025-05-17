@@ -1,0 +1,42 @@
+.categoryItemFrame {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 1.25rem;
+}
+
+
+.categoryBackFrame {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 1.25rem;
+}
+
+.categoryBackFrame img,
+.categoryItemFrame img {
+    margin-top: .2rem;
+    height: 1em; /* skaliert proportional zur Schriftgröße */
+    width: auto;
+    vertical-align: middle; /* bessere Ausrichtung zum Text */
+}
+
+.categoryLink:link,
+.categoryLink:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+.categoryLink:hover,
+.categoryBackFrame:hover,
+.categoryItemFrame:hover{
+    background-color: #d9d9d9;
+}

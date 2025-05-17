@@ -1,0 +1,30 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# Systemdateien
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDEs / Editoren
+.vscode/
+.idea/
+*.sw?
+
+# dotenv
+.env
+.env.* # falls du z.B. .env.local oder .env.production verwendest
+
+# Vite cache
+.vite/
+
+# Optional: wenn du TypeScript build outputs generierst
+*.tsbuildinfo
