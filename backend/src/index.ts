@@ -9,8 +9,7 @@ import cors from 'cors';
 import {LoginResponse} from './types.js';
 import {validateId} from "./validate.js";
 
-// const BASE_URL = 'https://cook.shadowsoft.de/v0/';
-const BASE_URL = 'http://localhost:18080/v0/';
+const BASE_URL = process.env.BASE_URL ?? '';
 const USERNAME = process.env.SC_USER ?? '';
 const PASSWORD = process.env.SC_PASS ?? '';
 
