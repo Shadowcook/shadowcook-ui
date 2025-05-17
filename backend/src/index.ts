@@ -14,8 +14,6 @@ const USERNAME = process.env.SC_USER ?? '';
 const PASSWORD = process.env.SC_PASS ?? '';
 
 console.log(`Using endpoint: ${BASE_URL}`)
-console.log(`User name: ${USERNAME}`)
-console.log(`Password: ${PASSWORD}`)
 
 const jar = new CookieJar();
 const client: AxiosInstance = wrapper(axios.create({
