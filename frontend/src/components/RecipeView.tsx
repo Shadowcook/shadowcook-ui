@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {validateId} from "../utilities/validate.ts";
 import type {JSX} from 'react';
 import React, {useEffect, useState} from "react";
@@ -8,10 +8,12 @@ import style from "./RecipeView.module.css"
 import './Modules.css';
 import {StepIngredient} from "../types/stepIngredient.ts";
 import shadowCookLogo from "../assets/shadowcook._alpha.png";
+import backIcon from "../assets/turn-up.svg";
 
 export function RecipeView() {
 
-    const {recipeId} = useParams();
+    const {recipeId, categoryId} = useParams();
+    const catId = validateId(categoryId);
     const sanitizedRecipeId = validateId(recipeId);
     const [recipe, setRecipe] = useState<Recipe | null>();
     useEffect(() => {
@@ -34,6 +36,13 @@ export function RecipeView() {
 
     return (
         <div className={style.recipeCard}>
+            <div className={style.backButtonFrame}>
+                <Link className={style.backButtonLink} to={`/category/${catId}`}>
+                    <div className={style.backButton}>
+                        <img src={backIcon} alt="up-arrow" /> <span>Rezeptliste</span>
+                    </div>
+                </Link>
+            </div>
             <div className={style.recipeTitleFrame}>
                 <span className={style.recipeTitle}>{recipe.recipe.name}</span>
             </div>
