@@ -77,6 +77,18 @@ async function apiRequest<T>(endpoint: string, body = {}): Promise<T> {
     }
 }
 
+
+app.get('/api/login/:username/:password', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const password = req.params.password;
+        const data = await apiRequest<any>(`/auth/login/${username}/${password}`);
+        res.json(data);
+    } catch {
+        res.status(500).json({error: 'Error while fetching categories.'});
+    }
+});
+
 app.get('/api/getAllCategories', async (req, res) => {
     try {
         const data = await apiRequest<any>('/category/getFull');

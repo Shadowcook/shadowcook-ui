@@ -7,8 +7,9 @@ import {useEffect, useState} from "react";
 import {RecipeHeader} from "../types/recipeHeader.ts";
 import {fetchCategories, fetchRecipeList} from "../api/api.ts";
 import {validateId} from "../utilities/validate.ts";
-import ShadowCookTextLogo from "../assets/ShadowCook_text_alpha.png"
-import ShadowCookIcon from "../assets/icon.png"
+import ShadowCookTextLogo from "../assets/ShadowCook_text_alpha.png";
+import ShadowCookIcon from "../assets/icon.png";
+import {LoginMenu} from "../components/LoginMenu.tsx";
 
 
 export default function MainLayout() {
@@ -56,7 +57,7 @@ export default function MainLayout() {
                     <Link to="/"><img src={ShadowCookTextLogo} alt="SHADOWCOOK" className="text-logo"/></Link>
                 </div>
                 <div className="header-right">
-                    {/* Space to include Settings later */}
+                    <LoginMenu />
                 </div>
             </div>
             <div id="breadcrumbFrame" className="bg-gray-100 p-2">
