@@ -22,6 +22,12 @@ export async function validateLogin(): Promise<SessionValidationResponse> {
     return res.data;
 }
 
+export async function logout(): Promise<SessionValidationResponse> {
+    console.log("Logging out of session");
+    const res = await apiClient.get<SessionValidationResponse>('/logout');
+    return res.data;
+}
+
 export async function loginUser(username: string, password: string): Promise<AuthResponse | null> {
     if (username != null && password != null) {
         const res = await apiClient.get<AuthResponse>(`/login/${username}/${password}`);

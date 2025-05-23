@@ -4,7 +4,7 @@ import UserLoggedInIcon from "../assets/user-check.svg";
 import UserNotLoggedInIcon from "../assets/user-xmark.svg";
 import style from "./LoginMenu.module.css";
 import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
-import {loginUser} from "../api/api.ts";
+import {loginUser, logout} from "../api/api.ts";
 import {useSession} from "../session/SessionContext.tsx";
 import {UserOptionsPopup} from "./UserOptionsPopup.tsx";
 
@@ -56,11 +56,14 @@ export const LoginMenu: React.FC = () => {
         }
     };
 
-    const handleLogout = async (): Promise<void> => {
-
+    const handleLogout = async () => {
+        try {
+            await logout();
+            await revalidate();
+        } catch (e) {
+            console.error('Logout failed:', e);
+        }
     };
-
-    console.log(`Displaying logged in picture: ${session.valid}`);
 
     return (
         <div className="header-user">

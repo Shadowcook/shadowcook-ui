@@ -115,6 +115,14 @@ app.get('/api/session/validate', sessionRouteWrapper(async (cookie) => {
     return data;
 }));
 
+app.get('/api/logout', sessionRouteWrapper(async (cookie) => {
+    const data = await apiGet<any>('/auth/logout', cookie);
+    data.setHeader('Set-Cookie', [
+        'activeSession=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax'
+    ]);
+    return data;
+}));
+
 
 app.get('/api/login/:username/:password', async (req, res) => {
     try {
