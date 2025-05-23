@@ -1,6 +1,6 @@
 .userButton {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
     display: flex;
     padding: 0;
     border: none;
@@ -9,8 +9,8 @@
 }
 
 .userButton img {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border: none;
     cursor: pointer;
 }

@@ -1,14 +1,17 @@
 import React, {useEffect, useRef, useState} from 'react';
 import style from "./LoginPopup.module.css";
+import {LoginResultID, LoginResult} from "../types/loginResultID.ts";
+import {LoginErrorMessages} from "../types/loginErrorMessages.ts";
 
 interface Props {
-    onLogin: (username: string, password: string) => void;
+    onLogin: (username: string, password: string) => Promise<LoginResultID>;
     onClose: () => void;
 }
 
 export const LoginPopup: React.FC<Props> = ({onLogin, onClose}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loginResult, setLoginResult] = useState<LoginResultID>(LoginResult.Undefined);
     const firstInputRef = useRef<HTMLInputElement>(null);
     const popupRef = useRef<HTMLDivElement>(null);
 
@@ -23,9 +26,10 @@ export const LoginPopup: React.FC<Props> = ({onLogin, onClose}) => {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [onClose]);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        onLogin(username, password);
+        const loginResult = await onLogin(username, password);
+        setLoginResult(loginResult);
     };
 
     return (
@@ -61,7 +65,13 @@ export const LoginPopup: React.FC<Props> = ({onLogin, onClose}) => {
                             required
                         />
                     </p>
+
                 </div>
+                {loginResult !== LoginResult.Undefined && loginResult !== LoginResult.Success && (
+                    <div className={style.loginErrorMessageFrame} role="alert">
+                        <p>{LoginErrorMessages[loginResult] ?? 'Unknown error'}</p>
+                    </div>
+                )}
                 <div className={style.loginPopupButtons}>
                     <button type="submit">Login</button>
                 </div>

@@ -1,12 +1,18 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {LoginPopup} from './LoginPopup';
-import UserIcon from "../assets/user.svg";
+import UserLoggedInIcon from "../assets/user-check.svg";
+import UserNotLoggedInIcon from "../assets/user-xmark.svg";
 import style from "./LoginMenu.module.css";
+import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
+import {loginUser} from "../api/api.ts";
+import {useSession} from "../session/SessionContext.tsx";
+import {UserOptionsPopup} from "./UserOptionsPopup.tsx";
 
 export const LoginMenu: React.FC = () => {
     const [showLogin, setShowLogin] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
 
+    const session = useSession();
     const toggleLogin = () => setShowLogin((prev) => !prev);
 
     const handleClickOutside = (e: MouseEvent) => {
@@ -25,18 +31,36 @@ export const LoginMenu: React.FC = () => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [showLogin]);
-
-    const handleLogin = async (username: string, password: string) => {
+    const {revalidate} = useSession();
+    const handleLogin = async (
+        username: string,
+        password: string
+    ): Promise<LoginResultID> => {
         try {
-            const response = await fetch(`/login/${username}/${password}`);
-            if (!response.ok) throw new Error('Login failed');
-            const result = await response.json();
-            console.log('Logged in as:', result);
-            setShowLogin(false);
+            const response = await loginUser(username, password);
+            if (response) {
+                console.log(response);
+                if (response.success) {
+                    await revalidate();
+                    console.log('Logged in as:', username);
+                    setShowLogin(false);
+                    return LoginResult.Success;
+                } else {
+                    return LoginResult.InvalidCredentials
+                }
+            }
+            return LoginResult.ServerError;
         } catch (e) {
-            alert('Login failed.');
+            console.error(e);
+            return LoginResult.NetworkError;
         }
     };
+
+    const handleLogout = async (): Promise<void> => {
+
+    };
+
+    console.log(`Displaying logged in picture: ${session.valid}`);
 
     return (
         <div className="header-user">
@@ -49,10 +73,18 @@ export const LoginMenu: React.FC = () => {
                 title="open login"
                 className={style.userButton}
             >
-                <img src={UserIcon} alt="User login"/>
+                <img
+                    src={session.valid ? UserLoggedInIcon : UserNotLoggedInIcon}
+                    alt={session.valid ? "Logged in" : "Not logged in"}
+                />
+
             </button>
             {showLogin && (
-                <LoginPopup onLogin={handleLogin} onClose={() => setShowLogin(false)}/>
+                session.valid ? (
+                    <UserOptionsPopup onLogout={handleLogout}/>
+                ) : (
+                    <LoginPopup onLogin={handleLogin} onClose={() => setShowLogin(false)}/>
+                )
             )}
         </div>
     );

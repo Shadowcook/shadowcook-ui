@@ -40,3 +40,12 @@
     padding: 0.4em 0.8em;
     font-size: 1em;
 }
+
+.loginErrorMessageFrame {
+    color: darkred;
+    font-size: 0.9em;
+    margin: 0.25em 0 0.5em;
+    border-left: 0.25em solid darkred;
+    padding-left: 0.5em;
+    background-color: #fce8e8;
+}
