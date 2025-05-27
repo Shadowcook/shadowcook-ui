@@ -43,11 +43,20 @@
     padding: 1rem 0;
 }
 
+.actionsRight {
+    display: flex;
+    margin: .1rem;
+}
+
+.actionsRight button {
+    margin: 1rem;
+}
+
 .backButtonFrame {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.4rem;
+    padding: 1rem;
 }
 
 .backButton {
@@ -75,6 +84,14 @@
 }
 
 .backButton img {
+    transform: scaleX(-1);
+    /*margin-top: .0rem;*/
+    height: 1.5em;
+    width: auto;
+    vertical-align: middle;
+}
+
+.toolButtons img {
     transform: scaleX(-1);
     /*margin-top: .0rem;*/
     height: 1.5em;

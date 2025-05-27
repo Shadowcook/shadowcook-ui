@@ -11,7 +11,7 @@ type RecipeCardProps = {
 };
 
 
-export function RecipeCard(recipe: RecipeCardProps) {
+export function RecipeListItem(recipe: RecipeCardProps) {
     return (
         <Link className={style.cardLink}
             to={`/category/${recipe.categoryId}/recipe/${recipe.id}`}>

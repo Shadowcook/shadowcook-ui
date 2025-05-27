@@ -1,14 +1,16 @@
 import {Link, useParams} from "react-router-dom";
 import {validateId} from "../utilities/validate.ts";
-import type {JSX} from 'react';
-import React, {useEffect, useState} from "react";
 import {fetchRecipe} from "../api/api.ts";
 import {Recipe} from "../types/recipe.ts";
 import style from "./RecipeView.module.css"
 import './Modules.css';
-import {StepIngredient} from "../types/stepIngredient.ts";
 import shadowCookLogo from "../assets/shadowcook._alpha.png";
 import backIcon from "../assets/turn-up.svg";
+import {RecipeCardRead} from "./RecipeCardRead.tsx";
+import {useEffect, useState} from "react";
+import editImg from "../assets/pen.svg"
+import deleteImg from "../assets/trash-can.svg"
+import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
 
 export function RecipeView() {
 
@@ -16,15 +18,23 @@ export function RecipeView() {
     const catId = validateId(categoryId);
     const sanitizedRecipeId = validateId(recipeId);
     const [recipe, setRecipe] = useState<Recipe | null>();
+    const [editMode, setEditMode] = useState(false);
+    const [editableRecipe, setEditableRecipe] = useState<Recipe | null>(null);
+
+
     useEffect(() => {
         fetchRecipe(sanitizedRecipeId)
             .then(setRecipe)
             .catch((err) => console.error(`Unable to load recipe with id ${sanitizedRecipeId}`, err));
     }, [sanitizedRecipeId]);
 
+    useEffect(() => {
+        if (recipe) setEditableRecipe(structuredClone(recipe));
+    }, [recipe]);
+
     if (!recipe) return (
         <div className="loadingLogoFrame">
-            <img src={shadowCookLogo} alt="No recipes so far in here." />
+            <img src={shadowCookLogo} alt="No recipes so far in here."/>
         </div>
     );
 
@@ -39,61 +49,21 @@ export function RecipeView() {
             <div className={style.backButtonFrame}>
                 <Link className={style.backButtonLink} to={`/category/${catId}`}>
                     <div className={style.backButton}>
-                        <img src={backIcon} alt="up-arrow" /> <span>Rezeptliste</span>
+                        <img src={backIcon} alt="up-arrow"/> <span>Rezeptliste</span>
                     </div>
                 </Link>
+                <div className={[style.actionsRight, style.toolButtons].join(' ')}>
+                    <button className="shadowButton"><img src={editImg} alt="Edit"/></button>
+                    <button className="shadowButton"><img src={deleteImg} alt="Delete"/></button>
+                </div>
             </div>
-            <div className={style.recipeTitleFrame}>
-                <span className={style.recipeTitle}>{recipe.recipe.name}</span>
-            </div>
-            <div className={style.recipeDescriptionFrame}>
-                <span className={style.recipeDescription}>{recipe.recipe.description}</span>
-            </div>
-            <div className={style.recipeStepsFrame}>
-                <table>
-                    <tbody>
-                    {recipe.steps.map((step, index) => (
-                        <tr key={index}>
-                            <td className={style.stepIngredient}>
-                                {step.ingredients.map((ing, i) => (
-                                    <p key={i}>{renderIngredient(ing, index)}</p>
-                                ))}
-                            </td>
-                            <td className={style.stepDescription}>
-                                <p>{step.description.split('\n').map((line, i) => (
-                                    <React.Fragment key={i}>
-                                        {line}
-                                        <br/>
-                                    </React.Fragment>
-                                ))}</p>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
+            {editMode ? (
+                <RecipeCardEdit recipe={editableRecipe} setRecipe={setEditableRecipe} />
+            ) : (
+                <RecipeCardRead recipe={recipe}/>
+            )}
+
         </div>
     );
 }
 
-function renderIngredient(ing: StepIngredient, key: number): JSX.Element {
-    let content;
-    if (ing.uom.id > 0) {
-        content = (
-            <span className={style.ingredient}>{ing.value} {ing.uom.name} {ing.name}</span>
-        );
-    } else {
-        switch (ing.uom.id) {
-            case 0:
-                content = (
-                    <span className={style.ingredientWorkStepGeneric}>{ing.name}</span>
-                );
-                break;
-            default:
-                content = (
-                    <span className={style.ingredientWorkStepUndefined}>{ing.name}</span>
-                );
-        }
-    }
-    return <p key={key}>{content}</p>;
-}
