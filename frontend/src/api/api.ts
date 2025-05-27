@@ -5,12 +5,36 @@ import {CategoriesResponse} from "../types/categoriesResponse.ts";
 import {RecipeListResponse} from "../types/recipeListResponse.ts";
 import {RecipeResponse} from "../types/recipeResponse.ts";
 import {Recipe} from "../types/recipe.ts";
+import {AuthResponse} from "../types/authResponse.ts";
+import {SessionValidationResponse} from "../types/sessionValidationResponse.ts";
 
 export async function fetchCategories(): Promise<Category[]> {
     console.log("fetching categories");
     const res = await apiClient.get<CategoriesResponse>('/getAllCategories');
     console.log("fetched " + res.data.length + " categories");
     return res.data.categories;
+}
+
+export async function validateLogin(): Promise<SessionValidationResponse> {
+    console.log("Validating session");
+    const res = await apiClient.get<SessionValidationResponse>('/session/validate');
+    console.log('validateLogin → /session/validate responded with: ', res.data);
+    return res.data;
+}
+
+export async function logout(): Promise<SessionValidationResponse> {
+    console.log("Logging out of session");
+    const res = await apiClient.get<SessionValidationResponse>('/logout');
+    return res.data;
+}
+
+export async function loginUser(username: string, password: string): Promise<AuthResponse | null> {
+    if (username != null && password != null) {
+        const res = await apiClient.get<AuthResponse>(`/login/${username}/${password}`);
+        return res.data;
+    } else {
+        return null;
+    }
 }
 
 export async function fetchRecipeList(categoryId: number): Promise<RecipeHeader[]> {
