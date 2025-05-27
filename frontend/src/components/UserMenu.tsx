@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {UserLoginPopup, UserOptionsPopup} from './UserMenuPopup.tsx';
-import UserLoggedInIcon from "../assets/user-check.svg";
-import UserNotLoggedInIcon from "../assets/user-xmark.svg";
+import UserLoggedInIcon from "../assets/font-awesome/solid/user-check.svg";
+import UserNotLoggedInIcon from "../assets/font-awesome/solid/user-xmark.svg";
 import style from "./UserMenu.module.css";
 import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
 import {loginUser, logout} from "../api/api.ts";

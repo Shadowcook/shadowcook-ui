@@ -2,7 +2,7 @@ import {Category} from "../types/category";
 import {Link, useParams} from 'react-router-dom';
 import {validateId} from "../utilities/validate.ts";
 import style from "./CategoryBrowser.module.css";
-import backIcon from "../assets/backward.svg"
+import backIcon from "../assets//font-awesome/solid/backward.svg"
 
 type CategoryBrowserProps = {
     categories: Category[];

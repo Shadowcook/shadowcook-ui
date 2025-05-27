@@ -2,7 +2,7 @@ import {Category} from "../types/category";
 import React from "react";
 import {Link} from "react-router-dom";
 import style from "./Breadcrumbs.module.css";
-import breadCrumbChevron from "../assets/chevron-right.svg"
+import breadCrumbChevron from "../assets/font-awesome/solid/chevron-right.svg"
 
 type BreadcrumbsProps = {
     categories: Category[];

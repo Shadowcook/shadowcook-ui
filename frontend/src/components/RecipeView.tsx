@@ -8,7 +8,7 @@ import style from "./RecipeView.module.css"
 import './Modules.css';
 import {StepIngredient} from "../types/stepIngredient.ts";
 import shadowCookLogo from "../assets/shadowcook._alpha.png";
-import backIcon from "../assets/turn-up.svg";
+import backIcon from "../assets/font-awesome/solid/turn-up.svg";
 
 export function RecipeView() {
 
