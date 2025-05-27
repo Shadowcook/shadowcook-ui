@@ -1,36 +1,35 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {LoginPopup} from './LoginPopup';
+import {UserLoginPopup, UserOptionsPopup} from './UserMenuPopup.tsx';
 import UserLoggedInIcon from "../assets/user-check.svg";
 import UserNotLoggedInIcon from "../assets/user-xmark.svg";
-import style from "./LoginMenu.module.css";
+import style from "./UserMenu.module.css";
 import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
 import {loginUser, logout} from "../api/api.ts";
 import {useSession} from "../session/SessionContext.tsx";
-import {UserOptionsPopup} from "./UserOptionsPopup.tsx";
 
-export const LoginMenu: React.FC = () => {
-    const [showLogin, setShowLogin] = useState(false);
+export const UserMenu: React.FC = () => {
+    const [showUserOptions, setShowUserOptions] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     const session = useSession();
-    const toggleLogin = () => setShowLogin((prev) => !prev);
+    const toggleUserOptions = () => setShowUserOptions((prev) => !prev);
 
     const handleClickOutside = (e: MouseEvent) => {
         const popup = document.querySelector('.login-popup');
         if (
-            showLogin &&
+            showUserOptions &&
             popup &&
             !popup.contains(e.target as Node) &&
             !buttonRef.current?.contains(e.target as Node)
         ) {
-            setShowLogin(false);
+            setShowUserOptions(false);
         }
     };
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [showLogin]);
+    }, [showUserOptions]);
     const {revalidate} = useSession();
     const handleLogin = async (
         username: string,
@@ -42,8 +41,8 @@ export const LoginMenu: React.FC = () => {
                 console.log(response);
                 if (response.success) {
                     await revalidate();
-                    console.log('Logged in as:', username);
-                    setShowLogin(false);
+                    console.log('Logged in as: ', username);
+                    setShowUserOptions(false);
                     return LoginResult.Success;
                 } else {
                     return LoginResult.InvalidCredentials
@@ -59,9 +58,11 @@ export const LoginMenu: React.FC = () => {
     const handleLogout = async () => {
         try {
             await logout();
+            setShowUserOptions(false);
             await revalidate();
+            window.location.href = '/logout-success';
         } catch (e) {
-            console.error('Logout failed:', e);
+            console.error('Logout failed: ', e);
         }
     };
 
@@ -69,11 +70,11 @@ export const LoginMenu: React.FC = () => {
         <div className="header-user">
             <button
                 ref={buttonRef}
-                onClick={toggleLogin}
+                onClick={toggleUserOptions}
                 aria-haspopup="dialog"
-                aria-expanded={showLogin}
-                aria-controls="login-popup"
-                title="open login"
+                aria-expanded={showUserOptions}
+                aria-controls="user-options-popup"
+                title="open user options"
                 className={style.userButton}
             >
                 <img
@@ -82,11 +83,18 @@ export const LoginMenu: React.FC = () => {
                 />
 
             </button>
-            {showLogin && (
+            {showUserOptions && (
                 session.valid ? (
-                    <UserOptionsPopup onLogout={handleLogout}/>
+                    <UserOptionsPopup
+                        session={session}
+                        onLogout={handleLogout}
+                        onClose={() => setShowUserOptions(false)}
+                    />
                 ) : (
-                    <LoginPopup onLogin={handleLogin} onClose={() => setShowLogin(false)}/>
+                    <UserLoginPopup
+                        onLogin={handleLogin}
+                        onClose={() => setShowUserOptions(false)}
+                    />
                 )
             )}
         </div>

@@ -7,7 +7,7 @@
     overflow: hidden;
 }
 
-.loginPopup {
+.userMenuPopup {
     position: absolute;
     top: 100%;
     right: 0;
@@ -20,7 +20,7 @@
     min-width: 10em;
 }
 
-.loginPopup input {
+.userMenuPopup input {
     width: 20em;
     margin: 0.25em 0 0.75em;
     padding: 0.5em;
@@ -28,20 +28,27 @@
     box-sizing: border-box;
 }
 
-.loginPopupButtons {
+.userMenuPopupButtons {
     display: flex;
     width: 100%;
     justify-content: center;
     gap: 0.5em;
 }
 
-.loginPopup button {
-    width: 100%;
-    padding: 0.4em 0.8em;
-    font-size: 1em;
+.welcomeMessage {
+    font-weight: bold;
+    font-size: 1.25em;
 }
 
-.loginErrorMessageFrame {
+.emailId {
+    font-style: italic;
+}
+
+.menuSeparator {
+    margin: 2em .5em 2em .5em;
+}
+
+.userMenuErrorMessageFrame {
     color: darkred;
     font-size: 0.9em;
     margin: 0.25em 0 0.5em;

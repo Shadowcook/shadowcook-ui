@@ -1,14 +1,46 @@
 import React, {useEffect, useRef, useState} from 'react';
-import style from "./LoginPopup.module.css";
-import {LoginResultID, LoginResult} from "../types/loginResultID.ts";
+import style from "./UserMenuPopup.module.css";
+import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
 import {LoginErrorMessages} from "../types/loginErrorMessages.ts";
+import {SessionState} from "../types/sessionState.ts";
 
-interface Props {
+interface LoginProps {
     onLogin: (username: string, password: string) => Promise<LoginResultID>;
     onClose: () => void;
 }
 
-export const LoginPopup: React.FC<Props> = ({onLogin, onClose}) => {
+
+interface UserOptionsProps {
+    session: SessionState;
+    onLogout: () => void;
+    onClose: () => void;
+}
+
+export const UserOptionsPopup: React.FC<UserOptionsProps> = (props) => {
+    const popupRef = useRef<HTMLDivElement>(null);
+    const {session, onLogout} = props;
+    return (
+        <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="login-popup-title"
+            className={style.userMenuPopup}
+            ref={popupRef}
+        >
+            <p>
+                <span className={style.welcomeMessage}>Welcome, {session.user.login}</span><br/>
+                <span className={style.emailId}>{session.user.email}</span><br/>
+            </p>
+            <hr className={style.menuSeparator} />
+            <div className={style.userMenuPopupButtons}>
+                <button className="shadowButton" onClick={onLogout}>Logout</button>
+            </div>
+        </div>
+    );
+};
+
+
+export const UserLoginPopup: React.FC<LoginProps> = ({onLogin, onClose}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginResult, setLoginResult] = useState<LoginResultID>(LoginResult.Undefined);
@@ -37,11 +69,11 @@ export const LoginPopup: React.FC<Props> = ({onLogin, onClose}) => {
             role="dialog"
             aria-modal="true"
             aria-labelledby="login-popup-title"
-            className={style.loginPopup}
+            className={style.userMenuPopup}
             ref={popupRef}
         >
             <form onSubmit={handleSubmit}>
-                {/*<h2 id="login-popup-title" className={style.visuallyHidden}>Login</h2>*/}
+                <h2 id="login-popup-title" className={style.visuallyHidden}>Login</h2>
                 <div>
                     <p><label htmlFor="username">Username:</label><br/>
                         <input
@@ -68,12 +100,12 @@ export const LoginPopup: React.FC<Props> = ({onLogin, onClose}) => {
 
                 </div>
                 {loginResult !== LoginResult.Undefined && loginResult !== LoginResult.Success && (
-                    <div className={style.loginErrorMessageFrame} role="alert">
+                    <div className={style.userMenuErrorMessageFrame} role="alert">
                         <p>{LoginErrorMessages[loginResult] ?? 'Unknown error'}</p>
                     </div>
                 )}
-                <div className={style.loginPopupButtons}>
-                    <button type="submit">Login</button>
+                <div className={style.userMenuPopupButtons}>
+                    <button className="shadowButton" type="submit">Login</button>
                 </div>
             </form>
         </div>
