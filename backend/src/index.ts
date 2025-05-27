@@ -120,9 +120,20 @@ app.get('/api/GetFullRecipe/:id', async (req, res) => {
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
 app.listen(PORT, async () => {
-    console.log(`Backend proxy started on port ${PORT}`);
-    const success = await login();
-    if (!success) {
-        console.error('Initial login failed. API calls will fail.');
-    }
+    await loginWithRetry();
+        console.log(`Backend proxy started on port ${PORT}`);
 });
+
+async function loginWithRetry(intervalMs = 5000): Promise<void> {
+    let loggedIn = false;
+    while (!loggedIn) {
+        console.log('Attempting default login...');
+        loggedIn = await login();
+        if (!loggedIn) {
+            console.warn(`Login failed. Retrying in ${intervalMs / 1000}s...`);
+            await new Promise(resolve => setTimeout(resolve, intervalMs));
+        }
+    }
+}
+
+
