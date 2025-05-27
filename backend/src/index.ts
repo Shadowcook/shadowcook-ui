@@ -184,9 +184,18 @@ app.get('/api/GetFullRecipe/:id', async (req, res) => {
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
 app.listen(PORT, async () => {
+    await loginWithRetry();
     console.log(`Proxy listening on port ${PORT}`);
-    const success = await loginDefault();
-    if (!success) {
-        console.error('Default session could not be established. Public API calls will fail.');
-    }
 });
+
+async function loginWithRetry(intervalMs = 5000): Promise<void> {
+    let loggedIn = false;
+    while (!loggedIn) {
+        console.log('Attempting default login...');
+        loggedIn = await loginDefault();
+        if (!loggedIn) {
+            console.warn(`Login failed. Retrying in ${intervalMs / 1000}s...`);
+            await new Promise(resolve => setTimeout(resolve, intervalMs));
+        }
+    }
+}
