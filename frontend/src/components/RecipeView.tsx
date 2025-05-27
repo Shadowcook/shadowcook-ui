@@ -10,6 +10,8 @@ import {RecipeCardRead} from "./RecipeCardRead.tsx";
 import {useEffect, useState} from "react";
 import editImg from "../assets/pen.svg"
 import deleteImg from "../assets/trash-can.svg"
+import saveImg from "../assets/floppy-disk.svg"
+import cancelImg from "../assets/circle-xmark.svg"
 import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
 
 export function RecipeView() {
@@ -43,6 +45,50 @@ export function RecipeView() {
         step.ingredients.sort((a, b) => a.order - b.order);
     })
 
+    let toolbox;
+
+    if (editMode) {
+        toolbox = (
+            <>
+                <button
+                    className="shadowButton"
+                    onClick={() => setEditMode(false)}
+                >
+                    <img
+                        src={cancelImg}
+                        alt="Cancel"
+                    />
+                </button>
+                <button className="shadowButton">
+                    <img
+                        src={saveImg}
+                        alt="Save"
+                    />
+                </button>
+                <button className="shadowButton">
+                    <img
+                        src={deleteImg}
+                        alt="Delete"
+                    />
+                </button>
+            </>
+        );
+    } else {
+        toolbox = (
+            <>
+                <button
+                    className="shadowButton"
+                    onClick={() => setEditMode(true)}
+                >
+                    <img
+                        src={editImg}
+                        alt="Edit"
+                    />
+                </button>
+            </>
+        );
+    }
+
 
     return (
         <div className={style.recipeCard}>
@@ -53,12 +99,11 @@ export function RecipeView() {
                     </div>
                 </Link>
                 <div className={[style.actionsRight, style.toolButtons].join(' ')}>
-                    <button className="shadowButton"><img src={editImg} alt="Edit"/></button>
-                    <button className="shadowButton"><img src={deleteImg} alt="Delete"/></button>
+                    {toolbox}
                 </div>
             </div>
             {editMode ? (
-                <RecipeCardEdit recipe={editableRecipe} setRecipe={setEditableRecipe} />
+                <RecipeCardEdit recipe={editableRecipe} setRecipe={setEditableRecipe}/>
             ) : (
                 <RecipeCardRead recipe={recipe}/>
             )}

@@ -1,4 +1,4 @@
-import style from "./RecipeCard.module.css"
+import style from "./RecipeListItem.module.css"
 import {Link} from 'react-router-dom';
 import no_thumbnail from "../assets/no_thumbnail.png";
 
