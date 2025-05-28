@@ -7,12 +7,27 @@ import {RecipeResponse} from "../types/recipeResponse.ts";
 import {Recipe} from "../types/recipe.ts";
 import {AuthResponse} from "../types/authResponse.ts";
 import {SessionValidationResponse} from "../types/sessionValidationResponse.ts";
+import {UomResponse} from "../types/uomResponse.ts";
+import {Uom} from "../types/uom.ts";
 
 export async function fetchCategories(): Promise<Category[]> {
     console.log("fetching categories");
     const res = await apiClient.get<CategoriesResponse>('/getAllCategories');
     console.log("fetched " + res.data.length + " categories");
     return res.data.categories;
+}
+
+export async function fetchUomList(): Promise<Uom[]> {
+    try {
+        console.log("fetching UOM...");
+        const res = await apiClient.get<UomResponse>('/getUomList');
+        console.log(`fetched UOM data: ${res.data}`);
+        console.log("fetched " + res.data.length + " UOM");
+        return res.data.uoms;
+    } catch (error) {
+        console.log(error);
+    }
+    return [];
 }
 
 export async function validateLogin(): Promise<SessionValidationResponse> {

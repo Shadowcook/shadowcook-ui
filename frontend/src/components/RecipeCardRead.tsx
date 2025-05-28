@@ -29,6 +29,7 @@ function renderIngredient(ing: StepIngredient, key: number): JSX.Element {
     return <p key={key}>{content}</p>;
 }
 
+
 export const RecipeCardRead: React.FC<RecipeCardReadProps>
     = (props) => {
     const recipe = props.recipe;
@@ -43,16 +44,16 @@ export const RecipeCardRead: React.FC<RecipeCardReadProps>
             <div className="recipeStepsFrame">
                 <table>
                     <tbody>
-                    {recipe.steps.map((step, index) => (
-                        <tr key={index}>
+                    {recipe.steps.map((step, stepIndex) => (
+                        <tr key={`step-row-${stepIndex}`}>
                             <td className="stepIngredient">
-                                {step.ingredients.map((ing, i) => (
-                                    <p key={i}>{renderIngredient(ing, index)}</p>
+                                {step.ingredients.map((ing, ingredientIndex) => (
+                                    renderIngredient(ing, ingredientIndex)
                                 ))}
                             </td>
                             <td className="stepDescription">
-                                <p>{step.description.split('\n').map((line, i) => (
-                                    <React.Fragment key={i}>
+                                <p>{step.description.split('\n').map((line, descriptionLineIndex) => (
+                                    <React.Fragment key={`step-description-${descriptionLineIndex}`}>
                                         {line}
                                         <br/>
                                     </React.Fragment>

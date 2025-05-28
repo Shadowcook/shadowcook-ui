@@ -1,6 +1,6 @@
 import {Link, useParams} from "react-router-dom";
 import {validateId} from "../utilities/validate.ts";
-import {fetchRecipe} from "../api/api.ts";
+import {fetchRecipe, fetchUomList} from "../api/api.ts";
 import {Recipe} from "../types/recipe.ts";
 import style from "./RecipeView.module.css"
 import './Modules.css';
@@ -13,6 +13,7 @@ import deleteImg from "../assets/trash-can.svg"
 import saveImg from "../assets/floppy-disk.svg"
 import cancelImg from "../assets/circle-xmark.svg"
 import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
+import {Uom} from "../types/uom.ts";
 
 export function RecipeView() {
 
@@ -22,7 +23,22 @@ export function RecipeView() {
     const [recipe, setRecipe] = useState<Recipe | null>();
     const [editMode, setEditMode] = useState(false);
     const [editableRecipe, setEditableRecipe] = useState<Recipe | null>(null);
+    const [uomList, setUomList] = useState<Uom[]>([]);
 
+    useEffect(() => {
+        if (editMode) {
+            console.log("fetching UOM...");
+            fetchUomList()
+                .then((result) => {
+                    console.log("fetched UOM data:", result);
+                    setUomList(result ?? []);
+                })
+                .catch((err) => {
+                    console.error("UOM fetch failed:", err);
+                    setUomList([]);
+                });
+        }
+    }, [editMode]);
 
     useEffect(() => {
         fetchRecipe(sanitizedRecipeId)
@@ -46,8 +62,19 @@ export function RecipeView() {
     })
 
     let toolbox;
+    let navigateBack;
 
     if (editMode) {
+
+        navigateBack = (
+            <>
+                <div className={style.backButtonDisabled}>
+                    <img src={backIcon} alt="up-arrow"/> <span>Rezeptliste</span>
+                </div>
+            </>
+        );
+
+
         toolbox = (
             <>
                 <button
@@ -74,6 +101,15 @@ export function RecipeView() {
             </>
         );
     } else {
+
+        navigateBack = (
+            <Link className={style.backButtonLink} to={`/category/${catId}`}>
+                <div className={style.backButton}>
+                    <img src={backIcon} alt="up-arrow"/> <span>Rezeptliste</span>
+                </div>
+            </Link>
+        )
+
         toolbox = (
             <>
                 <button
@@ -93,17 +129,13 @@ export function RecipeView() {
     return (
         <div className={style.recipeCard}>
             <div className={style.backButtonFrame}>
-                <Link className={style.backButtonLink} to={`/category/${catId}`}>
-                    <div className={style.backButton}>
-                        <img src={backIcon} alt="up-arrow"/> <span>Rezeptliste</span>
-                    </div>
-                </Link>
+                {navigateBack}
                 <div className={[style.actionsRight, style.toolButtons].join(' ')}>
                     {toolbox}
                 </div>
             </div>
             {editMode ? (
-                <RecipeCardEdit recipe={editableRecipe} setRecipe={setEditableRecipe}/>
+                <RecipeCardEdit recipe={editableRecipe} uomList={uomList} setRecipe={setEditableRecipe}/>
             ) : (
                 <RecipeCardRead recipe={recipe}/>
             )}

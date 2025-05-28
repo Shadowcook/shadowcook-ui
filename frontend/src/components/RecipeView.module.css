@@ -15,7 +15,8 @@
     padding: 1rem;
 }
 
-.backButton {
+.backButton,
+.backButtonDisabled {
     display: flex;
     flex-direction: row;
     gap: 1rem;
@@ -24,6 +25,10 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 1.25rem;
+}
+
+.backButtonDisabled {
+    opacity: 0.2;
 }
 
 .backButtonLink:link,
@@ -39,7 +44,8 @@
     background-color: #d9d9d9;
 }
 
-.backButton img {
+.backButton img,
+.backButtonDisabled img {
     transform: scaleX(-1);
     /*margin-top: .0rem;*/
     height: 1.5em;
