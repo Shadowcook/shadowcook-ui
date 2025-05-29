@@ -46,12 +46,12 @@ export const RecipeCardRead: React.FC<RecipeCardReadProps>
                     <tbody>
                     {recipe.steps.map((step, stepIndex) => (
                         <tr key={`step-row-${stepIndex}`}>
-                            <td className="stepIngredient">
+                            <td className="editStepIngredient">
                                 {step.ingredients.map((ing, ingredientIndex) => (
                                     renderIngredient(ing, ingredientIndex)
                                 ))}
                             </td>
-                            <td className="stepDescription">
+                            <td className="editStepDescription">
                                 <p>{step.description.split('\n').map((line, descriptionLineIndex) => (
                                     <React.Fragment key={`step-description-${descriptionLineIndex}`}>
                                         {line}

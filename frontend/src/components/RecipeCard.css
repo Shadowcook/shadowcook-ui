@@ -15,20 +15,19 @@
 
 .recipeDescriptionFrame {
     margin-top: 2em;
-
 }
 
 .recipeDescription {
 
 }
 
-.stepIngredient {
+.editStepIngredient {
     background-color: #cccccc;
     vertical-align: top;
     padding: .3rem;
 }
 
-.stepDescription {
+.editStepDescription {
     background-color: #cccccc;
     vertical-align: top;
     padding: .3rem;

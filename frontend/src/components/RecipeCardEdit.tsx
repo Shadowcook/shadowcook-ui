@@ -1,6 +1,6 @@
 import React from "react";
 import {Recipe} from "../types/recipe.ts";
-import "./RecipeCard.css";
+// import "./RecipeCard.css";
 import {StepIngredient} from "../types/stepIngredient.ts";
 import {
     EditableNumberField,
@@ -9,6 +9,7 @@ import {
     EditableUomSelect
 } from "../utilities/InputFieldLibrary.tsx";
 import {Uom} from "../types/uom.ts";
+import style from "./RecipeCardEdit.module.css";
 
 interface RecipeCardEditProps {
     recipe: Recipe | null;
@@ -98,44 +99,48 @@ export const RecipeCardEdit: React.FC<RecipeCardEditProps>
                     />
                 </div>
                 <div className="recipeStepsFrame">
-                    <table>
+                    <table className={style.editRecipeTable}>
                         <tbody>
                         {recipe.steps.map((step, stepIndex) => (
                             <tr key={stepIndex}>
-                                <td className="stepIngredient">
+                                <td className={style.editStepIngredient}>
                                     {step.ingredients.map((ing, ingIndex) => (
-                                        <p key={`step-row-${ingIndex}`}>
+                                        <p key={`step-row-${ingIndex}`} className={style.editStepIngredientGroup}>
                                             <EditableNumberField
                                                 value={ing.value}
                                                 onChange={(val) => updateIngredientField(stepIndex, ingIndex, 'value', val)}
+                                                className={style.ingredientValueInput}
                                             />
                                             {uomList.length > 0 ? (
-                                                <EditableUomSelect
-                                                    value={ing.uom}
-                                                    options={uomList}
-                                                    onChange={(val) => updateIngredientField(stepIndex, ingIndex, 'uom', val)}
-                                                    className="ingredientUomSelect"
-                                                />
+                                                <>
+                                                    <EditableUomSelect
+                                                        value={ing.uom}
+                                                        options={uomList}
+                                                        onChange={(val) => updateIngredientField(stepIndex, ingIndex, 'uom', val)}
+                                                        className={style.ingredientUomSelect}
+                                                    />
+                                                </>
                                             ) : (
-                                                <span>Loading...</span>
+                                                <>
+                                                    <span>Loading...</span>
+                                                </>
                                             )}
                                             <EditableTextField
                                                 value={ing.name}
                                                 onChange={(val) => updateIngredientField(stepIndex, ingIndex, 'name', val)}
-                                                className="ingredientNameInput"
+                                                className={style.ingredientNameInput}
                                             />
                                         </p>
                                     ))}
                                 </td>
-                                <td className="stepDescription">
-                                    <p>
+                                <td className={style.editStepDescription}>
 
-                                        <EditableTextareaField
-                                            value={step.description}
-                                            onChange={(val) => updateStepDescription(stepIndex, val)}
-                                            className="stepDescriptionInput"
-                                        />
-                                    </p>
+                                    <EditableTextareaField
+                                        value={step.description}
+                                        onChange={(val) => updateStepDescription(stepIndex, val)}
+                                        className={style.editStepDescriptionInput}
+                                    />
+
                                 </td>
                             </tr>
                         ))}
