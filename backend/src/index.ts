@@ -209,3 +209,13 @@ async function loginWithRetry(intervalMs = 5000): Promise<void> {
         }
     }
 }
+
+app.post('/api/saveRecipe', sessionRouteWrapper(async (cookie, req, res) => {
+    const recipe = req.body;
+
+    if (!recipe || !recipe.recipe || typeof recipe.recipe.recipe.id !== 'number') {
+        return res.status(400).json({ error: 'Invalid recipe object.' });
+    }
+
+    return await apiRequest<any>('/fullRecipe/create', recipe, cookie);
+}));

@@ -74,3 +74,21 @@ export async function fetchRecipe(recipeId: number): Promise<Recipe | null> {
     console.log("API call did not contain any recipe");
     return null;
 }
+
+export async function pushRecipe(recipe: Recipe): Promise<boolean> {
+    try {
+        console.log("Saving recipe...", recipe);
+        const res = await apiClient.post('/saveRecipe', {recipe: recipe}, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+
+        console.log("Recipe saved:", res.data);
+        return true;
+    } catch (error) {
+        console.error("Failed to save recipe:", error);
+        return false;
+    }
+}

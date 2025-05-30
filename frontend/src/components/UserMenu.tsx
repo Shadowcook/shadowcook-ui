@@ -6,6 +6,7 @@ import style from "./UserMenu.module.css";
 import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
 import {loginUser, logout} from "../api/api.ts";
 import {useSession} from "../session/SessionContext.tsx";
+import {useMessage} from "../hooks/useMessage.ts";
 
 export const UserMenu: React.FC = () => {
     const [showUserOptions, setShowUserOptions] = useState(false);
@@ -13,7 +14,7 @@ export const UserMenu: React.FC = () => {
 
     const session = useSession();
     const toggleUserOptions = () => setShowUserOptions((prev) => !prev);
-
+    const {showMessage} = useMessage();
     const handleClickOutside = (e: MouseEvent) => {
         const popup = document.querySelector('.login-popup');
         if (
@@ -43,14 +44,18 @@ export const UserMenu: React.FC = () => {
                     await revalidate();
                     console.log('Logged in as: ', username);
                     setShowUserOptions(false);
+                    showMessage("Login successful", "success")
                     return LoginResult.Success;
                 } else {
+                    showMessage("Login failed. Check log for details.", "error")
                     return LoginResult.InvalidCredentials
                 }
             }
+            showMessage("Login failed. Check log for details.", "error")
             return LoginResult.ServerError;
         } catch (e) {
             console.error(e);
+            showMessage("Login failed. Check log for details.", "error")
             return LoginResult.NetworkError;
         }
     };

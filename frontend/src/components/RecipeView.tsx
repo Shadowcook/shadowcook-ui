@@ -1,6 +1,6 @@
 import {Link, useParams} from "react-router-dom";
 import {validateId} from "../utilities/validate.ts";
-import {fetchRecipe, fetchUomList} from "../api/api.ts";
+import {fetchRecipe, fetchUomList, pushRecipe} from "../api/api.ts";
 import {Recipe} from "../types/recipe.ts";
 import style from "./RecipeView.module.css"
 import './Modules.css';
@@ -11,9 +11,10 @@ import {useEffect, useState} from "react";
 import editImg from "../assets/pen.svg"
 import deleteImg from "../assets/trash-can.svg"
 import saveImg from "../assets/floppy-disk.svg"
-import cancelImg from "../assets/circle-xmark.svg"
+import closeImg from "../assets/circle-xmark.svg"
 import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
 import {Uom} from "../types/uom.ts";
+import {useMessage} from "../hooks/useMessage.ts";
 
 export function RecipeView() {
 
@@ -24,6 +25,7 @@ export function RecipeView() {
     const [editMode, setEditMode] = useState(false);
     const [editableRecipe, setEditableRecipe] = useState<Recipe | null>(null);
     const [uomList, setUomList] = useState<Uom[]>([]);
+    const {showMessage} = useMessage();
 
     useEffect(() => {
         if (editMode) {
@@ -64,9 +66,23 @@ export function RecipeView() {
     let toolbox;
     let navigateBack;
 
-    function saveRecipe(editableRecipe: Recipe | null) {
-        if (editableRecipe) {
+    function reloadRecipe() {
+        fetchRecipe(sanitizedRecipeId)
+            .then(setRecipe)
+            .catch((err) => console.error(`Unable to load recipe with id ${sanitizedRecipeId}`, err));
+    }
 
+    async function saveRecipe() {
+        if (editableRecipe) {
+            console.log("Trying to save recipe: ", editableRecipe);
+            const saveSuccess = await pushRecipe(editableRecipe);
+            if (saveSuccess) {
+                showMessage("Recipe saved successfully.", "success");
+            } else {
+                showMessage("Saving recipe failed. Please check log.", "error", 30000);
+            }
+        } else {
+            showMessage("No recipe loaded. Cannot save.", "warning", 8000);
         }
     }
 
@@ -85,16 +101,19 @@ export function RecipeView() {
             <>
                 <button
                     className="shadowButton"
-                    onClick={() => setEditMode(false)}
+                    onClick={async () => {
+                        setEditMode(false);
+                        reloadRecipe();
+                    }}
                 >
                     <img
-                        src={cancelImg}
-                        alt="Cancel"
+                        src={closeImg}
+                        alt="Close"
                     />
                 </button>
                 <button
                     className="shadowButton"
-                    onClick={() => saveRecipe(editableRecipe)}
+                    onClick={() => saveRecipe()}
                 >
                     <img
                         src={saveImg}
@@ -123,6 +142,7 @@ export function RecipeView() {
             <>
                 <button
                     className="shadowButton"
+                    disabled={!recipe}
                     onClick={() => setEditMode(true)}
                 >
                     <img
