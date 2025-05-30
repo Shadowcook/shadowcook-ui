@@ -64,6 +64,12 @@ export function RecipeView() {
     let toolbox;
     let navigateBack;
 
+    function saveRecipe(editableRecipe: Recipe | null) {
+        if (editableRecipe) {
+
+        }
+    }
+
     if (editMode) {
 
         navigateBack = (
@@ -86,7 +92,10 @@ export function RecipeView() {
                         alt="Cancel"
                     />
                 </button>
-                <button className="shadowButton">
+                <button
+                    className="shadowButton"
+                    onClick={() => saveRecipe(editableRecipe)}
+                >
                     <img
                         src={saveImg}
                         alt="Save"
@@ -124,7 +133,6 @@ export function RecipeView() {
             </>
         );
     }
-
 
     return (
         <div className={style.recipeCard}>

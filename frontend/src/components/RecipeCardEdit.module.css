@@ -36,10 +36,18 @@
 .ingredientNameInput,
 .ingredientValueInput,
 .ingredientUomSelect {
-    width: auto;
-    max-width: 10rem;
+    max-width: 15rem;
     box-sizing: border-box;
 }
 
+.ingredientNameInput{
+    width: 10rem;
+}
+.ingredientValueInput{
+    width: 4rem;
+}
+.ingredientUomSelect {
+    width: 10rem;
+}
 
 

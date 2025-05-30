@@ -134,7 +134,6 @@ export const RecipeCardEdit: React.FC<RecipeCardEditProps>
                                     ))}
                                 </td>
                                 <td className={style.editStepDescription}>
-
                                     <EditableTextareaField
                                         value={step.description}
                                         onChange={(val) => updateStepDescription(stepIndex, val)}
