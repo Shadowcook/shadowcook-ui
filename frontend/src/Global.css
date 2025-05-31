@@ -1,6 +1,7 @@
 .shadowButton,
 .imageButton,
-.imageButtonDisabled {
+.imageButtonDisabled,
+.addRecipeButton {
     all: unset;
     display: block;
     padding: 0.5rem 1rem;
@@ -16,11 +17,13 @@
 
 .shadowButton:hover,
 .imageButton:hover,
-.imageButtonSmall:hover {
+.imageButtonSmall:hover,
+.addRecipeButton:hover {
     background-color: #ddd;
 }
 
 .imageButton img,
+.addRecipeButton img,
 .imageButtonDisabled img {
     height: 1.5em;
     width: auto;
@@ -40,6 +43,10 @@
     font-weight: bold;
     color: #333;
     transition: background-color 0.2s ease;
+}
+
+.addRecipeButton {
+    margin-right: 2rem;
 }
 
 .imageButtonSmall img,

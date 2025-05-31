@@ -19,6 +19,7 @@ import addIngredient from "../assets/plus.svg";
 import moveUpIngredient from "../assets/up-long.svg";
 import moveDownIngredient from "../assets/down-long.svg";
 
+
 // import {useMessage} from "../hooks/useMessage.ts";
 
 
@@ -32,8 +33,7 @@ interface RecipeCardEditProps {
 export const RecipeCardEdit: React.FC<RecipeCardEditProps>
     = (props) => {
     const {recipe, setRecipe, uomList} = props;
-    // const {showMessage} = useMessage();
-    // console.log({component: "RecipeCardEdit", function: "RecipeCardEdit", data: uomList});
+
 
     function updateRecipeField<K extends keyof Recipe['recipe']>(
         field: K,

@@ -15,6 +15,8 @@ import closeImg from "../assets/circle-xmark.svg"
 import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
 import {Uom} from "../types/uom.ts";
 import {useMessage} from "../hooks/useMessage.ts";
+import categoryEditorIcon from "../assets/folder-tree.svg"
+import CategoryModal from "./CategoryModal.tsx";
 
 export function RecipeView() {
 
@@ -26,6 +28,18 @@ export function RecipeView() {
     const [editableRecipe, setEditableRecipe] = useState<Recipe | null>(null);
     const [uomList, setUomList] = useState<Uom[]>([]);
     const {showMessage} = useMessage();
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
+
+    const openModalCategorySelection = () => {
+        setModalOpen(true);
+    };
+
+    const handleSaveCategories = (newSelected: number[]) => {
+        setSelectedCategoryIds(newSelected);
+        console.log(selectedCategoryIds);
+        setModalOpen(false);
+    };
 
     useEffect(() => {
         if (editMode) {
@@ -93,6 +107,18 @@ export function RecipeView() {
                 <div className={style.backButtonDisabled}>
                     <img src={backIcon} alt="up-arrow"/> <span>Rezeptliste</span>
                 </div>
+                <div className={style.backButton}>
+                    <button className="shadowButton" onClick={openModalCategorySelection}>
+                        <img src={categoryEditorIcon} alt="category editor"/>
+                    </button>
+                </div>
+
+                {modalOpen && (
+                    <CategoryModal
+                        onClose={() => setModalOpen(false)}
+                        onSave={handleSaveCategories}
+                    />
+                )}
             </>
         );
 

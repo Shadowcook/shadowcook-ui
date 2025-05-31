@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {UserLoginPopup, UserOptionsPopup} from './UserMenuPopup.tsx';
 import UserLoggedInIcon from "../assets/user-check.svg";
 import UserNotLoggedInIcon from "../assets/user-xmark.svg";
+import AddRecipeIcon from "../assets/plus.svg"
 import style from "./UserMenu.module.css";
 import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
 import {loginUser, logout} from "../api/api.ts";
@@ -71,23 +72,51 @@ export const UserMenu: React.FC = () => {
         }
     };
 
-    return (
-        <div className="header-user">
+    let createRecipeButton;
+
+    if (session.valid) {
+
+        createRecipeButton = (
             <button
-                ref={buttonRef}
-                onClick={toggleUserOptions}
-                aria-haspopup="dialog"
-                aria-expanded={showUserOptions}
-                aria-controls="user-options-popup"
-                title="open user options"
-                className={style.userButton}
+                className="addRecipeButton"
+                title="create new recipe"
             >
                 <img
-                    src={session.valid ? UserLoggedInIcon : UserNotLoggedInIcon}
-                    alt={session.valid ? "Logged in" : "Not logged in"}
+                    src={AddRecipeIcon}
+                    alt="add recipe"
                 />
-
+                &nbsp;&nbsp;Add recipe
             </button>
+        )
+    } else {
+        createRecipeButton=(<div></div>)
+    }
+
+    return (
+        <div className="header-user">
+            <table>
+                <tr>
+                    <td>
+                        {createRecipeButton}
+                    </td>
+                    <td>
+                        <button
+                            ref={buttonRef}
+                            onClick={toggleUserOptions}
+                            aria-haspopup="dialog"
+                            aria-expanded={showUserOptions}
+                            aria-controls="user-options-popup"
+                            title="open user options"
+                            className={style.userButton}
+                        >
+                            <img
+                                src={session.valid ? UserLoggedInIcon : UserNotLoggedInIcon}
+                                alt={session.valid ? "Logged in" : "Not logged in"}
+                            />
+                        </button>
+                    </td>
+                </tr>
+            </table>
             {showUserOptions && (
                 session.valid ? (
                     <UserOptionsPopup
