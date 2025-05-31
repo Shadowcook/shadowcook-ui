@@ -10,20 +10,24 @@
     margin-right: .3rem;
 }
 
-.editStepIngredient {
+.editStepDescription,
+.editStepIngredient,
+.editStepToolbar {
     background-color: #cccccc;
+    vertical-align: top;
+    padding: 1rem;
+}
+
+.editStepIngredient,
+.editStepToolbar {
     width: 1%;
     max-width: 50%;
     white-space: nowrap;
     overflow: hidden;
-    vertical-align: top;
 }
 
 .editStepDescription {
-    background-color: #cccccc;
     width: auto;
-    vertical-align: top;
-    padding: 1rem;
 }
 
 .editStepDescriptionInput {
@@ -40,12 +44,14 @@
     box-sizing: border-box;
 }
 
-.ingredientNameInput{
+.ingredientNameInput {
     width: 10rem;
 }
-.ingredientValueInput{
+
+.ingredientValueInput {
     width: 4rem;
 }
+
 .ingredientUomSelect {
     width: 10rem;
 }

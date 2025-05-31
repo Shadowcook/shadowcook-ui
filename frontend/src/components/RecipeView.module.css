@@ -54,7 +54,7 @@
 }
 
 .toolButtons img {
-    transform: scaleX(-1);
+    /*transform: scaleX(-1);*/
     /*margin-top: .0rem;*/
     height: 1.5em;
     width: auto;
