@@ -1,3 +1,5 @@
+import {SessionState} from "../types/sessionState.ts";
+
 export function validateId(input: unknown): number {
     const id = Number(input);
 
@@ -10,4 +12,8 @@ export function validateId(input: unknown): number {
     }
 
     return id;
+}
+
+export function validateAccess(session: SessionState, requiredAccess: number): boolean {
+    return session.accesses.some(access => access.accessId === requiredAccess);
 }

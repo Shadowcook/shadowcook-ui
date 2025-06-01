@@ -18,6 +18,7 @@ export default function App() {
                 <Route path="/" element={<MainLayout/>}>
                     <Route index element={<RecipeListView/>}/>
                     <Route path="category/:categoryId" element={<RecipeListView/>}/>
+                    <Route path="recipe/:recipeId" element={<RecipeView/>}/>
                     <Route path="category/:categoryId/recipe/:recipeId" element={<RecipeView/>}/>
                 </Route>
             </Routes>

@@ -1,5 +1,5 @@
 import {RecipeHeader} from "../types/recipeHeader.ts";
-import {RecipeCard} from "./RecipeCard.tsx";
+import {RecipeListItem} from "./RecipeListItem.tsx";
 import {useOutletContext} from "react-router-dom";
 import './Modules.css';
 import shadowCookLogo from "../assets/shadowcook._alpha.png"
@@ -26,12 +26,12 @@ export function RecipeListView() {
     return (
         <div className="flex flex-col space-y-2">
             {recipes.map((recipe) => (
-                <RecipeCard key={recipe.id}
-                    id={recipe.id}
-                    name={recipe.name}
-                    description={recipe.description}
-                    thumbnail={recipe.thumbnail}
-                    categoryId={categoryId}
+                <RecipeListItem key={recipe.id}
+                                id={recipe.id}
+                                name={recipe.name}
+                                description={recipe.description}
+                                thumbnail={recipe.thumbnail}
+                                categoryId={categoryId}
                 />
             ))}
         </div>

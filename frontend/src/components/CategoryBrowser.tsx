@@ -26,7 +26,7 @@ export function CategoryBrowser({
                 </Link>
             )}
             {children.map((cat) => (
-                <Link className={style.categoryLink} to={`/category/${cat.id}`}>
+                <Link key={`category-${cat.id}`} className={style.categoryLink} to={`/category/${cat.id}`}>
                     <div key={cat.id} className={style.categoryItemFrame}>
                         {cat.name}
                     </div>

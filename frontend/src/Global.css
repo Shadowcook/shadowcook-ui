@@ -1,5 +1,8 @@
-.shadowButton {
-    all: unset;               /* Reset alle Browser-Styles */
+.shadowButton,
+.imageButton,
+.imageButtonDisabled,
+.addRecipeButton {
+    all: unset;
     display: block;
     padding: 0.5rem 1rem;
     background-color: #eee;
@@ -12,6 +15,54 @@
     transition: background-color 0.2s ease;
 }
 
-.shadowButton:hover {
+.shadowButton:hover,
+.imageButton:hover,
+.imageButtonSmall:hover,
+.addRecipeButton:hover {
     background-color: #ddd;
+}
+
+.imageButton img,
+.addRecipeButton img,
+.imageButtonDisabled img {
+    height: 1.5em;
+    width: auto;
+    vertical-align: middle;
+}
+
+.imageButtonSmall,
+.imageButtonSmallDisabled {
+    all: unset;
+    display: block;
+    padding: 0.25rem .5rem;
+    background-color: #eee;
+    border-radius: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    font-size: .75rem;
+    font-weight: bold;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.addRecipeButton {
+    margin-right: 2rem;
+}
+
+.imageButtonSmall img,
+.imageButtonSmallDisabled img {
+    height: .9em;
+    width: auto;
+    vertical-align: middle;
+    cursor: unset;
+}
+
+.imageButtonSmallDisabled,
+.imageButtonSmallDisabled img,
+.imageButtonDisabled,
+.imageButtonDisabled img {
+    opacity: 0.5;
+}
+
+.imageButtonSmallDisabled:hover {
 }

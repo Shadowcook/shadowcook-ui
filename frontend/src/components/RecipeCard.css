@@ -1,0 +1,49 @@
+.recipeCard,
+.recipeCard div {
+
+}
+
+.recipeTitleFrame {
+    text-align: center;
+
+}
+
+.recipeTitle {
+    text-align: center;
+    font-size: 4rem;
+}
+
+.recipeDescriptionFrame {
+    margin-top: 2em;
+}
+
+.recipeDescription {
+
+}
+
+.editStepIngredient {
+    background-color: #cccccc;
+    vertical-align: top;
+    padding: .3rem;
+}
+
+.editStepDescription {
+    background-color: #cccccc;
+    vertical-align: top;
+    padding: .3rem;
+}
+
+.ingredientWorkStepGeneric {
+    font-style: italic;
+}
+
+.recipeStepsFrame {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+.recipeDescriptionInput {
+    width: 100%;
+    height: 4rem;
+}

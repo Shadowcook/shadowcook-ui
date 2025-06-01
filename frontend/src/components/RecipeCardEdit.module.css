@@ -1,0 +1,59 @@
+.editRecipeTable {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: separate;
+}
+
+.editStepIngredientGroup input,
+.editStepIngredientGroup select {
+    margin-left: .3rem;
+    margin-right: .3rem;
+}
+
+.editStepDescription,
+.editStepIngredient,
+.editStepToolbar {
+    background-color: #cccccc;
+    vertical-align: top;
+    padding: 1rem;
+}
+
+.editStepIngredient,
+.editStepToolbar {
+    width: 1%;
+    max-width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.editStepDescription {
+    width: auto;
+}
+
+.editStepDescriptionInput {
+    width: 100%;
+    min-height: 6rem;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.ingredientNameInput,
+.ingredientValueInput,
+.ingredientUomSelect {
+    max-width: 15rem;
+    box-sizing: border-box;
+}
+
+.ingredientNameInput {
+    width: 10rem;
+}
+
+.ingredientValueInput {
+    width: 4rem;
+}
+
+.ingredientUomSelect {
+    width: 10rem;
+}
+
+

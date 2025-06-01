@@ -1,11 +1,17 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {UserLoginPopup, UserOptionsPopup} from './UserMenuPopup.tsx';
-import UserLoggedInIcon from "../assets/font-awesome/solid/user-check.svg";
-import UserNotLoggedInIcon from "../assets/font-awesome/solid/user-xmark.svg";
+import UserLoggedInIcon from "../assets/user-check.svg";
+import UserNotLoggedInIcon from "../assets/user-xmark.svg";
+import AddRecipeIcon from "../assets/plus.svg"
 import style from "./UserMenu.module.css";
 import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
 import {loginUser, logout} from "../api/api.ts";
 import {useSession} from "../session/SessionContext.tsx";
+import {useMessage} from "../hooks/useMessage.ts";
+import {createEmptyRecipe} from "../types/createEmptyRecipe.ts";
+import {useNavigate} from 'react-router-dom';
+import {validateAccess} from "../utilities/validate.ts";
+import {AccessId} from "../types/accessId.ts";
 
 export const UserMenu: React.FC = () => {
     const [showUserOptions, setShowUserOptions] = useState(false);
@@ -13,7 +19,7 @@ export const UserMenu: React.FC = () => {
 
     const session = useSession();
     const toggleUserOptions = () => setShowUserOptions((prev) => !prev);
-
+    const {showMessage} = useMessage();
     const handleClickOutside = (e: MouseEvent) => {
         const popup = document.querySelector('.login-popup');
         if (
@@ -43,14 +49,18 @@ export const UserMenu: React.FC = () => {
                     await revalidate();
                     console.log('Logged in as: ', username);
                     setShowUserOptions(false);
+                    showMessage("Login successful", "success")
                     return LoginResult.Success;
                 } else {
+                    showMessage("Login failed. Check log for details.", "error")
                     return LoginResult.InvalidCredentials
                 }
             }
+            showMessage("Login failed. Check log for details.", "error")
             return LoginResult.ServerError;
         } catch (e) {
             console.error(e);
+            showMessage("Login failed. Check log for details.", "error")
             return LoginResult.NetworkError;
         }
     };
@@ -66,23 +76,57 @@ export const UserMenu: React.FC = () => {
         }
     };
 
-    return (
-        <div className="header-user">
+    let createRecipeButton;
+    const navigate = useNavigate();
+    if (session.valid && validateAccess(session, AccessId.EDIT_RECIPE)) {
+
+        createRecipeButton = (
             <button
-                ref={buttonRef}
-                onClick={toggleUserOptions}
-                aria-haspopup="dialog"
-                aria-expanded={showUserOptions}
-                aria-controls="user-options-popup"
-                title="open user options"
-                className={style.userButton}
+                className="addRecipeButton"
+                onClick={() => {
+                    const newRecipe = createEmptyRecipe();
+                    navigate('/recipe/new', {state: {newRecipe}});
+                }}
+                title="create new recipe"
             >
                 <img
-                    src={session.valid ? UserLoggedInIcon : UserNotLoggedInIcon}
-                    alt={session.valid ? "Logged in" : "Not logged in"}
+                    src={AddRecipeIcon}
+                    alt="add recipe"
                 />
-
+                &nbsp;&nbsp;Add recipe
             </button>
+        )
+    } else {
+        createRecipeButton = (<div></div>)
+    }
+
+    return (
+        <div className="header-user">
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        {createRecipeButton}
+                    </td>
+                    <td>
+                        <button
+                            ref={buttonRef}
+                            onClick={toggleUserOptions}
+                            aria-haspopup="dialog"
+                            aria-expanded={showUserOptions}
+                            aria-controls="user-options-popup"
+                            title="open user options"
+                            className={style.userButton}
+                        >
+                            <img
+                                src={session.valid ? UserLoggedInIcon : UserNotLoggedInIcon}
+                                alt={session.valid ? "Logged in" : "Not logged in"}
+                            />
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
             {showUserOptions && (
                 session.valid ? (
                     <UserOptionsPopup

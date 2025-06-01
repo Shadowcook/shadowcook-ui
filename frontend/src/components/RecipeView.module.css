@@ -1,56 +1,22 @@
-.recipeCard,
-.recipeCard div {
 
-}
-
-.recipeTitleFrame {
-    text-align: center;
-
-}
-
-.recipeTitle {
-    text-align: center;
-    font-size: 4rem;
-}
-
-.recipeDescriptionFrame {
-
-}
-
-.recipeDescription {
-
-}
-
-.stepIngredient {
-    background-color: #cccccc;
-    vertical-align: top;
-    padding: .3rem;
-}
-
-.stepDescription {
-    background-color: #cccccc;
-    vertical-align: top;
-    padding: .3rem;
-}
-
-.ingredientWorkStepGeneric {
-    font-style: italic;
-}
-
-.recipeStepsFrame {
+.actionsRight {
     display: flex;
-    justify-content: center;
-    padding: 1rem 0;
+    margin: .1rem;
+}
+
+.actionsRight button {
+    margin: 1rem;
 }
 
 .backButtonFrame {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.4rem;
+    padding: 1rem;
 }
 
-.backButton {
+.backButton,
+.backButtonDisabled {
     display: flex;
     flex-direction: row;
     gap: 1rem;
@@ -59,6 +25,10 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 1.25rem;
+}
+
+.backButtonDisabled {
+    opacity: 0.2;
 }
 
 .backButtonLink:link,
@@ -74,10 +44,46 @@
     background-color: #d9d9d9;
 }
 
-.backButton img {
+.backButton img,
+.backButtonDisabled img {
     transform: scaleX(-1);
     /*margin-top: .0rem;*/
     height: 1.5em;
     width: auto;
     vertical-align: middle;
+}
+
+.toolButtons img {
+    /*transform: scaleX(-1);*/
+    /*margin-top: .0rem;*/
+    height: 1.5em;
+    width: auto;
+    vertical-align: middle;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalContent {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modalActions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
 }

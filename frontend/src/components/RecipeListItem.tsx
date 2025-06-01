@@ -1,4 +1,4 @@
-import style from "./RecipeCard.module.css"
+import style from "./RecipeListItem.module.css"
 import {Link} from 'react-router-dom';
 import no_thumbnail from "../assets/no_thumbnail.png";
 
@@ -11,7 +11,7 @@ type RecipeCardProps = {
 };
 
 
-export function RecipeCard(recipe: RecipeCardProps) {
+export function RecipeListItem(recipe: RecipeCardProps) {
     return (
         <Link className={style.cardLink}
             to={`/category/${recipe.categoryId}/recipe/${recipe.id}`}>

@@ -1,30 +1,103 @@
-import {Link, useParams} from "react-router-dom";
-import {validateId} from "../utilities/validate.ts";
-import type {JSX} from 'react';
-import React, {useEffect, useState} from "react";
-import {fetchRecipe} from "../api/api.ts";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {validateAccess, validateId} from "../utilities/validate.ts";
+import {fetchRecipe, fetchRecipeCategories, fetchUomList, pushRecipe, pushRecipeCategories} from "../api/api.ts";
 import {Recipe} from "../types/recipe.ts";
 import style from "./RecipeView.module.css"
 import './Modules.css';
-import {StepIngredient} from "../types/stepIngredient.ts";
 import shadowCookLogo from "../assets/shadowcook._alpha.png";
 import backIcon from "../assets/font-awesome/solid/turn-up.svg";
+import {RecipeCardRead} from "./RecipeCardRead.tsx";
+import {useEffect, useState} from "react";
+import editImg from "../assets/pen.svg"
+import deleteImg from "../assets/trash-can.svg"
+import saveImg from "../assets/floppy-disk.svg"
+import closeImg from "../assets/circle-xmark.svg"
+import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
+import {Uom} from "../types/uom.ts";
+import {useMessage} from "../hooks/useMessage.ts";
+import categoryEditorIcon from "../assets/folder-tree.svg"
+import ModalCategorySelector from "./ModalCategorySelector.tsx";
+import {createEmptyRecipe} from "../types/createEmptyRecipe.ts";
+import {useSession} from "../session/SessionContext.tsx";
+import {AccessId} from "../types/accessId.ts";
 
 export function RecipeView() {
 
     const {recipeId, categoryId} = useParams();
     const catId = validateId(categoryId);
-    const sanitizedRecipeId = validateId(recipeId);
+    const isNewRecipe = recipeId === 'new';
+    const sanitizedRecipeId = isNewRecipe ? undefined : validateId(recipeId);
     const [recipe, setRecipe] = useState<Recipe | null>();
+    const [editMode, setEditMode] = useState(false);
+    const [editableRecipe, setEditableRecipe] = useState<Recipe | null>(null);
+    const [uomList, setUomList] = useState<Uom[]>([]);
+    const {showMessage} = useMessage();
+    const [modalOpen, setModalOpen] = useState(false);
+    const [pendingCategories, setPendingCategories] = useState<number[] | undefined>(undefined);
+    const navigate = useNavigate();
+    const session = useSession();
+
+
     useEffect(() => {
-        fetchRecipe(sanitizedRecipeId)
-            .then(setRecipe)
-            .catch((err) => console.error(`Unable to load recipe with id ${sanitizedRecipeId}`, err));
-    }, [sanitizedRecipeId]);
+        if (editMode && pendingCategories === undefined && recipe !== null && recipe !== undefined) {
+            fetchRecipeCategories(recipe.recipe.id)
+                .then((recipeCategories) => {
+                    const categoryIds = recipeCategories.map(rc => rc.category);
+                    setPendingCategories(categoryIds);
+                })
+                .catch(err => console.error("Category fetch failed:", err));
+        }
+    });
+
+    const openModalCategorySelection = () => {
+        setModalOpen(true);
+    };
+
+    const handleSaveCategories = (newSelected: number[]) => {
+        setPendingCategories(newSelected);
+        setModalOpen(false);
+    };
+
+    useEffect(() => {
+        if (editMode) {
+            console.log("fetching UOM...");
+            fetchUomList()
+                .then((result) => {
+                    console.log("fetched UOM data:", result);
+                    setUomList(result ?? []);
+                })
+                .catch((err) => {
+                    console.error("UOM fetch failed:", err);
+                    setUomList([]);
+                });
+        }
+    }, [editMode]);
+
+    useEffect(() => {
+        if (recipeId === "new") {
+            const newRecipe = createEmptyRecipe();
+            setRecipe(newRecipe);
+            setEditMode(true);
+        }
+    }, [recipeId]);
+
+    useEffect(() => {
+        if (sanitizedRecipeId !== undefined && recipeId !== "new") {
+            fetchRecipe(sanitizedRecipeId)
+                .then(setRecipe)
+                .catch((err) =>
+                    console.error(`Unable to load recipe with id ${sanitizedRecipeId}`, err)
+                );
+        }
+    }, [sanitizedRecipeId, recipeId]);
+
+    useEffect(() => {
+        if (recipe) setEditableRecipe(structuredClone(recipe));
+    }, [recipe]);
 
     if (!recipe) return (
         <div className="loadingLogoFrame">
-            <img src={shadowCookLogo} alt="No recipes so far in here." />
+            <img src={shadowCookLogo} alt="No recipes so far in here."/>
         </div>
     );
 
@@ -33,67 +106,151 @@ export function RecipeView() {
         step.ingredients.sort((a, b) => a.order - b.order);
     })
 
+    let toolbox;
+    let navigateBack;
+
+    function reloadRecipe() {
+        if (sanitizedRecipeId === undefined) {
+            console.warn("No recipe ID available – cannot reload recipe.");
+            return;
+        }
+
+        fetchRecipe(sanitizedRecipeId)
+            .then(setRecipe)
+            .catch((err) => console.error(`Unable to load recipe with id ${sanitizedRecipeId}`, err));
+    }
+
+    async function saveRecipe() {
+        if (!editableRecipe) return;
+
+        const savedRecipe = await pushRecipe(editableRecipe);
+        if (!savedRecipe || !savedRecipe.recipe.id) {
+            showMessage("Failed to save recipe.", "error");
+            return;
+        }
+
+        const recipeId = savedRecipe.recipe.id;
+
+
+        if (pendingCategories !== undefined && pendingCategories.length > 0) {
+            const success = await pushRecipeCategories(recipeId, pendingCategories);
+            if (!success) {
+                showMessage("Recipe saved, but failed to update categories.", "warning");
+                return;
+            }
+        }
+
+        setRecipe(savedRecipe);
+        setEditableRecipe(structuredClone(savedRecipe));
+        showMessage("Recipe saved successfully.", "success");
+    }
+
+    if (editMode && validateAccess(session, AccessId.EDIT_RECIPE)) {
+
+        navigateBack = (
+            <>
+                <div className={style.backButtonDisabled}>
+                    <img src={backIcon} alt="up-arrow"/> <span>Rezeptliste</span>
+                </div>
+                <div className={style.backButton}>
+                    <button className="shadowButton" onClick={openModalCategorySelection}>
+                        <img src={categoryEditorIcon} alt="category editor"/>
+                    </button>
+                </div>
+
+                {modalOpen && (
+                    <ModalCategorySelector
+                        recipeId={recipe.recipe.id}
+                        selectedCategories={pendingCategories ?? []}
+                        onClose={() => setModalOpen(false)}
+                        onSave={handleSaveCategories}
+                    />
+                )}
+            </>
+        );
+
+
+        toolbox = (
+            <>
+                <button
+                    className="shadowButton"
+                    onClick={async () => {
+                        if (isNewRecipe) {
+                            navigate(`/`);
+                        } else {
+                            setEditMode(false);
+                            reloadRecipe();
+                        }
+                    }}
+                >
+                    <img
+                        src={closeImg}
+                        alt="Close"
+                    />
+                </button>
+                <button
+                    className="shadowButton"
+                    onClick={() => saveRecipe()}
+                >
+                    <img
+                        src={saveImg}
+                        alt="Save"
+                    />
+                </button>
+                <button className="shadowButton">
+                    <img
+                        src={deleteImg}
+                        alt="Delete"
+                    />
+                </button>
+            </>
+        );
+    } else {
+
+        navigateBack = (
+            <Link className={style.backButtonLink} to={`/category/${catId}`}>
+                <div className={style.backButton}>
+                    <img src={backIcon} alt="up-arrow"/> <span>Rezeptliste</span>
+                </div>
+            </Link>
+        )
+        if (validateAccess(session, AccessId.EDIT_RECIPE)) {
+            toolbox = (
+                <>
+                    <button
+                        className="shadowButton"
+                        disabled={!recipe}
+                        onClick={() => setEditMode(true)}
+                    >
+                        <img
+                            src={editImg}
+                            alt="Edit"
+                        />
+                    </button>
+                </>
+            );
+        } else {
+            toolbox = (
+                <></>
+            )
+        }
+    }
 
     return (
         <div className={style.recipeCard}>
             <div className={style.backButtonFrame}>
-                <Link className={style.backButtonLink} to={`/category/${catId}`}>
-                    <div className={style.backButton}>
-                        <img src={backIcon} alt="up-arrow" /> <span>Rezeptliste</span>
-                    </div>
-                </Link>
+                {navigateBack}
+                <div className={[style.actionsRight, style.toolButtons].join(' ')}>
+                    {toolbox}
+                </div>
             </div>
-            <div className={style.recipeTitleFrame}>
-                <span className={style.recipeTitle}>{recipe.recipe.name}</span>
-            </div>
-            <div className={style.recipeDescriptionFrame}>
-                <span className={style.recipeDescription}>{recipe.recipe.description}</span>
-            </div>
-            <div className={style.recipeStepsFrame}>
-                <table>
-                    <tbody>
-                    {recipe.steps.map((step, index) => (
-                        <tr key={index}>
-                            <td className={style.stepIngredient}>
-                                {step.ingredients.map((ing, i) => (
-                                    <p key={i}>{renderIngredient(ing, index)}</p>
-                                ))}
-                            </td>
-                            <td className={style.stepDescription}>
-                                <p>{step.description.split('\n').map((line, i) => (
-                                    <React.Fragment key={i}>
-                                        {line}
-                                        <br/>
-                                    </React.Fragment>
-                                ))}</p>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
+            {editMode ? (
+                <RecipeCardEdit recipe={editableRecipe} uomList={uomList} setRecipe={setEditableRecipe}/>
+            ) : (
+                <RecipeCardRead recipe={recipe}/>
+            )}
+
         </div>
     );
 }
 
-function renderIngredient(ing: StepIngredient, key: number): JSX.Element {
-    let content;
-    if (ing.uom.id > 0) {
-        content = (
-            <span className={style.ingredient}>{ing.value} {ing.uom.name} {ing.name}</span>
-        );
-    } else {
-        switch (ing.uom.id) {
-            case 0:
-                content = (
-                    <span className={style.ingredientWorkStepGeneric}>{ing.name}</span>
-                );
-                break;
-            default:
-                content = (
-                    <span className={style.ingredientWorkStepUndefined}>{ing.name}</span>
-                );
-        }
-    }
-    return <p key={key}>{content}</p>;
-}

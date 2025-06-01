@@ -10,6 +10,7 @@ import {validateId} from "../utilities/validate.ts";
 import ShadowCookTextLogo from "../assets/ShadowCook_text_alpha.png";
 import ShadowCookIcon from "../assets/icon.png";
 import {UserMenu} from "../components/UserMenu.tsx";
+import {MessageProvider} from '../context/MessageProvider.tsx';
 
 
 export default function MainLayout() {
@@ -48,35 +49,37 @@ export default function MainLayout() {
 
 
     return (
-        <div id="rootContent">
-            <div id="headerFrame">
-                <div className="header-left">
-                    <Link to="/"><img src={ShadowCookIcon} alt="Shadowcook Logo" className="logo"/></Link>
-                </div>
-                <div className="header-center">
-                    <Link to="/"><img src={ShadowCookTextLogo} alt="SHADOWCOOK" className="text-logo"/></Link>
-                </div>
-                <div className="header-right">
-                    <UserMenu />
-                </div>
-            </div>
-            <div id="breadcrumbFrame" className="bg-gray-100 p-2">
-                <Breadcrumbs
-                    categories={categories}
-                    categoryId={sanitizedCategoryId}
-                />
-            </div>
-            <div className="main">
-                <div id="categoryFrame">
-                    <div className="categoryFrame">
-                        <CategoryBrowser categories={categories}/>
+        <MessageProvider>
+            <div id="rootContent">
+                <div id="headerFrame">
+                    <div className="header-left">
+                        <Link to="/"><img src={ShadowCookIcon} alt="Shadowcook Logo" className="logo"/></Link>
+                    </div>
+                    <div className="header-center">
+                        <Link to="/"><img src={ShadowCookTextLogo} alt="SHADOWCOOK" className="text-logo"/></Link>
+                    </div>
+                    <div className="header-right">
+                        <UserMenu/>
                     </div>
                 </div>
-                <div id="recipeFrame">
-                    <Outlet context={{recipes, categoryId: sanitizedCategoryId}}/>
+                <div id="breadcrumbFrame" className="bg-gray-100 p-2">
+                    <Breadcrumbs
+                        categories={categories}
+                        categoryId={sanitizedCategoryId}
+                    />
                 </div>
+                <div className="main">
+                    <div id="categoryFrame">
+                        <div className="categoryFrame">
+                            <CategoryBrowser categories={categories}/>
+                        </div>
+                    </div>
+                    <div id="recipeFrame">
+                        <Outlet context={{recipes, categoryId: sanitizedCategoryId}}/>
+                    </div>
+                </div>
+                <div id="footerFrame">&copy; 2019-{new Date().getFullYear()} by Shadowsoft</div>
             </div>
-            <div id="footerFrame">&copy; 2019-{new Date().getFullYear()} by Shadowsoft</div>
-        </div>
+        </MessageProvider>
     )
 }

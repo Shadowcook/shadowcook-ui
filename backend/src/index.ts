@@ -1,6 +1,4 @@
 import dotenv from 'dotenv';
-
-dotenv.config();
 import express from 'express';
 import axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {CookieJar} from 'tough-cookie';
@@ -9,7 +7,9 @@ import cors from 'cors';
 import {LoginResponse} from './types.js';
 import {validateId} from "./validate.js";
 import {sanitizeUrl} from "./toolbox.js";
-import { sessionRouteWrapper } from './sessionRouterWrapper.js';
+import {sessionRouteWrapper} from './sessionRouterWrapper.js';
+
+dotenv.config();
 
 const BASE_URL = process.env.BASE_URL ?? '';
 const USERNAME = process.env.SC_USER ?? '';
@@ -79,7 +79,7 @@ export async function apiGetFull<T>(
 ): Promise<AxiosResponse<T>> {
     console.log(`Full request of ${sanitizeUrl(BASE_URL, endpoint)}`);
     return axios.get<T>(sanitizeUrl(BASE_URL, endpoint), {
-        headers: clientCookies ? { Cookie: clientCookies } : undefined,
+        headers: clientCookies ? {Cookie: clientCookies} : undefined,
         withCredentials: true
     });
 }
@@ -136,7 +136,7 @@ app.get('/api/login/:username/:password', async (req, res) => {
             res.setHeader('Set-Cookie', setCookie);
         }
         res.json(response.data);
-    } catch (e){
+    } catch (e) {
         console.log(`API ERROR in user login: ${e}`)
         res.status(500).json({error: 'Internal server error while login'});
     }
@@ -151,19 +151,40 @@ app.get('/api/getAllCategories', async (req, res) => {
     }
 });
 
+app.get('/api/getUomList', sessionRouteWrapper(async (cookie, req, res) => {
+    try {
+        const data = await apiGet<any>('/uom/get/false', cookie);
+        console.log(data);
+        res.json(data);
+    } catch {
+        res.status(500).json({error: 'Error while fetching uoms.'});
+    }
+}));
+
+app.get('/api/getRecipeCategories/:recipeId', sessionRouteWrapper(async (cookie, req, res) => {
+    try {
+        const id = validateId(req.params.recipeId);
+        const data = await apiGet<any>(`/recipeCategory/get/${id}`, cookie);
+        console.log(data);
+        res.json(data);
+    } catch {
+        res.status(500).json({error: 'Error while fetching recipe categories.'});
+    }
+}));
+
 app.get('/api/GetRecipeFromCategory/:id', async (req, res) => {
 
     const id = validateId(req.params.id);
 
     if (id === null) {
-        return res.status(400).json({ error: "Invalid category ID." });
+        return res.status(400).json({error: "Invalid category ID."});
     }
 
     try {
         const data = await apiGet<any>(`/recipe/get/category/${id}`);
         res.json(data);
     } catch {
-        res.status(500).json({ error: 'Error while getting recipes from category.' });
+        res.status(500).json({error: 'Error while getting recipes from category.'});
     }
 });
 
@@ -171,7 +192,7 @@ app.get('/api/GetFullRecipe/:id', async (req, res) => {
     const id = validateId(req.params.id);
 
     if (id === null) {
-        return res.status(400).json({ error: "Invalid recipe ID." });
+        return res.status(400).json({error: "Invalid recipe ID."});
     }
     try {
         const data = await apiGet<any>(`/recipe/getfull/${id}`);
@@ -181,7 +202,6 @@ app.get('/api/GetFullRecipe/:id', async (req, res) => {
     }
 });
 
-// 🔁 Serverstart mit Login
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
 app.listen(PORT, async () => {
@@ -200,3 +220,19 @@ async function loginWithRetry(intervalMs = 5000): Promise<void> {
         }
     }
 }
+
+app.post('/api/saveRecipe', sessionRouteWrapper(async (cookie, req, res) => {
+    const recipe = req.body;
+
+    if (!recipe || !recipe.recipe || typeof recipe.recipe.recipe.id !== 'number') {
+        return res.status(400).json({error: 'Invalid recipe object.'});
+    }
+
+    return await apiRequest<any>('/fullRecipe/create', recipe, cookie);
+}));
+
+app.post('/api/saveRecipeCategories', sessionRouteWrapper(async (cookie, req, res) => {
+    const recipeCategory = req.body;
+    // console.log("Received data: ", req.body);
+    return await apiRequest<any>('/recipeCategory/create', recipeCategory, cookie);
+}));
