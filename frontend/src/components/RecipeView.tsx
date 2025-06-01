@@ -1,6 +1,6 @@
 import {Link, useParams} from "react-router-dom";
 import {validateId} from "../utilities/validate.ts";
-import {fetchRecipe, fetchUomList, pushRecipe} from "../api/api.ts";
+import {fetchRecipe, fetchUomList, pushRecipe, pushRecipeCategories} from "../api/api.ts";
 import {Recipe} from "../types/recipe.ts";
 import style from "./RecipeView.module.css"
 import './Modules.css';
@@ -16,7 +16,8 @@ import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
 import {Uom} from "../types/uom.ts";
 import {useMessage} from "../hooks/useMessage.ts";
 import categoryEditorIcon from "../assets/folder-tree.svg"
-import CategoryModal from "./CategoryModal.tsx";
+import ModalCategorySelector from "./ModalCategorySelector.tsx";
+import {createEmptyRecipe} from "../types/createEmptyRecipe.ts";
 
 export function RecipeView() {
 
@@ -29,15 +30,38 @@ export function RecipeView() {
     const [uomList, setUomList] = useState<Uom[]>([]);
     const {showMessage} = useMessage();
     const [modalOpen, setModalOpen] = useState(false);
-    const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
 
     const openModalCategorySelection = () => {
         setModalOpen(true);
     };
 
-    const handleSaveCategories = (newSelected: number[]) => {
-        setSelectedCategoryIds(newSelected);
-        console.log(selectedCategoryIds);
+    const handleSaveCategories = async (newSelected: number[]) => {
+        let selectedRecipeId: number | undefined = recipe?.recipe.id;
+
+        if (!selectedRecipeId || selectedRecipeId === 0) {
+            if (!editableRecipe) {
+                showMessage("No recipe to save.", "error");
+                return;
+            }
+
+            const savedRecipe = await pushRecipe(editableRecipe);
+            if (!savedRecipe || !savedRecipe.recipe.id) {
+                showMessage("Failed to save recipe before assigning categories.", "error");
+                return;
+            }
+
+            selectedRecipeId = savedRecipe.recipe.id;
+            setRecipe(savedRecipe);
+            setEditableRecipe(structuredClone(savedRecipe));
+        }
+
+        if (await pushRecipeCategories(selectedRecipeId, newSelected)) {
+            console.log(`Added recipe to ${newSelected.length} categories: ${newSelected}`);
+            showMessage(`Added recipe to ${newSelected.length} categories`, "info");
+        } else {
+            showMessage(`Unable to save new categories`, "error");
+        }
+
         setModalOpen(false);
     };
 
@@ -57,10 +81,16 @@ export function RecipeView() {
     }, [editMode]);
 
     useEffect(() => {
-        fetchRecipe(sanitizedRecipeId)
-            .then(setRecipe)
-            .catch((err) => console.error(`Unable to load recipe with id ${sanitizedRecipeId}`, err));
-    }, [sanitizedRecipeId]);
+        if (recipeId === "new") {
+            const newRecipe = createEmptyRecipe();
+            setRecipe(newRecipe);
+            setEditMode(true);
+        } else {
+            fetchRecipe(sanitizedRecipeId)
+                .then(setRecipe)
+                .catch((err) => console.error(`Unable to load recipe with id ${sanitizedRecipeId}`, err));
+        }
+    }, [recipeId, sanitizedRecipeId]);
 
     useEffect(() => {
         if (recipe) setEditableRecipe(structuredClone(recipe));
@@ -114,7 +144,8 @@ export function RecipeView() {
                 </div>
 
                 {modalOpen && (
-                    <CategoryModal
+                    <ModalCategorySelector
+                        recipeId={recipe.recipe.id}
                         onClose={() => setModalOpen(false)}
                         onSave={handleSaveCategories}
                     />

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {createPortal} from "react-dom";
-import {fetchCategories} from "../api/api.ts";
-import style from "./CategoryModal.module.css";
+import {fetchCategories, fetchRecipeCategories} from "../api/api.ts";
+import style from "./ModalCategorySelector.module.css";
 
 export interface Category {
     id: number;
@@ -10,14 +10,16 @@ export interface Category {
 }
 
 interface CategoryModalProps {
+    recipeId: number;
     onClose: () => void;
     onSave: (selected: number[]) => void;
 }
 
-const CategoryModal: React.FC<CategoryModalProps> = ({onClose, onSave}) => {
+const ModalCategorySelector: React.FC<CategoryModalProps> = (props) => {
     const [categories, setCategories] = useState<Category[] | null>(null);
     const [selected, setSelected] = useState<Set<number>>(new Set());
     const [loading, setLoading] = useState(true);
+    const {recipeId, onClose, onSave} = props;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,12 +27,11 @@ const CategoryModal: React.FC<CategoryModalProps> = ({onClose, onSave}) => {
             try {
                 const [catRes, selRes] = await Promise.all([
                     fetchCategories(),
-                    // TODO: replace this API call with the actual call to get category IDs
-                    // fetch("/api/recipe/selected-categories")adasd
-                    []
+                    fetchRecipeCategories(recipeId)
                 ]);
                 const cats: Category[] = catRes;
-                const selectedIds: number[] = selRes;
+                console.log(`Fetch result of selected categories: ${selRes}`)
+                const selectedIds: number[] = selRes.map(rc => rc.category);
                 setCategories(cats);
                 setSelected(new Set(selectedIds));
             } catch (error) {
@@ -94,4 +95,4 @@ const CategoryModal: React.FC<CategoryModalProps> = ({onClose, onSave}) => {
     );
 };
 
-export default CategoryModal;
+export default ModalCategorySelector;

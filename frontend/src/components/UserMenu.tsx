@@ -8,6 +8,8 @@ import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
 import {loginUser, logout} from "../api/api.ts";
 import {useSession} from "../session/SessionContext.tsx";
 import {useMessage} from "../hooks/useMessage.ts";
+import {createEmptyRecipe} from "../types/createEmptyRecipe.ts";
+import { useNavigate } from 'react-router-dom';
 
 export const UserMenu: React.FC = () => {
     const [showUserOptions, setShowUserOptions] = useState(false);
@@ -73,12 +75,16 @@ export const UserMenu: React.FC = () => {
     };
 
     let createRecipeButton;
-
+    const navigate = useNavigate();
     if (session.valid) {
 
         createRecipeButton = (
             <button
                 className="addRecipeButton"
+                onClick={() => {
+                    const newRecipe = createEmptyRecipe();
+                    navigate('/recipe/new', {state: {newRecipe}});
+                }}
                 title="create new recipe"
             >
                 <img
@@ -89,12 +95,13 @@ export const UserMenu: React.FC = () => {
             </button>
         )
     } else {
-        createRecipeButton=(<div></div>)
+        createRecipeButton = (<div></div>)
     }
 
     return (
         <div className="header-user">
             <table>
+                <tbody>
                 <tr>
                     <td>
                         {createRecipeButton}
@@ -116,6 +123,7 @@ export const UserMenu: React.FC = () => {
                         </button>
                     </td>
                 </tr>
+                </tbody>
             </table>
             {showUserOptions && (
                 session.valid ? (

@@ -9,12 +9,26 @@ import {AuthResponse} from "../types/authResponse.ts";
 import {SessionValidationResponse} from "../types/sessionValidationResponse.ts";
 import {UomResponse} from "../types/uomResponse.ts";
 import {Uom} from "../types/uom.ts";
+import {RecipeCategory} from "../types/recipeCategory.ts";
+import {RecipeCategoryResponse} from "../types/recipeCategoryResponse.ts";
 
 export async function fetchCategories(): Promise<Category[]> {
     console.log("fetching categories");
     const res = await apiClient.get<CategoriesResponse>('/getAllCategories');
     console.log("fetched " + res.data.length + " categories");
     return res.data.categories;
+}
+
+export async function fetchRecipeCategories(recipeId: number): Promise<RecipeCategory[]> {
+    try {
+        console.log("fetching recipe categories");
+        const res = await apiClient.get<RecipeCategoryResponse>(`/getRecipeCategories/${recipeId}`);
+        console.log(`fetched recipe categories: ${res.data.recipeCategory.length}`);
+        return res.data.recipeCategory;
+    } catch (error) {
+        console.log(error);
+    }
+    return [];
 }
 
 export async function fetchUomList(): Promise<Uom[]> {
@@ -75,10 +89,37 @@ export async function fetchRecipe(recipeId: number): Promise<Recipe | null> {
     return null;
 }
 
-export async function pushRecipe(recipe: Recipe): Promise<boolean> {
+export async function pushRecipe(recipe: Recipe): Promise<Recipe | null> {
     try {
         console.log("Saving recipe...", recipe);
         const res = await apiClient.post('/saveRecipe', {recipe: recipe}, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+
+        console.log("Recipe saved:", res.data);
+        return res.data.recipes[0];
+    } catch (error) {
+        console.error("Failed to save recipe:", error);
+        return null;
+    }
+}
+
+export async function pushRecipeCategories(recipeId: number, categoryIds: number[]): Promise<boolean> {
+    try {
+
+        const recipeCategories: RecipeCategory[] = categoryIds.map(catId => ({
+            id: -1,
+            recipe: recipeId,
+            category: catId
+        }));
+
+        // const categoryWrapper = {recipeCategories: recipeCategories}
+
+        console.log(`Adding recipe ${recipeId} to ${recipeCategories.length} categories.`);
+        const res = await apiClient.post('/saveRecipeCategories', {recipeCategories}, {
             headers: {
                 'Content-Type': 'application/json'
             },
