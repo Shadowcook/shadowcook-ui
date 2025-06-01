@@ -1,6 +1,6 @@
 import {Link, useParams} from "react-router-dom";
 import {validateId} from "../utilities/validate.ts";
-import {fetchRecipe, fetchUomList, pushRecipe, pushRecipeCategories} from "../api/api.ts";
+import {fetchRecipe, fetchRecipeCategories, fetchUomList, pushRecipe, pushRecipeCategories} from "../api/api.ts";
 import {Recipe} from "../types/recipe.ts";
 import style from "./RecipeView.module.css"
 import './Modules.css';
@@ -30,38 +30,26 @@ export function RecipeView() {
     const [uomList, setUomList] = useState<Uom[]>([]);
     const {showMessage} = useMessage();
     const [modalOpen, setModalOpen] = useState(false);
+    const [pendingCategories, setPendingCategories] = useState<number[] | undefined>(undefined);
+
+
+    useEffect(() => {
+        if (editMode && pendingCategories === undefined && recipe !== null && recipe !== undefined) {
+            fetchRecipeCategories(recipe.recipe.id)
+                .then((recipeCategories) => {
+                    const categoryIds = recipeCategories.map(rc => rc.category);
+                    setPendingCategories(categoryIds);
+                })
+                .catch(err => console.error("Category fetch failed:", err));
+        }
+    });
 
     const openModalCategorySelection = () => {
         setModalOpen(true);
     };
 
-    const handleSaveCategories = async (newSelected: number[]) => {
-        let selectedRecipeId: number | undefined = recipe?.recipe.id;
-
-        if (!selectedRecipeId || selectedRecipeId === 0) {
-            if (!editableRecipe) {
-                showMessage("No recipe to save.", "error");
-                return;
-            }
-
-            const savedRecipe = await pushRecipe(editableRecipe);
-            if (!savedRecipe || !savedRecipe.recipe.id) {
-                showMessage("Failed to save recipe before assigning categories.", "error");
-                return;
-            }
-
-            selectedRecipeId = savedRecipe.recipe.id;
-            setRecipe(savedRecipe);
-            setEditableRecipe(structuredClone(savedRecipe));
-        }
-
-        if (await pushRecipeCategories(selectedRecipeId, newSelected)) {
-            console.log(`Added recipe to ${newSelected.length} categories: ${newSelected}`);
-            showMessage(`Added recipe to ${newSelected.length} categories`, "info");
-        } else {
-            showMessage(`Unable to save new categories`, "error");
-        }
-
+    const handleSaveCategories = (newSelected: number[]) => {
+        setPendingCategories(newSelected);
         setModalOpen(false);
     };
 
@@ -117,17 +105,28 @@ export function RecipeView() {
     }
 
     async function saveRecipe() {
-        if (editableRecipe) {
-            console.log("Trying to save recipe: ", editableRecipe);
-            const saveSuccess = await pushRecipe(editableRecipe);
-            if (saveSuccess) {
-                showMessage("Recipe saved successfully.", "success");
-            } else {
-                showMessage("Saving recipe failed. Please check log.", "error", 30000);
-            }
-        } else {
-            showMessage("No recipe loaded. Cannot save.", "warning", 8000);
+        if (!editableRecipe) return;
+
+        const savedRecipe = await pushRecipe(editableRecipe);
+        if (!savedRecipe || !savedRecipe.recipe.id) {
+            showMessage("Failed to save recipe.", "error");
+            return;
         }
+
+        const recipeId = savedRecipe.recipe.id;
+
+
+        if (pendingCategories !== undefined && pendingCategories.length > 0) {
+            const success = await pushRecipeCategories(recipeId, pendingCategories);
+            if (!success) {
+                showMessage("Recipe saved, but failed to update categories.", "warning");
+                return;
+            }
+        }
+
+        setRecipe(savedRecipe);
+        setEditableRecipe(structuredClone(savedRecipe));
+        showMessage("Recipe saved successfully.", "success");
     }
 
     if (editMode) {
@@ -146,6 +145,7 @@ export function RecipeView() {
                 {modalOpen && (
                     <ModalCategorySelector
                         recipeId={recipe.recipe.id}
+                        selectedCategories={pendingCategories ?? []}
                         onClose={() => setModalOpen(false)}
                         onSave={handleSaveCategories}
                     />

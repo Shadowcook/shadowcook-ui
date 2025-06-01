@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {createPortal} from "react-dom";
-import {fetchCategories, fetchRecipeCategories} from "../api/api.ts";
+import {fetchCategories} from "../api/api.ts";
 import style from "./ModalCategorySelector.module.css";
 
 export interface Category {
@@ -11,6 +11,7 @@ export interface Category {
 
 interface CategoryModalProps {
     recipeId: number;
+    selectedCategories: number[];
     onClose: () => void;
     onSave: (selected: number[]) => void;
 }
@@ -19,21 +20,18 @@ const ModalCategorySelector: React.FC<CategoryModalProps> = (props) => {
     const [categories, setCategories] = useState<Category[] | null>(null);
     const [selected, setSelected] = useState<Set<number>>(new Set());
     const [loading, setLoading] = useState(true);
-    const {recipeId, onClose, onSave} = props;
+    const {selectedCategories, onClose, onSave} = props;
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const [catRes, selRes] = await Promise.all([
+                const [catRes] = await Promise.all([
                     fetchCategories(),
-                    fetchRecipeCategories(recipeId)
                 ]);
                 const cats: Category[] = catRes;
-                console.log(`Fetch result of selected categories: ${selRes}`)
-                const selectedIds: number[] = selRes.map(rc => rc.category);
                 setCategories(cats);
-                setSelected(new Set(selectedIds));
+                setSelected(new Set(selectedCategories));
             } catch (error) {
                 console.error("Error while loading categories: ", error);
             } finally {
