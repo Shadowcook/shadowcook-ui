@@ -1,4 +1,6 @@
 .shadowButton,
+.shadowButtonConfirm,
+.shadowButtonCancel,
 .imageButton,
 .imageButtonDisabled,
 .addRecipeButton {
@@ -14,6 +16,21 @@
     color: #333;
     transition: background-color 0.2s ease;
 }
+
+.shadowButtonConfirm {
+    background-color: #30931a;
+}
+.shadowButtonCancel{
+    background-color: #a80000;
+}
+
+.shadowButtonCancel:hover {
+    background-color: #d10000;
+}
+.shadowButtonConfirm:hover {
+    background-color: #37a51c;
+}
+
 
 .shadowButton:hover,
 .imageButton:hover,

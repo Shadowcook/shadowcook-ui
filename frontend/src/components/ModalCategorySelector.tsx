@@ -40,7 +40,7 @@ const ModalCategorySelector: React.FC<CategoryModalProps> = (props) => {
         };
 
         fetchData();
-    }, []);
+    }, [selectedCategories]);
 
     const toggle = (id: number) => {
         const updated = new Set(selected);
@@ -82,8 +82,8 @@ const ModalCategorySelector: React.FC<CategoryModalProps> = (props) => {
                     <>
                         <div className={style.categoryTree}>{buildTree(0)}</div>
                         <div className={style.modalActions}>
-                            <button onClick={onClose}>Cancel</button>
-                            <button onClick={() => onSave(Array.from(selected))}>Save</button>
+                            <button className="shadowButtonCancel" onClick={onClose}>Cancel</button>
+                            <button className="shadowButtonConfirm" onClick={() => onSave(Array.from(selected))}>Confirm</button>
                         </div>
                     </>
                 )}
