@@ -1,5 +1,5 @@
 import '../App.css';
-import {Link, Outlet, useParams} from "react-router-dom";
+import {Link, Outlet, useLocation, useParams} from "react-router-dom";
 import {Breadcrumbs} from "../components/Breadcrumbs.tsx";
 import {CategoryBrowser} from "../components/CategoryBrowser.tsx";
 import {Category} from "../types/category.ts";
@@ -31,6 +31,26 @@ export default function MainLayout() {
             })
             .catch((err) => console.error("Unable to load categories", err));
     }, []);
+
+    const location = useLocation();
+    const forceReload = location.state?.forceReload;
+
+    useEffect(() => {
+        if (forceReload) {
+            fetchRecipeList(sanitizedCategoryId)
+                .then((data) => {
+                    if (sanitizedCategoryId != null) {
+                        console.log(`Fetching ${data.length} recipes for category ${sanitizedCategoryId}`);
+                        setRecipeList(data);
+                    } else {
+                        console.log(`No category selected. No data fetched`);
+                    }
+                })
+                .catch((err) => {
+                    console.error("Unable to load recipe list: ", err);
+                });
+        }
+    }, [forceReload, sanitizedCategoryId]);
 
     useEffect(() => {
         fetchRecipeList(sanitizedCategoryId)

@@ -133,3 +133,21 @@ export async function pushRecipeCategories(recipeId: number, categoryIds: number
         return false;
     }
 }
+
+export async function deleteRecipe(recipeId: number): Promise<boolean> {
+    try {
+        if (recipeId != null) {
+            console.log(`deleting recipe with id ${recipeId}`);
+            const res = await apiClient.get<RecipeResponse>(`/deleteRecipe/${recipeId}`);
+            if (res.data.success) {
+                return true;
+            } else {
+                console.error("unable to delete recipe. Response was: ", res.data);
+            }
+        }
+    } catch (error) {
+        console.log("API call did not contain any recipe: ", error);
+    }
+    return false;
+}
+

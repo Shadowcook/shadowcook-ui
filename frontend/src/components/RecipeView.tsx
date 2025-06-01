@@ -1,6 +1,13 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {validateAccess, validateId} from "../utilities/validate.ts";
-import {fetchRecipe, fetchRecipeCategories, fetchUomList, pushRecipe, pushRecipeCategories} from "../api/api.ts";
+import {
+    deleteRecipe,
+    fetchRecipe,
+    fetchRecipeCategories,
+    fetchUomList,
+    pushRecipe,
+    pushRecipeCategories
+} from "../api/api.ts";
 import {Recipe} from "../types/recipe.ts";
 import style from "./RecipeView.module.css"
 import './Modules.css';
@@ -20,6 +27,7 @@ import ModalCategorySelector from "./ModalCategorySelector.tsx";
 import {createEmptyRecipe} from "../types/createEmptyRecipe.ts";
 import {useSession} from "../session/SessionContext.tsx";
 import {AccessId} from "../types/accessId.ts";
+import DeleteRecipeModal from "./DeleteRecipeModal.tsx";
 
 export function RecipeView() {
 
@@ -33,6 +41,7 @@ export function RecipeView() {
     const [uomList, setUomList] = useState<Uom[]>([]);
     const {showMessage} = useMessage();
     const [modalOpen, setModalOpen] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [pendingCategories, setPendingCategories] = useState<number[] | undefined>(undefined);
     const navigate = useNavigate();
     const session = useSession();
@@ -48,6 +57,10 @@ export function RecipeView() {
                 .catch(err => console.error("Category fetch failed:", err));
         }
     });
+
+    const openConfirmDeleteRecipe = () => {
+        setDeleteModalOpen(true);
+    }
 
     const openModalCategorySelection = () => {
         setModalOpen(true);
@@ -157,15 +170,6 @@ export function RecipeView() {
                         <img src={categoryEditorIcon} alt="category editor"/>
                     </button>
                 </div>
-
-                {modalOpen && (
-                    <ModalCategorySelector
-                        recipeId={recipe.recipe.id}
-                        selectedCategories={pendingCategories ?? []}
-                        onClose={() => setModalOpen(false)}
-                        onSave={handleSaveCategories}
-                    />
-                )}
             </>
         );
 
@@ -197,7 +201,10 @@ export function RecipeView() {
                         alt="Save"
                     />
                 </button>
-                <button className="shadowButton">
+                <button
+                    className="shadowButton"
+                    onClick={() => openConfirmDeleteRecipe()}
+                >
                     <img
                         src={deleteImg}
                         alt="Delete"
@@ -237,20 +244,53 @@ export function RecipeView() {
     }
 
     return (
-        <div className={style.recipeCard}>
-            <div className={style.backButtonFrame}>
-                {navigateBack}
-                <div className={[style.actionsRight, style.toolButtons].join(' ')}>
-                    {toolbox}
+        <>
+            <div className={style.recipeCard}>
+                <div className={style.backButtonFrame}>
+                    {navigateBack}
+                    <div className={[style.actionsRight, style.toolButtons].join(' ')}>
+                        {toolbox}
+                    </div>
                 </div>
+                {editMode ? (
+                    <RecipeCardEdit recipe={editableRecipe} uomList={uomList} setRecipe={setEditableRecipe}/>
+                ) : (
+                    <RecipeCardRead recipe={recipe}/>
+                )}
+
             </div>
-            {editMode ? (
-                <RecipeCardEdit recipe={editableRecipe} uomList={uomList} setRecipe={setEditableRecipe}/>
-            ) : (
-                <RecipeCardRead recipe={recipe}/>
+
+            {deleteModalOpen && (
+                <DeleteRecipeModal
+                    isOpen={deleteModalOpen}
+                    recipe={recipe}
+                    onCancel={() => setDeleteModalOpen(false)}
+                    onConfirm={async () => {
+                        const trueRecipeNumberId = Number(sanitizedRecipeId);
+                        if (!isNaN(trueRecipeNumberId)) {
+                            if (await deleteRecipe(trueRecipeNumberId)) {
+                                setDeleteModalOpen(false);
+                                showMessage(`Recipe "${recipe?.recipe.name}" has been deleted.`, "success");
+                                navigate(`/category/${categoryId}`, { state: { forceReload: true } });
+                            } else {
+                                showMessage("Failed to delete recipe.", "warning");
+                            }
+                        } else {
+                            showMessage(`"${sanitizedRecipeId}" is not a valid recipe ID`, "warning");
+                        }
+                    }}
+                />
             )}
 
-        </div>
+            {modalOpen && (
+                <ModalCategorySelector
+                    recipeId={recipe.recipe.id}
+                    selectedCategories={pendingCategories ?? []}
+                    onClose={() => setModalOpen(false)}
+                    onSave={handleSaveCategories}
+                />
+            )}
+        </>
     );
 }
 

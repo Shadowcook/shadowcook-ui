@@ -8,7 +8,7 @@ export function validateId(input: unknown): number {
         id < 0 ||
         id > Number.MAX_SAFE_INTEGER
     ) {
-        return 0;
+        return Number.MIN_SAFE_INTEGER;
     }
 
     return id;

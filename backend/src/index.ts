@@ -236,3 +236,16 @@ app.post('/api/saveRecipeCategories', sessionRouteWrapper(async (cookie, req, re
     // console.log("Received data: ", req.body);
     return await apiRequest<any>('/recipeCategory/create', recipeCategory, cookie);
 }));
+
+app.get('/api/deleteRecipe/:id', sessionRouteWrapper(async (cookie, req, res) => {
+    const id = validateId(req.params.id);
+    if (id === null) {
+        return res.status(400).json({error: "Invalid recipe ID."});
+    }
+    try {
+        const data = await apiGet<any>(`/recipe/delete/${id}`, cookie);
+        res.json(data);
+    } catch {
+        res.status(500).json({error: 'Error while deleting recipe.'});
+    }
+}));
