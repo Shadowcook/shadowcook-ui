@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {createPortal} from "react-dom";
-import {fetchCategories} from "../api/api.ts";
+import {fetchCategories} from "@api";
 import style from "./ModalCategorySelector.module.css";
 
 export interface Category {

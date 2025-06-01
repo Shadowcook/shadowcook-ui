@@ -1,70 +1,9 @@
-import apiClient from './axios';
-import {Category} from "../types/category/category.ts";
-import {RecipeHeader} from "../types/recipe/recipeHeader.ts";
-import {CategoriesResponse} from "../types/category/categoriesResponse.ts";
-import {RecipeListResponse} from "../types/recipe/recipeListResponse.ts";
-import {RecipeResponse} from "../types/recipe/recipeResponse.ts";
-import {Recipe} from "../types/recipe/recipe.ts";
-import {AuthResponse} from "../types/session/authResponse.ts";
-import {SessionValidationResponse} from "../types/session/sessionValidationResponse.ts";
-import {UomResponse} from "../types/recipe/uomResponse.ts";
-import {Uom} from "../types/recipe/uom.ts";
-import {RecipeCategory} from "../types/category/recipeCategory.ts";
-import {RecipeCategoryResponse} from "../types/category/recipeCategoryResponse.ts";
-
-export async function fetchCategories(): Promise<Category[]> {
-    console.log("fetching categories");
-    const res = await apiClient.get<CategoriesResponse>('/getAllCategories');
-    console.log("fetched " + res.data.length + " categories");
-    return res.data.categories;
-}
-
-export async function fetchRecipeCategories(recipeId: number): Promise<RecipeCategory[]> {
-    try {
-        console.log("fetching recipe categories");
-        const res = await apiClient.get<RecipeCategoryResponse>(`/getRecipeCategories/${recipeId}`);
-        console.log(`fetched recipe categories: ${res.data.recipeCategory.length}`);
-        return res.data.recipeCategory;
-    } catch (error) {
-        console.log(error);
-    }
-    return [];
-}
-
-export async function fetchUomList(): Promise<Uom[]> {
-    try {
-        console.log("fetching UOM...");
-        const res = await apiClient.get<UomResponse>('/getUomList');
-        console.log(`fetched UOM data: ${res.data}`);
-        console.log("fetched " + res.data.length + " UOM");
-        return res.data.uoms;
-    } catch (error) {
-        console.log(error);
-    }
-    return [];
-}
-
-export async function validateLogin(): Promise<SessionValidationResponse> {
-    console.log("Validating session");
-    const res = await apiClient.get<SessionValidationResponse>('/session/validate');
-    console.log('validateLogin → /session/validate responded with: ', res.data);
-    return res.data;
-}
-
-export async function logout(): Promise<SessionValidationResponse> {
-    console.log("Logging out of session");
-    const res = await apiClient.get<SessionValidationResponse>('/logout');
-    return res.data;
-}
-
-export async function loginUser(username: string, password: string): Promise<AuthResponse | null> {
-    if (username != null && password != null) {
-        const res = await apiClient.get<AuthResponse>(`/login/${username}/${password}`);
-        return res.data;
-    } else {
-        return null;
-    }
-}
+import {RecipeHeader} from "../../types/recipe/recipeHeader.ts";
+import apiClient from "../axios.ts";
+import {RecipeListResponse} from "../../types/recipe/recipeListResponse.ts";
+import {Recipe} from "../../types/recipe/recipe.ts";
+import {RecipeResponse} from "../../types/recipe/recipeResponse.ts";
+import {RecipeCategory} from "../../types/category/recipeCategory.ts";
 
 export async function fetchRecipeList(categoryId: number): Promise<RecipeHeader[]> {
     if (categoryId != null) {
@@ -106,6 +45,7 @@ export async function pushRecipe(recipe: Recipe): Promise<Recipe | null> {
         return null;
     }
 }
+
 
 export async function pushRecipeCategories(recipeId: number, categoryIds: number[]): Promise<boolean> {
     try {
@@ -150,4 +90,3 @@ export async function deleteRecipe(recipeId: number): Promise<boolean> {
     }
     return false;
 }
-

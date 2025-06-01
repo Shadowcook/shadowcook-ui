@@ -5,7 +5,7 @@ import {CategoryBrowser} from "../components/CategoryBrowser.tsx";
 import {Category} from "../types/category/category.ts";
 import {useEffect, useState} from "react";
 import {RecipeHeader} from "../types/recipe/recipeHeader.ts";
-import {fetchCategories, fetchRecipeList} from "../api/api.ts";
+import {fetchCategories, fetchRecipeList} from "@api";
 import {validateId} from "../utilities/validate.ts";
 import ShadowCookTextLogo from "../assets/ShadowCook_text_alpha.png";
 import ShadowCookIcon from "../assets/icon.png";

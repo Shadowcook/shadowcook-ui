@@ -7,7 +7,7 @@ import {
     fetchUomList,
     pushRecipe,
     pushRecipeCategories
-} from "../api/api.ts";
+} from "@api";
 import {Recipe} from "../types/recipe/recipe.ts";
 import style from "./RecipeView.module.css"
 import './Modules.css';

@@ -2,7 +2,13 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@api/*": ["api/*"],
+      "@api": ["api/index.ts"],
+      "@types/*": ["types/*"]
+    }
   },
   "files": [],
   "references": [

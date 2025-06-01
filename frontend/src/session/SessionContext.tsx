@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {SessionState} from '../types/session/sessionState.ts';
-import {validateLogin} from '../api/api.ts';
+import {validateLogin} from '../api';
 
 const defaultSession: SessionState = {
     user: {
