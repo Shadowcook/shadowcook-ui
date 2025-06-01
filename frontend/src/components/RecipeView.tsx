@@ -1,5 +1,5 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {validateId} from "../utilities/validate.ts";
+import {validateAccess, validateId} from "../utilities/validate.ts";
 import {fetchRecipe, fetchRecipeCategories, fetchUomList, pushRecipe, pushRecipeCategories} from "../api/api.ts";
 import {Recipe} from "../types/recipe.ts";
 import style from "./RecipeView.module.css"
@@ -18,6 +18,8 @@ import {useMessage} from "../hooks/useMessage.ts";
 import categoryEditorIcon from "../assets/folder-tree.svg"
 import ModalCategorySelector from "./ModalCategorySelector.tsx";
 import {createEmptyRecipe} from "../types/createEmptyRecipe.ts";
+import {useSession} from "../session/SessionContext.tsx";
+import {AccessId} from "../types/accessId.ts";
 
 export function RecipeView() {
 
@@ -33,6 +35,7 @@ export function RecipeView() {
     const [modalOpen, setModalOpen] = useState(false);
     const [pendingCategories, setPendingCategories] = useState<number[] | undefined>(undefined);
     const navigate = useNavigate();
+    const session = useSession();
 
 
     useEffect(() => {
@@ -142,7 +145,7 @@ export function RecipeView() {
         showMessage("Recipe saved successfully.", "success");
     }
 
-    if (editMode) {
+    if (editMode && validateAccess(session, AccessId.EDIT_RECIPE)) {
 
         navigateBack = (
             <>
@@ -211,21 +214,26 @@ export function RecipeView() {
                 </div>
             </Link>
         )
-
-        toolbox = (
-            <>
-                <button
-                    className="shadowButton"
-                    disabled={!recipe}
-                    onClick={() => setEditMode(true)}
-                >
-                    <img
-                        src={editImg}
-                        alt="Edit"
-                    />
-                </button>
-            </>
-        );
+        if (validateAccess(session, AccessId.EDIT_RECIPE)) {
+            toolbox = (
+                <>
+                    <button
+                        className="shadowButton"
+                        disabled={!recipe}
+                        onClick={() => setEditMode(true)}
+                    >
+                        <img
+                            src={editImg}
+                            alt="Edit"
+                        />
+                    </button>
+                </>
+            );
+        } else {
+            toolbox = (
+                <></>
+            )
+        }
     }
 
     return (

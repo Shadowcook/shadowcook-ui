@@ -9,7 +9,9 @@ import {loginUser, logout} from "../api/api.ts";
 import {useSession} from "../session/SessionContext.tsx";
 import {useMessage} from "../hooks/useMessage.ts";
 import {createEmptyRecipe} from "../types/createEmptyRecipe.ts";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import {validateAccess} from "../utilities/validate.ts";
+import {AccessId} from "../types/accessId.ts";
 
 export const UserMenu: React.FC = () => {
     const [showUserOptions, setShowUserOptions] = useState(false);
@@ -76,7 +78,7 @@ export const UserMenu: React.FC = () => {
 
     let createRecipeButton;
     const navigate = useNavigate();
-    if (session.valid) {
+    if (session.valid && validateAccess(session, AccessId.EDIT_RECIPE)) {
 
         createRecipeButton = (
             <button
