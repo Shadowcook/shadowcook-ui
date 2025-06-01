@@ -13,10 +13,15 @@ import {useNavigate} from 'react-router-dom';
 import {validateAccess} from "../utilities/validate.ts";
 import {AccessId} from "../types/session/accessId.ts";
 
-export const UserMenu: React.FC = () => {
+interface UserMenuProps {
+    showCreateRecipe: boolean;
+}
+
+export const UserMenu: React.FC<UserMenuProps> = ({
+                                                      showCreateRecipe,
+                                                  }) => {
     const [showUserOptions, setShowUserOptions] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
-
     const session = useSession();
     const toggleUserOptions = () => setShowUserOptions((prev) => !prev);
     const {showMessage} = useMessage();
@@ -78,7 +83,7 @@ export const UserMenu: React.FC = () => {
 
     let createRecipeButton;
     const navigate = useNavigate();
-    if (session.valid && validateAccess(session, AccessId.EDIT_RECIPE)) {
+    if (session.valid && validateAccess(session, AccessId.EDIT_RECIPE) && showCreateRecipe) {
 
         createRecipeButton = (
             <button

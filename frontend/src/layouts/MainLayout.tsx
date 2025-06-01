@@ -1,5 +1,5 @@
 import '../App.css';
-import {Link, Outlet, useLocation, useParams} from "react-router-dom";
+import {Outlet, useLocation, useParams} from "react-router-dom";
 import {Breadcrumbs} from "../components/Breadcrumbs.tsx";
 import {CategoryBrowser} from "../components/CategoryBrowser.tsx";
 import {Category} from "../types/category/category.ts";
@@ -7,10 +7,8 @@ import {useEffect, useState} from "react";
 import {RecipeHeader} from "../types/recipe/recipeHeader.ts";
 import {fetchCategories, fetchRecipeList} from "@api";
 import {validateId} from "../utilities/validate.ts";
-import ShadowCookTextLogo from "../assets/ShadowCook_text_alpha.png";
-import ShadowCookIcon from "../assets/icon.png";
-import {UserMenu} from "../components/UserMenu.tsx";
 import {MessageProvider} from '../context/MessageProvider.tsx';
+import {DefaultHeader} from "./elements/DefaultHeader.tsx";
 
 
 export default function MainLayout() {
@@ -71,17 +69,7 @@ export default function MainLayout() {
     return (
         <MessageProvider>
             <div id="rootContent">
-                <div id="headerFrame">
-                    <div className="header-left">
-                        <Link to="/"><img src={ShadowCookIcon} alt="Shadowcook Logo" className="logo"/></Link>
-                    </div>
-                    <div className="header-center">
-                        <Link to="/"><img src={ShadowCookTextLogo} alt="SHADOWCOOK" className="text-logo"/></Link>
-                    </div>
-                    <div className="header-right">
-                        <UserMenu/>
-                    </div>
-                </div>
+                <DefaultHeader showCreateRecipe={true}/>
                 <div id="breadcrumbFrame" className="bg-gray-100 p-2">
                     <Breadcrumbs
                         categories={categories}

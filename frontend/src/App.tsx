@@ -6,6 +6,9 @@ import {RecipeView} from "./components/RecipeView";
 import {SessionProvider} from "./session/SessionContext.tsx";
 import './Global.css';
 import {LogoutSuccessPage} from "./components/LogoutSuccessPage.tsx";
+import ManagementLayout from "./layouts/ManagementLayout.tsx";
+import {ManagementHome} from "./components/administration/ManagementHome.tsx";
+import {RoleManagement} from "./components/administration/RoleManagement.tsx";
 
 
 export default function App() {
@@ -14,6 +17,10 @@ export default function App() {
             <Routes>
                 <Route path="/logout-success" element={<LogoutLayout/>}>
                     <Route index element={<LogoutSuccessPage/>}/>
+                </Route>
+                <Route path="/management" element={<ManagementLayout/>}>
+                    <Route index element={<ManagementHome/>}/>
+                    <Route path="role-management" element={<RoleManagement/>}/>
                 </Route>
                 <Route path="/" element={<MainLayout/>}>
                     <Route index element={<RecipeListView/>}/>
