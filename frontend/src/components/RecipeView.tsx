@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {validateId} from "../utilities/validate.ts";
 import {fetchRecipe, fetchRecipeCategories, fetchUomList, pushRecipe, pushRecipeCategories} from "../api/api.ts";
 import {Recipe} from "../types/recipe.ts";
@@ -23,7 +23,8 @@ export function RecipeView() {
 
     const {recipeId, categoryId} = useParams();
     const catId = validateId(categoryId);
-    const sanitizedRecipeId = validateId(recipeId);
+    const isNewRecipe = recipeId === 'new';
+    const sanitizedRecipeId = isNewRecipe ? undefined : validateId(recipeId);
     const [recipe, setRecipe] = useState<Recipe | null>();
     const [editMode, setEditMode] = useState(false);
     const [editableRecipe, setEditableRecipe] = useState<Recipe | null>(null);
@@ -31,6 +32,7 @@ export function RecipeView() {
     const {showMessage} = useMessage();
     const [modalOpen, setModalOpen] = useState(false);
     const [pendingCategories, setPendingCategories] = useState<number[] | undefined>(undefined);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -73,12 +75,18 @@ export function RecipeView() {
             const newRecipe = createEmptyRecipe();
             setRecipe(newRecipe);
             setEditMode(true);
-        } else {
+        }
+    }, [recipeId]);
+
+    useEffect(() => {
+        if (sanitizedRecipeId !== undefined && recipeId !== "new") {
             fetchRecipe(sanitizedRecipeId)
                 .then(setRecipe)
-                .catch((err) => console.error(`Unable to load recipe with id ${sanitizedRecipeId}`, err));
+                .catch((err) =>
+                    console.error(`Unable to load recipe with id ${sanitizedRecipeId}`, err)
+                );
         }
-    }, [recipeId, sanitizedRecipeId]);
+    }, [sanitizedRecipeId, recipeId]);
 
     useEffect(() => {
         if (recipe) setEditableRecipe(structuredClone(recipe));
@@ -99,6 +107,11 @@ export function RecipeView() {
     let navigateBack;
 
     function reloadRecipe() {
+        if (sanitizedRecipeId === undefined) {
+            console.warn("No recipe ID available – cannot reload recipe.");
+            return;
+        }
+
         fetchRecipe(sanitizedRecipeId)
             .then(setRecipe)
             .catch((err) => console.error(`Unable to load recipe with id ${sanitizedRecipeId}`, err));
@@ -159,8 +172,12 @@ export function RecipeView() {
                 <button
                     className="shadowButton"
                     onClick={async () => {
-                        setEditMode(false);
-                        reloadRecipe();
+                        if (isNewRecipe) {
+                            navigate(`/`);
+                        } else {
+                            setEditMode(false);
+                            reloadRecipe();
+                        }
                     }}
                 >
                     <img
