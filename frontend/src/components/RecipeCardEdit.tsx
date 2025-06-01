@@ -1,6 +1,5 @@
 import React from "react";
 import {Recipe} from "../types/recipe.ts";
-// import "./RecipeCard.css";
 import {StepIngredient} from "../types/stepIngredient.ts";
 import {
     EditableNumberField,
@@ -10,14 +9,14 @@ import {
 } from "../utilities/InputFieldLibrary.tsx";
 import {Uom} from "../types/uom.ts";
 import style from "./RecipeCardEdit.module.css";
-import moveUpStep from "../assets/circle-up.svg";
-import moveDownStep from "../assets/circle-down.svg";
-import deleteStep from "../assets/trash-can.svg"
-import deleteIngredient from "../assets/trash-can.svg"
-import addStep from "../assets/plus.svg";
-import addIngredient from "../assets/plus.svg";
-import moveUpIngredient from "../assets/up-long.svg";
-import moveDownIngredient from "../assets/down-long.svg";
+import moveUpStep from "../assets/font-awesome/solid/circle-up.svg";
+import moveDownStep from "../assets/font-awesome/solid/circle-down.svg";
+import deleteStep from "../assets/font-awesome/solid/trash-can.svg"
+import deleteIngredient from "../assets/font-awesome/solid/trash-can.svg"
+import addStep from "../assets/font-awesome/solid/plus.svg";
+import addIngredient from "../assets/font-awesome/solid/plus.svg";
+import moveUpIngredient from "../assets/font-awesome/solid/up-long.svg";
+import moveDownIngredient from "../assets/font-awesome/solid/down-long.svg";
 
 
 // import {useMessage} from "../hooks/useMessage.ts";

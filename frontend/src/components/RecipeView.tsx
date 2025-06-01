@@ -8,14 +8,14 @@ import shadowCookLogo from "../assets/shadowcook._alpha.png";
 import backIcon from "../assets/font-awesome/solid/turn-up.svg";
 import {RecipeCardRead} from "./RecipeCardRead.tsx";
 import {useEffect, useState} from "react";
-import editImg from "../assets/pen.svg"
-import deleteImg from "../assets/trash-can.svg"
-import saveImg from "../assets/floppy-disk.svg"
-import closeImg from "../assets/circle-xmark.svg"
+import editImg from "../assets/font-awesome/solid/pen.svg"
+import deleteImg from "../assets/font-awesome/solid/trash-can.svg"
+import saveImg from "../assets/font-awesome/solid/floppy-disk.svg"
+import closeImg from "../assets/font-awesome/solid/circle-xmark.svg"
 import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
 import {Uom} from "../types/uom.ts";
 import {useMessage} from "../hooks/useMessage.ts";
-import categoryEditorIcon from "../assets/folder-tree.svg"
+import categoryEditorIcon from "../assets/font-awesome/solid/folder-tree.svg"
 import ModalCategorySelector from "./ModalCategorySelector.tsx";
 import {createEmptyRecipe} from "../types/createEmptyRecipe.ts";
 import {useSession} from "../session/SessionContext.tsx";
