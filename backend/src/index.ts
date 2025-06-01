@@ -110,13 +110,13 @@ async function apiGet<T>(
 
 
 app.get('/api/session/validate', sessionRouteWrapper(async (cookie, req, res) => {
-    const data = await apiGet<any>('/auth/validate', cookie);
+    const data = await apiGet<any>('/session/validate', cookie);
     console.log('Validated with cookie:', cookie);
     return data;
 }));
 
 app.get('/api/logout', sessionRouteWrapper(async (cookie, req, res) => {
-    const data = await apiGet<any>('/auth/logout', cookie);
+    const data = await apiGet<any>('/session/logout', cookie);
     console.log(data);
     res.setHeader('Set-Cookie', [
         'activeSession=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax'

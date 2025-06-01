@@ -1,4 +1,4 @@
-import {RecipeHeader} from "../types/recipeHeader.ts";
+import {RecipeHeader} from "../types/recipe/recipeHeader.ts";
 import {RecipeListItem} from "./RecipeListItem.tsx";
 import {useOutletContext} from "react-router-dom";
 import './Modules.css';

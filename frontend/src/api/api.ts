@@ -1,16 +1,16 @@
 import apiClient from './axios';
-import {Category} from "../types/category.ts";
-import {RecipeHeader} from "../types/recipeHeader.ts";
-import {CategoriesResponse} from "../types/categoriesResponse.ts";
-import {RecipeListResponse} from "../types/recipeListResponse.ts";
-import {RecipeResponse} from "../types/recipeResponse.ts";
-import {Recipe} from "../types/recipe.ts";
-import {AuthResponse} from "../types/authResponse.ts";
-import {SessionValidationResponse} from "../types/sessionValidationResponse.ts";
-import {UomResponse} from "../types/uomResponse.ts";
-import {Uom} from "../types/uom.ts";
-import {RecipeCategory} from "../types/recipeCategory.ts";
-import {RecipeCategoryResponse} from "../types/recipeCategoryResponse.ts";
+import {Category} from "../types/category/category.ts";
+import {RecipeHeader} from "../types/recipe/recipeHeader.ts";
+import {CategoriesResponse} from "../types/category/categoriesResponse.ts";
+import {RecipeListResponse} from "../types/recipe/recipeListResponse.ts";
+import {RecipeResponse} from "../types/recipe/recipeResponse.ts";
+import {Recipe} from "../types/recipe/recipe.ts";
+import {AuthResponse} from "../types/session/authResponse.ts";
+import {SessionValidationResponse} from "../types/session/sessionValidationResponse.ts";
+import {UomResponse} from "../types/recipe/uomResponse.ts";
+import {Uom} from "../types/recipe/uom.ts";
+import {RecipeCategory} from "../types/category/recipeCategory.ts";
+import {RecipeCategoryResponse} from "../types/category/recipeCategoryResponse.ts";
 
 export async function fetchCategories(): Promise<Category[]> {
     console.log("fetching categories");

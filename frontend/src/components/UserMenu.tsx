@@ -4,14 +4,14 @@ import UserLoggedInIcon from "../assets/font-awesome/solid/user-check.svg";
 import UserNotLoggedInIcon from "../assets/font-awesome/solid/user-xmark.svg";
 import AddRecipeIcon from "../assets/font-awesome/solid/plus.svg"
 import style from "./UserMenu.module.css";
-import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
+import {LoginResult, LoginResultID} from "../types/session/loginResultID.ts";
 import {loginUser, logout} from "../api/api.ts";
 import {useSession} from "../session/SessionContext.tsx";
 import {useMessage} from "../hooks/useMessage.ts";
-import {createEmptyRecipe} from "../types/createEmptyRecipe.ts";
+import {createEmptyRecipe} from "../types/recipe/createEmptyRecipe.ts";
 import {useNavigate} from 'react-router-dom';
 import {validateAccess} from "../utilities/validate.ts";
-import {AccessId} from "../types/accessId.ts";
+import {AccessId} from "../types/session/accessId.ts";
 
 export const UserMenu: React.FC = () => {
     const [showUserOptions, setShowUserOptions] = useState(false);

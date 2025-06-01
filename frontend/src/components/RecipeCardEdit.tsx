@@ -1,13 +1,13 @@
 import React from "react";
-import {Recipe} from "../types/recipe.ts";
-import {StepIngredient} from "../types/stepIngredient.ts";
+import {Recipe} from "../types/recipe/recipe.ts";
+import {StepIngredient} from "../types/recipe/stepIngredient.ts";
 import {
     EditableNumberField,
     EditableTextareaField,
     EditableTextField,
     EditableUomSelect
 } from "../utilities/InputFieldLibrary.tsx";
-import {Uom} from "../types/uom.ts";
+import {Uom} from "../types/recipe/uom.ts";
 import style from "./RecipeCardEdit.module.css";
 import moveUpStep from "../assets/font-awesome/solid/circle-up.svg";
 import moveDownStep from "../assets/font-awesome/solid/circle-down.svg";

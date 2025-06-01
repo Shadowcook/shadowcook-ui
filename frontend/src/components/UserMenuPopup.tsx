@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import style from "./UserMenuPopup.module.css";
-import {LoginResult, LoginResultID} from "../types/loginResultID.ts";
-import {LoginErrorMessages} from "../types/loginErrorMessages.ts";
-import {SessionState} from "../types/sessionState.ts";
+import {LoginResult, LoginResultID} from "../types/session/loginResultID.ts";
+import {LoginErrorMessages} from "../types/session/loginErrorMessages.ts";
+import {SessionState} from "../types/session/sessionState.ts";
 
 interface LoginProps {
     onLogin: (username: string, password: string) => Promise<LoginResultID>;

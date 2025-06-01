@@ -8,7 +8,7 @@ import {
     pushRecipe,
     pushRecipeCategories
 } from "../api/api.ts";
-import {Recipe} from "../types/recipe.ts";
+import {Recipe} from "../types/recipe/recipe.ts";
 import style from "./RecipeView.module.css"
 import './Modules.css';
 import shadowCookLogo from "../assets/shadowcook._alpha.png";
@@ -20,13 +20,13 @@ import deleteImg from "../assets/font-awesome/solid/trash-can.svg"
 import saveImg from "../assets/font-awesome/solid/floppy-disk.svg"
 import closeImg from "../assets/font-awesome/solid/circle-xmark.svg"
 import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
-import {Uom} from "../types/uom.ts";
+import {Uom} from "../types/recipe/uom.ts";
 import {useMessage} from "../hooks/useMessage.ts";
 import categoryEditorIcon from "../assets/font-awesome/solid/folder-tree.svg"
 import ModalCategorySelector from "./ModalCategorySelector.tsx";
-import {createEmptyRecipe} from "../types/createEmptyRecipe.ts";
+import {createEmptyRecipe} from "../types/recipe/createEmptyRecipe.ts";
 import {useSession} from "../session/SessionContext.tsx";
-import {AccessId} from "../types/accessId.ts";
+import {AccessId} from "../types/session/accessId.ts";
 import DeleteRecipeModal from "./DeleteRecipeModal.tsx";
 
 export function RecipeView() {

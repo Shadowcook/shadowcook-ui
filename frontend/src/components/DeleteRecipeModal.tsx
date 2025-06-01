@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styles from './DeleteRecipeModal.module.css';
-import {Recipe} from "../types/recipe.ts";
+import {Recipe} from "../types/recipe/recipe.ts";
 
 interface DeleteRecipeModalProps {
     isOpen: boolean;

@@ -1,4 +1,4 @@
-import {Category} from "../types/category";
+import {Category} from "../types/category/category.ts";
 import React from "react";
 import {Link} from "react-router-dom";
 import style from "./Breadcrumbs.module.css";

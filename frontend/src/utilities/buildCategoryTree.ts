@@ -1,5 +1,5 @@
-import {Category} from "../types/category";
-import {TreeItem} from "../types/treeItem.ts";
+import {Category} from "../types/category/category.ts";
+import {TreeItem} from "../types/utilities/treeItem.ts";
 
 
 export function buildCategoryTree(flatList: Category[]): TreeItem[] {

@@ -1,4 +1,4 @@
-import {SessionState} from "../types/sessionState.ts";
+import {SessionState} from "../types/session/sessionState.ts";
 
 export function validateId(input: unknown): number {
     const id = Number(input);

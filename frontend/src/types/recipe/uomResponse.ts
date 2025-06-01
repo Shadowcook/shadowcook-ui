@@ -1,4 +1,4 @@
-import {ApiResponse} from "./apiResponse.ts";
+import {ApiResponse} from "../apiResponse.ts";
 import {Recipe} from "./recipe.ts";
 import {Uom} from "./uom.ts";
 

@@ -1,4 +1,4 @@
-import {Category} from "../types/category";
+import {Category} from "../types/category/category.ts";
 import {Link, useParams} from 'react-router-dom';
 import {validateId} from "../utilities/validate.ts";
 import style from "./CategoryBrowser.module.css";

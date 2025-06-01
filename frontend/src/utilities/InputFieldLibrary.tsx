@@ -1,4 +1,4 @@
-import {Uom} from '../types/uom.ts';
+import {Uom} from '../types/recipe/uom.ts';
 
 interface EditableFieldProps<T> {
     value: T;
