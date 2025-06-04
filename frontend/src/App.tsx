@@ -8,7 +8,10 @@ import './Global.css';
 import {LogoutSuccessPage} from "./components/LogoutSuccessPage.tsx";
 import ManagementLayout from "./layouts/ManagementLayout.tsx";
 import {ManagementHome} from "./components/administration/ManagementHome.tsx";
+import {UserManagement} from "./components/administration/UserManagement.tsx";
 import {RoleManagement} from "./components/administration/RoleManagement.tsx";
+import {UomManagement} from "./components/administration/UomManagement.tsx";
+import {CategoryManagement} from "./components/administration/CategoryManagement.tsx";
 
 
 export default function App() {
@@ -20,7 +23,10 @@ export default function App() {
                 </Route>
                 <Route path="/management" element={<ManagementLayout/>}>
                     <Route index element={<ManagementHome/>}/>
-                    <Route path="role-management" element={<RoleManagement/>}/>
+                    <Route path="roles" element={<RoleManagement/>}/>
+                    <Route path="users" element={<UserManagement/>}/>
+                    <Route path="uoms" element={<UomManagement/>}/>
+                    <Route path="categories" element={<CategoryManagement/>}/>
                 </Route>
                 <Route path="/" element={<MainLayout/>}>
                     <Route index element={<RecipeListView/>}/>

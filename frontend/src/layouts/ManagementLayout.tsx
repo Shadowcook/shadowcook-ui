@@ -9,7 +9,7 @@ export default function ManagementLayout() {
     return (
         <MessageProvider>
             <div id="rootContent">
-                <DefaultHeader showCreateRecipe={false}/>
+                <DefaultHeader showCreateRecipe={false} showUserMenu={true}/>
                 <div className="main">
                     <div id="categoryFrame">
                         <div className="categoryFrame">

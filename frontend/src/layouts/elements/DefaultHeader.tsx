@@ -6,11 +6,22 @@ import React from "react";
 
 interface DefaultHeaderProps {
     showCreateRecipe: boolean;
+    showUserMenu: boolean;
 }
 
 export const DefaultHeader: React.FC<DefaultHeaderProps> = ({
-                                                                   showCreateRecipe,
-                                                               }) => {
+                                                                showCreateRecipe,
+                                                                showUserMenu,
+                                                            }) => {
+
+    let userMenu;
+
+    if(showUserMenu) {
+        userMenu = <UserMenu showCreateRecipe={showCreateRecipe} />;
+    } else {
+        userMenu = <></>
+    }
+
     return (
         <div id="headerFrame">
             <div className="header-left">
@@ -20,7 +31,7 @@ export const DefaultHeader: React.FC<DefaultHeaderProps> = ({
                 <Link to="/"><img src={ShadowCookTextLogo} alt="SHADOWCOOK" className="text-logo"/></Link>
             </div>
             <div className="header-right">
-                <UserMenu showCreateRecipe={showCreateRecipe}/>
+                {userMenu}
             </div>
         </div>
     );

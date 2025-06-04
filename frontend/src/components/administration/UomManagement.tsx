@@ -3,16 +3,14 @@ import {validateAccess} from "../../utilities/validate.ts";
 import {AccessId} from "../../types/session/accessId.ts";
 
 
-export function RoleManagement() {
+
+export function UomManagement() {
     const session = useSession();
-    if (!validateAccess(session, AccessId.ADMIN)) {
+    if (!validateAccess(session, AccessId.EDIT_UOM)) {
         return (<>ACCESS DENIED</>);
     }
 
     return (
-        <>
-
-
-        </>
+        <></>
     );
 }

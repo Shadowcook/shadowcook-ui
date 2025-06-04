@@ -69,7 +69,7 @@ export default function MainLayout() {
     return (
         <MessageProvider>
             <div id="rootContent">
-                <DefaultHeader showCreateRecipe={true}/>
+                <DefaultHeader showCreateRecipe={true} showUserMenu={true}/>
                 <div id="breadcrumbFrame" className="bg-gray-100 p-2">
                     <Breadcrumbs
                         categories={categories}

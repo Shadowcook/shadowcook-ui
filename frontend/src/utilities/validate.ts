@@ -1,4 +1,5 @@
 import {SessionState} from "../types/session/sessionState.ts";
+import {AccessId} from "../types/session/accessId.ts";
 
 export function validateId(input: unknown): number {
     const id = Number(input);
@@ -14,6 +15,14 @@ export function validateId(input: unknown): number {
     return id;
 }
 
+// Returns true, if requiredAccess-ID is found in the session
 export function validateAccess(session: SessionState, requiredAccess: number): boolean {
-    return session.accesses.some(access => access.accessId === requiredAccess);
+    return validateAnyAccess(session, [requiredAccess, AccessId.ADMIN])
+}
+
+// Returns true, if ANY ONE of the requiredAccess-IDs is found in the session
+export function validateAnyAccess(session: SessionState, requiredAccess: number[]): boolean {
+    return requiredAccess.some(required =>
+        session.accesses.some(access => access.accessId === required)
+    );
 }

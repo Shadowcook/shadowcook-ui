@@ -1,12 +1,11 @@
 import {useSession} from "../../session/SessionContext.tsx";
-import {validateAccess} from "../../utilities/validate.ts";
-import {AccessId} from "../../types/session/accessId.ts";
-
+import {validateAnyAccess} from "../../utilities/validate.ts";
+import {MANAGEMENT_ACCESS_IDS} from "../../types/session/accessId.ts";
 
 
 export function ManagementHome() {
     const session = useSession();
-    if (!validateAccess(session, AccessId.ADMIN)) {
+    if (!validateAnyAccess(session, MANAGEMENT_ACCESS_IDS)) {
         return (<>ACCESS DENIED</>);
     }
 

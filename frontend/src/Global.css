@@ -83,3 +83,45 @@
 
 .imageButtonSmallDisabled:hover {
 }
+
+.linkButtonFrame {
+    justify-content: space-between;
+    align-items: center;
+    /*padding: .2rem;*/
+}
+
+.linkButton,
+.linkButtonDisabled {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 1.25rem;
+}
+
+.linkButtonDisabled {
+    opacity: 0.2;
+}
+
+.linkButtonLink:link,
+.linkButtonLink:visited,
+.linkButton:link,
+.linkButton:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+/*.backButtonLink:hover,*/
+.linkButton:hover {
+    background-color: #d9d9d9;
+}
+
+.linkButton img,
+.linkButtonDisabled img {
+    height: 1.5em;
+    width: auto;
+    vertical-align: middle;
+}

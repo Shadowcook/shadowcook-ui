@@ -3,6 +3,10 @@ import style from "./UserMenuPopup.module.css";
 import {LoginResult, LoginResultID} from "../types/session/loginResultID.ts";
 import {LoginErrorMessages} from "../types/session/loginErrorMessages.ts";
 import {SessionState} from "../types/session/sessionState.ts";
+import {validateAnyAccess} from "../utilities/validate.ts";
+import {AccessId} from "../types/session/accessId.ts";
+import {Link} from "react-router-dom";
+import adminIcon from "../assets/font-awesome/solid/wrench.svg";
 
 interface LoginProps {
     onLogin: (username: string, password: string) => Promise<LoginResultID>;
@@ -19,6 +23,24 @@ interface UserOptionsProps {
 export const UserOptionsPopup: React.FC<UserOptionsProps> = (props) => {
     const popupRef = useRef<HTMLDivElement>(null);
     const {session, onLogout} = props;
+    let managementNavButton;
+    if (validateAnyAccess(session, [AccessId.EDIT_USER, AccessId.EDIT_UOM, AccessId.EDIT_CATEGORY, AccessId.ADMIN])) {
+        managementNavButton = (
+            <>
+                <hr className={style.menuSeparator}/>
+                <div className="linkButtonFrame">
+                    <strong>Administration</strong>
+                    <Link className="linkButtonLink" to={`/management`}>
+                        <div className="linkButton">
+                            <img src={adminIcon} alt="up-arrow"/> <span>Management</span>
+                        </div>
+                    </Link>
+                </div>
+            </>
+        )
+    } else {
+        managementNavButton = (<></>)
+    }
     return (
         <div
             role="dialog"
@@ -31,7 +53,8 @@ export const UserOptionsPopup: React.FC<UserOptionsProps> = (props) => {
                 <span className={style.welcomeMessage}>Welcome, {session.user.login}</span><br/>
                 <span className={style.emailId}>{session.user.email}</span><br/>
             </p>
-            <hr className={style.menuSeparator} />
+            {managementNavButton}
+            <hr className={style.menuSeparator}/>
             <div className={style.userMenuPopupButtons}>
                 <button className="shadowButton" onClick={onLogout}>Logout</button>
             </div>
@@ -63,6 +86,7 @@ export const UserLoginPopup: React.FC<LoginProps> = ({onLogin, onClose}) => {
         const loginResult = await onLogin(username, password);
         setLoginResult(loginResult);
     };
+
 
     return (
         <div

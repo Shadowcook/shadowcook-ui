@@ -7,3 +7,11 @@ export const enum AccessId {
     EDIT_USER = 1,
     READ_RECIPE = 4
 }
+
+export const MANAGEMENT_ACCESS_IDS: AccessId[] = [
+    AccessId.ADMIN,
+    AccessId.EDIT_CATEGORY,
+    AccessId.EDIT_RECIPE,
+    AccessId.EDIT_UOM,
+    AccessId.EDIT_USER,
+];
