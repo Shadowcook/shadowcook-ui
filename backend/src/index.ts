@@ -4,6 +4,7 @@ import recipeRoutes from './endpoints/recipe.js';
 import categoryRoutes from './endpoints/category.js';
 import sessionRoutes from './endpoints/session.js';
 import uomRoutes from './endpoints/uom.js';
+import admRolesRoutes from './endpoints/administration/roleManagement.js';
 import { config } from './config.js';
 import cors from 'cors';
 
@@ -21,6 +22,7 @@ app.use('/api', recipeRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', sessionRoutes);
 app.use('/api', uomRoutes);
+app.use('/api', admRolesRoutes);
 
 
 app.listen(config.port, async () => {
