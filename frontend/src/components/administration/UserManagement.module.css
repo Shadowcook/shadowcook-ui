@@ -85,6 +85,7 @@
     text-align: right;
     z-index: 10;
 }
+
 .placeholder {
     display: flex;
     justify-content: center;
@@ -94,3 +95,11 @@
     color: rgba(0, 0, 0, 0.4);
     font-style: italic;
 }
+
+.headerWithButton {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Abstand zwischen h2 und Button */
+}
+
+

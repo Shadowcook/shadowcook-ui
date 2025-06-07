@@ -14,6 +14,7 @@ import inactiveUserIcon from "@assets/font-awesome/solid/user-xmark.svg"
 import roleActiveIcon from "@assets/font-awesome/solid/check.svg"
 import roleInactiveIcon from "@assets/font-awesome/solid/xmark.svg"
 import addUserIcon from "@assets/font-awesome/solid/user-plus.svg"
+import deleteUserIcon from "@assets/font-awesome/solid/trash-can.svg"
 
 export function UserManagement() {
     const session = useSession();
@@ -81,6 +82,10 @@ export function UserManagement() {
         </div>
     )
 
+    let userDetailHead = (
+        <h2>User details</h2>
+    )
+
     if (users && users.length > 0) {
         userList = (
             <div className={style.userButtonList}>
@@ -101,6 +106,23 @@ export function UserManagement() {
 
 
     if (selectedUser) {
+
+        if (selectedUser.id > -1) {
+            userDetailHead = (
+                <>
+                    <h2>User details</h2>
+                    <button className="imageButton">
+                        <img src={deleteUserIcon} alt="delete user"/>
+                    </button>
+                </>
+            )
+        } else {
+            userDetailHead = (
+                <h2>New user</h2>
+            )
+        }
+
+
         userDetails = (
             <>
                 <div>
@@ -213,7 +235,9 @@ export function UserManagement() {
                     {userList}
                 </div>
                 <div className={style.userDetailsPane}>
-                    <h2>{(selectedUser && selectedUser.id > -1) || selectedUser === null ? "User details" : "New user"}</h2>
+                    <div className={style.headerWithButton}>
+                        {userDetailHead}
+                    </div>
                     {userDetails}
                 </div>
                 <div className={style.userRolesPane}>
