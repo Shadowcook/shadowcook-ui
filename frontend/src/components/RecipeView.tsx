@@ -1,13 +1,6 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {validateAccess, isValidId, transformIdIfValid} from "../utilities/validate.ts";
-import {
-    deleteRecipe,
-    fetchRecipe,
-    fetchRecipeCategories,
-    fetchUomList,
-    pushRecipe,
-    pushRecipeCategories
-} from "@api";
+import {transformIdIfValid, validateAccess} from "../utilities/validate.ts";
+import {deleteRecipe, fetchRecipe, fetchRecipeCategories, fetchUomList, pushRecipe, pushRecipeCategories} from "@api";
 import {Recipe} from "../types/recipe/recipe.ts";
 import style from "./RecipeView.module.css"
 import './Modules.css';
@@ -32,7 +25,7 @@ import DeleteRecipeModal from "./DeleteRecipeModal.tsx";
 export function RecipeView() {
 
     const {recipeId, categoryId} = useParams();
-    const catId = isValidId(categoryId);
+    const catId = transformIdIfValid(categoryId);
     const isNewRecipe = recipeId === 'new';
     const sanitizedRecipeId = isNewRecipe ? undefined : transformIdIfValid(recipeId);
     const [recipe, setRecipe] = useState<Recipe | null>();
@@ -271,7 +264,7 @@ export function RecipeView() {
                             if (await deleteRecipe(trueRecipeNumberId)) {
                                 setDeleteModalOpen(false);
                                 showMessage(`Recipe "${recipe?.recipe.name}" has been deleted.`, "success");
-                                navigate(`/category/${categoryId}`, { state: { forceReload: true } });
+                                navigate(`/category/${categoryId}`, {state: {forceReload: true}});
                             } else {
                                 showMessage("Failed to delete recipe.", "warning");
                             }

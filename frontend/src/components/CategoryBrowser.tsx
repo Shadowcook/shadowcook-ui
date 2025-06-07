@@ -1,6 +1,6 @@
 import {Category} from "../types/category/category.ts";
 import {Link, useParams} from 'react-router-dom';
-import {isValidId} from "../utilities/validate.ts";
+import {isValidId, transformIdIfValid} from "../utilities/validate.ts";
 import style from "./CategoryBrowser.module.css";
 import backIcon from "../assets//font-awesome/solid/backward.svg"
 
@@ -12,7 +12,7 @@ export function CategoryBrowser({
                                     categories,
                                 }: CategoryBrowserProps) {
     const {categoryId} = useParams();
-    const id = isValidId(categoryId);
+    const id = !isValidId(categoryId) ? 0 : Number(transformIdIfValid(categoryId));
     const children = categories.filter((cat) => cat.parent === id);
     const currentCategory = categories.find((cat) => cat.id === id);
     const parentCategory = categories.find((cat) => cat.id === currentCategory?.parent);
@@ -21,7 +21,7 @@ export function CategoryBrowser({
             {currentCategory && currentCategory.parent > -1 && parentCategory && (
                 <Link className={style.categoryLink} to={`/category/${parentCategory.id}`}>
                     <div className={style.categoryBackFrame}>
-                        <img src={backIcon} alt="navigate back" /> <span>{parentCategory.name}</span>
+                        <img src={backIcon} alt="navigate back"/> <span>{parentCategory.name}</span>
                     </div>
                 </Link>
             )}

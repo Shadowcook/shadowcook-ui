@@ -6,7 +6,7 @@ import {Category} from "../types/category/category.ts";
 import {useEffect, useState} from "react";
 import {RecipeHeader} from "../types/recipe/recipeHeader.ts";
 import {fetchCategories, fetchRecipeList} from "@api";
-import {isValidId} from "../utilities/validate.ts";
+import {isValidId, transformIdIfValid} from "../utilities/validate.ts";
 import {MessageProvider} from '../context/MessageProvider.tsx';
 import {DefaultHeader} from "./elements/DefaultHeader.tsx";
 
@@ -15,7 +15,7 @@ export default function MainLayout() {
 
     const [recipes, setRecipeList] = useState<RecipeHeader[]>([]);
     const {categoryId} = useParams();
-    const sanitizedCategoryId = isValidId(categoryId);
+    const sanitizedCategoryId = !isValidId(categoryId) ? 0 : Number(transformIdIfValid(categoryId));
 
     const [categories, setCategories] = useState<Category[]>([]);
 
@@ -51,18 +51,20 @@ export default function MainLayout() {
     }, [forceReload, sanitizedCategoryId]);
 
     useEffect(() => {
-        fetchRecipeList(sanitizedCategoryId)
-            .then((data) => {
-                if (sanitizedCategoryId != null) {
-                    console.log(`Fetching ${data.length} recipes for category ${sanitizedCategoryId}`);
-                    setRecipeList(data);
-                } else {
-                    console.log(`No category selected. No data fetched`);
-                }
-            })
-            .catch((err) => {
-                console.error("Unable to load recipe list: ", err);
-            });
+        if (sanitizedCategoryId) {
+            fetchRecipeList(sanitizedCategoryId)
+                .then((data) => {
+                    if (sanitizedCategoryId != null) {
+                        console.log(`Fetching ${data.length} recipes for category ${sanitizedCategoryId}`);
+                        setRecipeList(data);
+                    } else {
+                        console.log(`No category selected. No data fetched`);
+                    }
+                })
+                .catch((err) => {
+                    console.error("Unable to load recipe list: ", err);
+                });
+        }
     }, [sanitizedCategoryId]);
 
 
