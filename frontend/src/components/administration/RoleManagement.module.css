@@ -7,6 +7,7 @@
     padding: 0.2em;
     margin-right: 0.5em;
 }
+
 .roleHeader button {
     font-size: 1.5em;
     padding: 0.2em;
@@ -38,7 +39,12 @@
 }
 
 .roleSelectionFrame button {
-    margin-bottom: 2em;
+    margin-bottom: .5em;
+}
+
+
+.roleSelectionFrame button img {
+    margin-right: 1.5em;
 }
 
 .placeholder {
@@ -63,4 +69,8 @@
     align-items: center;
     gap: 0.5rem;
     font-size: 0.95rem;
+}
+
+.roleButtonList {
+    margin: 2rem;
 }

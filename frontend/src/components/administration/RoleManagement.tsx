@@ -1,7 +1,7 @@
 import {useSession} from "../../session/SessionContext.tsx";
 import {validateAccess} from "../../utilities/validate.ts";
 import {AccessId} from "@project-types/role/accessId.ts";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {deleteRole, deleteRoleAccess, fetchAllAccessIDs, fetchFullRoleAccess, saveAccess, saveRoles} from "@api";
 import style from "./RoleManagement.module.css"
 import {Access} from "@project-types/role/access.ts";
@@ -13,6 +13,7 @@ import {useMessage} from "../../hooks/useMessage.ts";
 import {RoleAccess} from "@project-types/role/roleAccess.ts";
 import {DeleteRoleModal} from "./DeleteRoleModal.tsx";
 import addRoleIcon from "@assets/font-awesome/solid/plus.svg";
+import roleIcon from "@assets/font-awesome/solid/id-card.svg";
 
 function groupByRole(entries: RoleAccessFull[]): { role: Role; accessIds: number[] }[] {
     const map = new Map<number, { role: Role; accessIds: number[] }>();
@@ -112,11 +113,11 @@ export function RoleManagement() {
                     if (exists) {
                         return prev.map(r =>
                             r.role.id === updatedRole.id
-                                ? { ...r, role: { ...r.role, name: updatedRole.name } }
+                                ? {...r, role: {...r.role, name: updatedRole.name}}
                                 : r
                         );
                     } else {
-                        return [...prev, { role: updatedRole, accessIds: [] }];
+                        return [...prev, {role: updatedRole, accessIds: []}];
                     }
                 });
             } else {
@@ -202,9 +203,10 @@ export function RoleManagement() {
                         </label>
                     ))}
                     <div className={style.accessDetailsButtonFrame}>
-                        <button className={!selectedRole || (selectedRole && selectedRole.id < 0) ? "shadowButtonDisabled" : "shadowButton"}
-                                disabled={!selectedRole || (selectedRole && selectedRole.id < 0)}
-                                onClick={() => handleUpdateAccess(selectedRole, editAccessIds)}>Save
+                        <button
+                            className={!selectedRole || (selectedRole && selectedRole.id < 0) ? "shadowButtonDisabled" : "shadowButton"}
+                            disabled={!selectedRole || (selectedRole && selectedRole.id < 0)}
+                            onClick={() => handleUpdateAccess(selectedRole, editAccessIds)}>Save
                         </button>
                     </div>
                 </div>
@@ -229,13 +231,15 @@ export function RoleManagement() {
                             onClick={() => handleNewRole()}>
                         <img src={addRoleIcon} alt="add role"/> Add role
                     </button>
-                    {roles.map(({role}) => (
-                        <React.Fragment key={`role-id-${role.id}`}>
-                            <button className="shadowButton" onClick={() => setSelectedRole(role)}>
-                                {role.name}
-                            </button>
-                        </React.Fragment>
-                    ))}
+                    <div className={style.roleButtonList}>
+                        {roles.map(({role}) => (
+                            <label key={`role-id-${role.id}`}>
+                                <button className="imageButton" onClick={() => setSelectedRole(role)}>
+                                    <img src={roleIcon} alt="role"/>{role.name}
+                                </button>
+                            </label>
+                        ))}
+                    </div>
                 </div>
                 <div className={style.accessSelectionFrame}>
                     <h2>{(selectedRole && selectedRole.id > -1) || selectedRole === null ? "Access level" : "New role"}</h2>
