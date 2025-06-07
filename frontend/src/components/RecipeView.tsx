@@ -26,7 +26,7 @@ import categoryEditorIcon from "../assets/font-awesome/solid/folder-tree.svg"
 import ModalCategorySelector from "./ModalCategorySelector.tsx";
 import {createEmptyRecipe} from "../types/recipe/createEmptyRecipe.ts";
 import {useSession} from "../session/SessionContext.tsx";
-import {AccessId} from "../types/session/accessId.ts";
+import {AccessId} from "@types/user/accessId.ts";
 import DeleteRecipeModal from "./DeleteRecipeModal.tsx";
 
 export function RecipeView() {

@@ -1,6 +1,6 @@
-import {User} from "./user.ts";
-import {Accesses} from "./accesses.ts";
-import {Role} from "./role.ts";
+import {User} from "../user.ts";
+import {Accesses} from "../accesses.ts";
+import {Role} from "../role.ts";
 
 
 export interface SessionState {

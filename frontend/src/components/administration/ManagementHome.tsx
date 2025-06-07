@@ -1,6 +1,6 @@
 import {useSession} from "../../session/SessionContext.tsx";
 import {validateAnyAccess} from "../../utilities/validate.ts";
-import {MANAGEMENT_ACCESS_IDS} from "../../types/session/accessId.ts";
+import {MANAGEMENT_ACCESS_IDS} from "@types/user/accessId.ts";
 
 
 export function ManagementHome() {

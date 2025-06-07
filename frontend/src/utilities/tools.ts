@@ -1,3 +1,5 @@
-export function resolveCJSModule(mod: any) {
-    return mod.default ?? mod;
+import {ApiResponse} from "../types/apiResponse.ts";
+
+export function isApiResponse<T>(res: unknown): res is ApiResponse<T> {
+    return typeof res === "object" && res !== null && "success" in res;
 }

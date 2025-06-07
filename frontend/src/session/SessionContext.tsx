@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {SessionState} from '../types/session/sessionState.ts';
+import {SessionState} from '@types/user/session/sessionState.ts';
 import {validateLogin} from '../api';
 
 const defaultSession: SessionState = {

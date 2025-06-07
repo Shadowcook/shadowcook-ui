@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import style from "./UserMenuPopup.module.css";
-import {LoginResult, LoginResultID} from "../types/session/loginResultID.ts";
-import {LoginErrorMessages} from "../types/session/loginErrorMessages.ts";
-import {SessionState} from "../types/session/sessionState.ts";
+import {LoginResult, LoginResultID} from "@types/user/session/loginResultID.ts";
+import {LoginErrorMessages} from "@types/user/session/loginErrorMessages.ts";
+import {SessionState} from "@types/user/session/sessionState.ts";
 import {validateAnyAccess} from "../utilities/validate.ts";
-import {AccessId} from "../types/session/accessId.ts";
+import {AccessId} from "@types/user/accessId.ts";
 import {Link} from "react-router-dom";
 import adminIcon from "../assets/font-awesome/solid/wrench.svg";
 

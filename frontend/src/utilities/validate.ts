@@ -1,5 +1,5 @@
-import {SessionState} from "../types/session/sessionState.ts";
-import {AccessId} from "../types/session/accessId.ts";
+import {SessionState} from "@types/user/session/sessionState.ts";
+import {AccessId} from "@types/user/accessId.ts";
 
 export function validateId(input: unknown): number {
     const id = Number(input);

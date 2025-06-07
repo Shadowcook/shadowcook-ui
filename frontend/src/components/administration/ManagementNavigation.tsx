@@ -1,6 +1,6 @@
 import {useSession} from "../../session/SessionContext.tsx";
 import {validateAccess, validateAnyAccess} from "../../utilities/validate.ts";
-import {AccessId, MANAGEMENT_ACCESS_IDS} from "../../types/session/accessId.ts";
+import {AccessId, MANAGEMENT_ACCESS_IDS} from "@types/user/accessId.ts";
 import {Link} from "react-router-dom";
 import userManagementIcon from "../../assets/font-awesome/solid/users.svg";
 import roleManagementIcon from "../../assets/font-awesome/solid/id-card.svg";

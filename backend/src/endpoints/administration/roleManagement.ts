@@ -1,6 +1,7 @@
 import {sessionRouteWrapper} from "../../utils/sessionRouterWrapper.js";
 import express from "express";
-import {apiGet} from "../../utils/apiHelpers.js";
+import {apiGet, apiRequest} from "../../utils/apiHelpers.js";
+import {validateId} from "../../utils/validate.js";
 
 const router = express.Router();
 
@@ -24,6 +25,37 @@ router.get('/getAllAccessIDs', sessionRouteWrapper(async (cookie, req, res) => {
     const data = await apiGet<any>('/access/get', cookie);
     console.log("retrieved data for access IDs: ", data);
     res.json(data);
+}));
+
+router.post('/saveRole', sessionRouteWrapper(async (cookie, req, res) => {
+    const rolesRequest = req.body;
+    console.log("RoleRequest: ", rolesRequest);
+    if (!rolesRequest) {
+        console.error("rolesRequest not found");
+        return res.status(400).json({error: 'Invalid role object.'});
+    }
+    return await apiRequest<any>('/role/create', rolesRequest, cookie);
+}));
+
+router.post('/saveAccess', sessionRouteWrapper(async (cookie, req, res) => {
+    const accessRequest = req.body;
+    console.log("AccessRequest: ", accessRequest);
+    if (!accessRequest) {
+        console.error("accessRequest not found");
+        return res.status(400).json({error: 'Invalid access object.'});
+    }
+    return await apiRequest<any>('/roleAccess/create', accessRequest, cookie);
+}));
+
+router.get('/deleteRoleAccess/:roleId', sessionRouteWrapper(async (cookie, req, res) => {
+    try {
+        const id = validateId(req.params.roleId);
+        const data = await apiGet<any>(`/roleAccess/delete/${id}`, cookie);
+        console.log(data);
+        res.json(data);
+    } catch {
+        res.status(500).json({error: 'Error while deleting accesses.'});
+    }
 }));
 
 export default router

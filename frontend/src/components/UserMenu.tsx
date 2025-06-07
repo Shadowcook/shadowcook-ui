@@ -4,14 +4,14 @@ import UserLoggedInIcon from "../assets/font-awesome/solid/user-check.svg";
 import UserNotLoggedInIcon from "../assets/font-awesome/solid/user-xmark.svg";
 import AddRecipeIcon from "../assets/font-awesome/solid/plus.svg"
 import style from "./UserMenu.module.css";
-import {LoginResult, LoginResultID} from "../types/session/loginResultID.ts";
+import {LoginResult, LoginResultID} from "@types/user/session/loginResultID.ts";
 import {loginUser, logout} from "@api";
 import {useSession} from "../session/SessionContext.tsx";
 import {useMessage} from "../hooks/useMessage.ts";
 import {createEmptyRecipe} from "../types/recipe/createEmptyRecipe.ts";
 import {useNavigate} from 'react-router-dom';
 import {validateAccess} from "../utilities/validate.ts";
-import {AccessId} from "../types/session/accessId.ts";
+import {AccessId} from "@types/user/accessId.ts";
 
 interface UserMenuProps {
     showCreateRecipe: boolean;
