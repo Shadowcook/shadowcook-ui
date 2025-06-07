@@ -1,7 +1,7 @@
-import {SessionState} from "@types/user/session/sessionState.ts";
-import {AccessId} from "@types/user/accessId.ts";
+import {SessionState} from "@project-types/user/session/sessionState.ts";
+import {AccessId} from "@project-types/role/accessId.ts";
 
-export function validateId(input: unknown): number {
+export function isValidId(input: unknown): boolean {
     const id = Number(input);
 
     if (
@@ -9,10 +9,17 @@ export function validateId(input: unknown): number {
         id < 0 ||
         id > Number.MAX_SAFE_INTEGER
     ) {
-        return 0;
+        return false;
     }
+    return true;
+}
 
-    return id;
+export function transformIdIfValid(input: unknown): number | undefined {
+    if(isValidId(input)) {
+        return Number(input);
+    } else {
+        return undefined;
+    }
 }
 
 // Returns true, if requiredAccess-ID is found in the session

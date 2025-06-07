@@ -1,12 +1,12 @@
-import {Role} from "@types/user/role.ts";
+import {Role} from "@project-types/role/role.ts";
 import apiClient from "@api/axios.ts";
-import {RoleResponse} from "@types/user/roleResponse.ts";
-import {RoleAccessFull} from "@types/user/roleAccessFull.ts";
-import {RoleAccessFullResponse} from "@types/user/roleAccessFullResponse.ts";
-import {Access} from "@types/user/access.ts";
-import {AccessResponse} from "@types/user/accessResponse.ts";
-import {RoleAccess} from "@types/user/roleAccess.ts";
-import {RoleAccessResponse} from "@types/user/roleAccessResponse.ts";
+import {RoleResponse} from "@project-types/role/roleResponse.ts";
+import {RoleAccessFull} from "@project-types/role/roleAccessFull.ts";
+import {RoleAccessFullResponse} from "@project-types/role/roleAccessFullResponse.ts";
+import {Access} from "@project-types/role/access.ts";
+import {AccessResponse} from "@project-types/role/accessResponse.ts";
+import {RoleAccess} from "@project-types/role/roleAccess.ts";
+import {RoleAccessResponse} from "@project-types/role/roleAccessResponse.ts";
 
 export async function fetchAllRoles(): Promise<Role[]> {
     try {
@@ -27,7 +27,10 @@ export async function fetchFullRoleAccess(): Promise<RoleAccessFull[]> {
         const res = await apiClient.get<RoleAccessFullResponse>('/getAllRoleAccess');
         console.log("retrieved role access data: ", res);
         console.log("fetched " + res.data.length + " roles accesses");
-        return res.data.rolesAccess;
+        const sorted = res.data.rolesAccess.sort((a, b) =>
+            a.role.name.localeCompare(b.role.name, undefined, {sensitivity: 'base'})
+        );
+        return sorted
     } catch (error) {
         console.error(error);
     }
@@ -81,6 +84,17 @@ export async function deleteRoleAccess(roleId: number): Promise<RoleAccessRespon
     try {
         console.log(`deleting role access for ${roleId}`);
         const res = await apiClient.get<RoleAccessResponse>(`/deleteRoleAccess/${roleId}`);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export async function deleteRole(roleId: number): Promise<RoleResponse> {
+    try {
+        console.log(`deleting role ${roleId}`);
+        const res = await apiClient.get<RoleResponse>(`/deleteRole/${roleId}`);
         return res.data;
     } catch (error) {
         console.log(error);

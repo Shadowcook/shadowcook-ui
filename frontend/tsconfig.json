@@ -3,12 +3,7 @@
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@api/*": ["api/*"],
-      "@api": ["api/index.ts"],
-      "@types/*": ["types/*"]
-    }
+    "baseUrl": "./src"
   },
   "files": [],
   "references": [

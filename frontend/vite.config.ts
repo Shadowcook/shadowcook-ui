@@ -7,7 +7,8 @@ export default defineConfig({
     resolve: {
         alias: {
             '@api': path.resolve(__dirname, 'src/api'),
-            '@types': path.resolve(__dirname, 'src/types'),
+            '@project-types': path.resolve(__dirname, 'src/types'),
+            '@assets': path.resolve(__dirname, 'src/assets'),
         },
     },
 });

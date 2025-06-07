@@ -1,6 +1,6 @@
-import {SessionValidationResponse} from "@types/user/session/sessionValidationResponse.ts";
+import {SessionValidationResponse} from "@project-types/user/session/sessionValidationResponse.ts";
 import apiClient from "../axios.ts";
-import {AuthResponse} from "@types/user/session/authResponse.ts";
+import {AuthResponse} from "@project-types/user/session/authResponse.ts";
 
 export async function validateLogin(): Promise<SessionValidationResponse> {
     console.log("Validating session");

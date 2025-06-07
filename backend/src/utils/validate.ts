@@ -1,4 +1,4 @@
-export function validateId(input: unknown): number | null {
+export function isValidId(input: unknown): boolean {
     const id = Number(input);
 
     if (
@@ -6,8 +6,8 @@ export function validateId(input: unknown): number | null {
         id < 0 ||
         id > Number.MAX_SAFE_INTEGER
     ) {
-        return null;
+        return false;
     }
 
-    return id;
+    return true;
 }

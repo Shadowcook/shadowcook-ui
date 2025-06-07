@@ -3,6 +3,7 @@
 .shadowButtonCancel,
 .imageButton,
 .imageButtonDisabled,
+.shadowButtonDisabled,
 .addRecipeButton {
     all: unset;
     display: block;
@@ -74,8 +75,15 @@
     cursor: unset;
 }
 
+.shadowButtonDisabled:hover,
+.shadowButtonDisabled img:hover {
+    cursor: unset;
+}
+
 .imageButtonSmallDisabled,
 .imageButtonSmallDisabled img,
+.shadowButtonDisabled,
+.shadowButtonDisabled img,
 .imageButtonDisabled,
 .imageButtonDisabled img {
     opacity: 0.5;

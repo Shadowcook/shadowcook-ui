@@ -1,7 +1,7 @@
 import {sessionRouteWrapper} from "../../utils/sessionRouterWrapper.js";
 import express from "express";
 import {apiGet, apiRequest} from "../../utils/apiHelpers.js";
-import {validateId} from "../../utils/validate.js";
+import {isValidId} from "../../utils/validate.js";
 
 const router = express.Router();
 
@@ -49,10 +49,25 @@ router.post('/saveAccess', sessionRouteWrapper(async (cookie, req, res) => {
 
 router.get('/deleteRoleAccess/:roleId', sessionRouteWrapper(async (cookie, req, res) => {
     try {
-        const id = validateId(req.params.roleId);
-        const data = await apiGet<any>(`/roleAccess/delete/${id}`, cookie);
-        console.log(data);
-        res.json(data);
+        if (isValidId(req.params.roleId)) {
+            const id = req.params.roleId;
+            const data = await apiGet<any>(`/roleAccess/delete/${id}`, cookie);
+            console.log(data);
+            res.json(data);
+        }
+    } catch {
+        res.status(500).json({error: 'Error while deleting accesses.'});
+    }
+}));
+
+router.get('/deleteRole/:roleId', sessionRouteWrapper(async (cookie, req, res) => {
+    try {
+        if (isValidId(req.params.roleId)) {
+            const id = Number(req.params.roleId);
+            const data = await apiGet<any>(`/role/delete/${id}`, cookie);
+            console.log(data);
+            res.json(data);
+        }
     } catch {
         res.status(500).json({error: 'Error while deleting accesses.'});
     }

@@ -26,7 +26,8 @@
     "paths": {
       "@api/*": ["api/*"],
       "@api": ["api/index.ts"],
-      "@types/*": ["types/*"]
+      "@project-types/*": ["types/*"],
+      "@assets/*": ["assets/*"]
     }
   },
   "include": ["src"]

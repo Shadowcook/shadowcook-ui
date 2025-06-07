@@ -1,6 +1,6 @@
 import {Category} from "../types/category/category.ts";
 import {Link, useParams} from 'react-router-dom';
-import {validateId} from "../utilities/validate.ts";
+import {isValidId} from "../utilities/validate.ts";
 import style from "./CategoryBrowser.module.css";
 import backIcon from "../assets//font-awesome/solid/backward.svg"
 
@@ -12,7 +12,7 @@ export function CategoryBrowser({
                                     categories,
                                 }: CategoryBrowserProps) {
     const {categoryId} = useParams();
-    const id = validateId(categoryId);
+    const id = isValidId(categoryId);
     const children = categories.filter((cat) => cat.parent === id);
     const currentCategory = categories.find((cat) => cat.id === id);
     const parentCategory = categories.find((cat) => cat.id === currentCategory?.parent);

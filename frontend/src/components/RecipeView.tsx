@@ -1,5 +1,5 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {validateAccess, validateId} from "../utilities/validate.ts";
+import {validateAccess, isValidId, transformIdIfValid} from "../utilities/validate.ts";
 import {
     deleteRecipe,
     fetchRecipe,
@@ -26,15 +26,15 @@ import categoryEditorIcon from "../assets/font-awesome/solid/folder-tree.svg"
 import ModalCategorySelector from "./ModalCategorySelector.tsx";
 import {createEmptyRecipe} from "../types/recipe/createEmptyRecipe.ts";
 import {useSession} from "../session/SessionContext.tsx";
-import {AccessId} from "@types/user/accessId.ts";
+import {AccessId} from "@project-types/role/accessId.ts";
 import DeleteRecipeModal from "./DeleteRecipeModal.tsx";
 
 export function RecipeView() {
 
     const {recipeId, categoryId} = useParams();
-    const catId = validateId(categoryId);
+    const catId = isValidId(categoryId);
     const isNewRecipe = recipeId === 'new';
-    const sanitizedRecipeId = isNewRecipe ? undefined : validateId(recipeId);
+    const sanitizedRecipeId = isNewRecipe ? undefined : transformIdIfValid(recipeId);
     const [recipe, setRecipe] = useState<Recipe | null>();
     const [editMode, setEditMode] = useState(false);
     const [editableRecipe, setEditableRecipe] = useState<Recipe | null>(null);

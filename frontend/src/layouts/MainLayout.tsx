@@ -6,7 +6,7 @@ import {Category} from "../types/category/category.ts";
 import {useEffect, useState} from "react";
 import {RecipeHeader} from "../types/recipe/recipeHeader.ts";
 import {fetchCategories, fetchRecipeList} from "@api";
-import {validateId} from "../utilities/validate.ts";
+import {isValidId} from "../utilities/validate.ts";
 import {MessageProvider} from '../context/MessageProvider.tsx';
 import {DefaultHeader} from "./elements/DefaultHeader.tsx";
 
@@ -15,7 +15,7 @@ export default function MainLayout() {
 
     const [recipes, setRecipeList] = useState<RecipeHeader[]>([]);
     const {categoryId} = useParams();
-    const sanitizedCategoryId = validateId(categoryId);
+    const sanitizedCategoryId = isValidId(categoryId);
 
     const [categories, setCategories] = useState<Category[]>([]);
 
