@@ -34,4 +34,37 @@ router.post('/saveUser', sessionRouteWrapper(async (cookie, req, res) => {
     return await apiRequest<any>('/user/create', userRequest, cookie);
 }));
 
+router.post('/pushUserRoles', sessionRouteWrapper(async (cookie, req, res) => {
+    const userRoleRequest = req.body;
+
+    if (!userRoleRequest) {
+        return res.status(400).json({error: 'Invalid user role object.'});
+    }
+
+    return await apiRequest<any>('/userRole/create', userRoleRequest, cookie);
+}));
+
+router.post('/pushUser', sessionRouteWrapper(async (cookie, req, res) => {
+    const user = req.body;
+
+    if (!user) {
+        return res.status(400).json({error: 'Invalid user object.'});
+    }
+    console.log("Pushing user: ", user);
+    return await apiRequest<any>('/user/create', user, cookie);
+}));
+
+router.get('/deleteUserRole/:userId', sessionRouteWrapper(async (cookie, req, res) => {
+    try {
+        if (isValidId(req.params.userId)) {
+            const id = Number(req.params.userId);
+            const data = await apiGet<any>(`/userRole/delete/${id}`, cookie);
+            console.log(data);
+            res.json(data);
+        }
+    } catch {
+        res.status(500).json({error: 'Error while deleting user roles.'});
+    }
+}));
+
 export default router

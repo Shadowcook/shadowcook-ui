@@ -33,3 +33,13 @@ export function validateAnyAccess(session: SessionState, requiredAccess: number[
         session.accesses.some(access => access.accessId === required)
     );
 }
+
+export function generateRandomString(length: number = 20): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charsLength = chars.length;
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * charsLength));
+    }
+    return result;
+}
