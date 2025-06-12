@@ -25,3 +25,15 @@ export function encodeBase64(str: string): string {
         .join("");
     return btoa(binaryString);
 }
+
+export function formatUtcIsoString(input: string): string {
+    const date = new Date(input);
+    const yyyy = date.getUTCFullYear();
+    const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const dd = String(date.getUTCDate()).padStart(2, "0");
+    const hh = String(date.getUTCHours()).padStart(2, "0");
+    const min = String(date.getUTCMinutes()).padStart(2, "0");
+    const sec = String(date.getUTCSeconds()).padStart(2, "0");
+
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${sec}`;
+}

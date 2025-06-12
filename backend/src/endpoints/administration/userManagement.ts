@@ -1,6 +1,6 @@
 import router from "./roleManagement.js";
 import {sessionRouteWrapper} from "../../utils/sessionRouterWrapper.js";
-import {apiGet, apiRequest} from "../../utils/apiHelpers.js";
+import {apiGet, apiGetFull, apiRequest} from "../../utils/apiHelpers.js";
 import {isValidId} from "../../utils/validate.js";
 
 router.get('/getAllUsers', sessionRouteWrapper(async (cookie, req, res) => {
@@ -66,5 +66,18 @@ router.get('/deleteUserRole/:userId', sessionRouteWrapper(async (cookie, req, re
         res.status(500).json({error: 'Error while deleting user roles.'});
     }
 }));
+
+router.get('/resetUserPassword/:userid', async (req, res) => {
+    try {
+        const userid = req.params.userid;
+
+        const response = await apiGetFull<any>(`/user/resetPasswordCreate/${userid}`);
+        console.log(response);
+        res.json(response.data);
+    } catch (e) {
+        console.log(`API ERROR in triggering password reset: ${e}`)
+        res.status(500).json({error: 'Internal server error while triggering password reset'});
+    }
+});
 
 export default router

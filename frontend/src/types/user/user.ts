@@ -3,4 +3,5 @@ export interface User {
     email: string;
     id: number;
     login: string;
+    passwordResetExpiry: string;
 }

@@ -11,8 +11,7 @@ export async function fetchAllUsers(): Promise<User[]> {
     try {
         console.log("fetching users");
         const res = await apiClient.get<UserResponse>('/getAllUsers');
-        console.log("retrieved role data: ", res);
-        console.log("fetched " + res.data.length + " roles");
+        console.log("retrieved user data: ", res);
         return res.data.users
     } catch (error) {
         console.error(error);

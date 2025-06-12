@@ -17,6 +17,7 @@ import roleInactiveIcon from "@assets/font-awesome/solid/xmark.svg"
 import addUserIcon from "@assets/font-awesome/solid/user-plus.svg"
 import deleteUserIcon from "@assets/font-awesome/solid/trash-can.svg"
 import resetPasswordIcon from "@assets/font-awesome/solid/key.svg"
+import TokenExpiryInfo from "./TokenExpiryInfo.tsx";
 
 export function UserManagement() {
     const session = useSession();
@@ -68,7 +69,8 @@ export function UserManagement() {
             active: false,
             email: "",
             id: -1,
-            login: ""
+            login: "",
+            passwordResetExpiry: ""
         }
         setSelectedUser(newUser);
     }
@@ -137,7 +139,10 @@ export function UserManagement() {
             <div className={style.userButtonList}>
                 {users.map((user) => (
                     <label key={`user-id-${user.id}`}>
-                        <button className="imageButton" onClick={() => setSelectedUser(user)}>
+                        <button className="imageButton" onClick={() => {
+                            setSelectedUser(user)
+                            console.log("Selected user: ", user);
+                        }}>
                             <img
                                 src={user.active ? activeUserIcon : inactiveUserIcon}
                                 alt={user.active ? "active user" : "inactive user"}
@@ -243,6 +248,10 @@ export function UserManagement() {
                                 />
                             </td>
                         </tr>
+                        <tr>
+                            <td>Reset token:</td>
+                            <td><TokenExpiryInfo expiryTimestamp={selectedUser.passwordResetExpiry}/></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -300,7 +309,7 @@ export function UserManagement() {
                         >
                             {isSaving ? (
                                 <>
-                                    <span className="loader" />
+                                    <span className="loader"/>
                                     Saving...
                                 </>
                             ) : (

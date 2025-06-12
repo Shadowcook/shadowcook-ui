@@ -3,6 +3,7 @@ import apiClient from "../axios.ts";
 import {AuthResponse} from "@project-types/user/session/authResponse.ts";
 import {User} from "@project-types/user/user.ts";
 import {UserResponse} from "@project-types/user/userResponse.ts";
+import {ApiBaseResponse} from "@project-types/apiBaseResponse.ts";
 
 export async function validateLogin(): Promise<SessionValidationResponse> {
     console.log("Validating session");
@@ -36,11 +37,21 @@ export async function validateUserToken(username: string, token: string): Promis
     }
 }
 
-export async function pushUserPassword(username: string, token: string, newPasswordBase64: string): Promise<UserResponse | null> {
+export async function pushUserPassword(username: string, token: string, newPasswordBase64: string): Promise<boolean | null> {
     if (username != null && token != null) {
-        const res = await apiClient.get<UserResponse>(`/resetUserPassword/${username}/${token}/${newPasswordBase64}`);
+        const res = await apiClient.get<ApiBaseResponse>(`/resetUserPassword/${username}/${token}/${newPasswordBase64}`);
+        console.log("pushing new user password");
+        return res.data.success;
+    } else {
+        return null;
+    }
+}
+
+export async function pushPasswordReset(user: User): Promise<User | null> {
+    if (user && user.id > -1) {
+        const res = await apiClient.get<UserResponse>(`/userPasswordReset/${user.id}`);
         console.log('validateUserToken <UNK> /session/validate', res);
-        return res.data;
+        return res.data.users[0];
     } else {
         return null;
     }
