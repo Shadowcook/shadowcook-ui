@@ -12,12 +12,18 @@ import {UserManagement} from "./components/administration/UserManagement.tsx";
 import {RoleManagement} from "./components/administration/RoleManagement.tsx";
 import {UomManagement} from "./components/administration/UomManagement.tsx";
 import {CategoryManagement} from "./components/administration/CategoryManagement.tsx";
+import {SetPasswordPage} from "./components/SetPasswordPage.tsx";
+import {InvalidPage} from "./components/InvalidPage.tsx";
 
 
 export default function App() {
     return (
         <SessionProvider>
             <Routes>
+                <Route path="/password" element={<LogoutLayout/>}>
+                    <Route index element={<InvalidPage />} />
+                    <Route path=":username/:token" element={<SetPasswordPage/>}/>
+                </Route>
                 <Route path="/logout-success" element={<LogoutLayout/>}>
                     <Route index element={<LogoutSuccessPage/>}/>
                 </Route>

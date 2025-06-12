@@ -151,13 +151,20 @@ export function UserManagement() {
     }
 
 
+    function handleResetUserPassword() {
+
+    }
+
     if (selectedUser) {
 
         if (selectedUser.id > -1) {
             userDetailHead = (
                 <>
                     <h2>User details</h2>
-                    <button className="imageButton">
+                    <button
+                        className="imageButton"
+                        onClick={() => handleResetUserPassword()}
+                    >
                         <img src={resetPasswordIcon} alt="reset password"/>
                     </button>
                     <button className="imageButton">

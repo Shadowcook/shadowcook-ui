@@ -1,0 +1,24 @@
+.invalidPageFrame {
+    width: 100%;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+}
+
+.invalidPageFrame span {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 5rem;
+}
+
+.invalidPageFrame button {
+    margin: 5rem;
+}
+
+.invalidPageFrame button {
+    display: block;
+    margin: 5rem auto;
+    padding: 2rem;
+    font-size: 1.5rem;
+}

@@ -36,4 +36,31 @@ router.get('/login/:username/:password', async (req, res) => {
     }
 });
 
+router.get('/validateUserToken/:username/:token', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const token = req.params.token;
+        const response = await apiGetFull<any>(`/user/validateToken/${username}/${token}`);
+        console.log(response);
+        res.json(response.data);
+    } catch (e) {
+        console.log(`API ERROR in token validation: ${e}`)
+        res.status(500).json({error: 'Internal server error while validating token'});
+    }
+});
+
+router.get('/resetUserPassword/:username/:token/:base64Password', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const token = req.params.token;
+        const base64Password = req.params.base64Password;
+        const response = await apiGetFull<any>(`/user/resetPassword/${username}/${token}/${base64Password}`);
+        console.log(response);
+        res.json(response.data);
+    } catch (e) {
+        console.log(`API ERROR in resetting password: ${e}`)
+        res.status(500).json({error: 'Internal server error while resetting password'});
+    }
+});
+
 export default router;

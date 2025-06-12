@@ -40,7 +40,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [showUserOptions]);
+    }, [handleClickOutside, showUserOptions]);
     const {revalidate} = useSession();
     const handleLogin = async (
         username: string,
