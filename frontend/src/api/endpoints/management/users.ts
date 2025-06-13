@@ -12,7 +12,9 @@ export async function fetchAllUsers(): Promise<User[]> {
         console.log("fetching users");
         const res = await apiClient.get<UserResponse>('/getAllUsers');
         console.log("retrieved user data: ", res);
-        return res.data.users
+        return [...res.data.users].sort((a, b) =>
+            a.login.localeCompare(b.login, undefined, {numeric: true, sensitivity: 'base'})
+        );
     } catch (error) {
         console.error(error);
     }
@@ -82,5 +84,11 @@ export async function deleteUserRoles(userId: number): Promise<RoleResponse> {
         console.log(error);
         throw error;
     }
+}
+
+export async function deleteUser(userId: number): Promise<UserResponse> {
+    console.log(`deleting user ${userId}`);
+    const res = await apiClient.get<UserResponse>(`/deleteUser/${userId}`);
+    return res.data;
 }
 

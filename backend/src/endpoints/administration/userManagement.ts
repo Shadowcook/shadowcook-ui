@@ -67,17 +67,34 @@ router.get('/deleteUserRole/:userId', sessionRouteWrapper(async (cookie, req, re
     }
 }));
 
-router.get('/resetUserPassword/:userid', async (req, res) => {
+router.get('/userPasswordReset/:userid', sessionRouteWrapper(async (cookie, req, res) => {
     try {
+        console.log("Creating user password reset");
         const userid = req.params.userid;
 
-        const response = await apiGetFull<any>(`/user/resetPasswordCreate/${userid}`);
+        const response = await apiGetFull<any>(`/user/resetPasswordCreate/${userid}`, cookie);
         console.log(response);
         res.json(response.data);
     } catch (e) {
         console.log(`API ERROR in triggering password reset: ${e}`)
         res.status(500).json({error: 'Internal server error while triggering password reset'});
     }
-});
+}));
+
+router.get('/deleteUser/:userid', sessionRouteWrapper(async (cookie, req, res) => {
+    try {
+        console.log("Deleting user");
+        const userid = req.params.userid;
+
+        const response = await apiGetFull<any>(`/user/delete/${userid}`, cookie);
+        console.log(response);
+        res.json(response.data);
+    } catch (e) {
+        console.log(`API ERROR in deleting user: ${e}`)
+        res.status(500).json({error: 'Internal server error while deleting user'});
+    }
+}));
+
+
 
 export default router

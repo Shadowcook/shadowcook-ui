@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {formatUtcIsoString} from "../../utilities/tools.ts";
+import { formatUtcIsoString } from "../../utilities/tools.ts";
+import style from "./TokenExpiryInfo.module.css";
+import clockIcon from "@assets/font-awesome/solid/clock.svg";
 
 interface ExpiryInfoProps {
     expiryTimestamp: string;
 }
 
 const TokenExpiryInfo: React.FC<ExpiryInfoProps> = ({ expiryTimestamp }) => {
-    const expiryDate = new Date(expiryTimestamp);
-    const [remaining, setRemaining] = useState(calculateRemaining(expiryDate));
+    const [remaining, setRemaining] = useState(calculateRemaining(new Date(expiryTimestamp)));
 
     useEffect(() => {
+        const expiryDate = new Date(expiryTimestamp);
         setRemaining(calculateRemaining(expiryDate));
 
         const interval = setInterval(() => {
@@ -17,9 +19,9 @@ const TokenExpiryInfo: React.FC<ExpiryInfoProps> = ({ expiryTimestamp }) => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [expiryDate]);
+    }, [expiryTimestamp]);
 
-    if(!expiryTimestamp){
+    if (!expiryTimestamp) {
         return (
             <div>
                 <div>No token generated</div>
@@ -30,19 +32,41 @@ const TokenExpiryInfo: React.FC<ExpiryInfoProps> = ({ expiryTimestamp }) => {
     if (remaining.total <= 0) {
         return (
             <div>
-                <div style={{ color: "red" }}>Token expired</div>
+                <div><strong>Valid until:</strong> {formatUtcIsoString(expiryTimestamp)}</div>
+                <div>
+                    <table className={style.tokenExpiryTimer}>
+                        <tbody>
+                        <tr>
+                            <td className={style.tokenExpiryTimerIcon}>
+                                <img className="defaultIcon iconOnText" src={clockIcon} alt="Time remaining" />
+                            </td>
+                            <td className={style.tokenExpiredText}> expired</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         );
     }
 
     return (
         <div>
-            <div><strong>Expiry on:</strong> {formatUtcIsoString(expiryDate.toISOString())}</div>
+            <div><strong>Valid until:</strong> {formatUtcIsoString(expiryTimestamp)}</div>
             <div>
-                <strong>Countdown:</strong>{" "}
-                {remaining.hours.toString().padStart(2, "0")}:
-                {remaining.minutes.toString().padStart(2, "0")}:
-                {remaining.seconds.toString().padStart(2, "0")}
+                <table className={style.tokenExpiryTimer}>
+                    <tbody>
+                    <tr>
+                        <td className={style.tokenExpiryTimerIcon}>
+                            <img className="defaultIcon iconOnText" src={clockIcon} alt="Time remaining" />
+                        </td>
+                        <td className={style.tokenExpiryTimerText}>
+                            {remaining.hours.toString().padStart(2, "0")}:
+                            {remaining.minutes.toString().padStart(2, "0")}:
+                            {remaining.seconds.toString().padStart(2, "0")}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     );

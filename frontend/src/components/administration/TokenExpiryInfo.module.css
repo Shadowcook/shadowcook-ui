@@ -1,0 +1,25 @@
+.tokenExpiredMark {
+    width: 2em;
+    height: 2em;
+    margin-top: .2em;
+    color: red;
+}
+
+.tokenExpiredText {
+    color: red;
+}
+
+.tokenExpiryText {
+    border-style: none;
+}
+
+.tokenExpiryTimer td {
+    vertical-align: middle;
+}
+.tokenExpiryTimerIcon img {
+    margin-top: .2em;
+}
+
+.tokenExpiryTimerText {
+    /*padding-top: em;*/
+}

@@ -47,11 +47,11 @@ export async function pushUserPassword(username: string, token: string, newPassw
     }
 }
 
-export async function pushPasswordReset(user: User): Promise<User | null> {
+export async function pushPasswordReset(user: User): Promise<UserResponse | null> {
     if (user && user.id > -1) {
+        console.log(`Generating new password token for user ${user.id}`);
         const res = await apiClient.get<UserResponse>(`/userPasswordReset/${user.id}`);
-        console.log('validateUserToken <UNK> /session/validate', res);
-        return res.data.users[0];
+        return res.data;
     } else {
         return null;
     }

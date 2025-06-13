@@ -107,3 +107,15 @@
     align-items: center;
     gap: 1rem;
 }
+
+.userDetailsInfoBlock table tbody tr td {
+    vertical-align:  top;
+    padding: 0.5rem;
+}
+
+.userDetailsInfoBlock table,
+.userDetailsInfoBlock table td {
+    border-collapse: collapse;
+    border-style: none;
+    border-width: 1px;
+}

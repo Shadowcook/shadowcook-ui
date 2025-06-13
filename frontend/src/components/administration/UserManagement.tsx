@@ -5,7 +5,15 @@ import style from "./UserManagement.module.css";
 import {useEffect, useState} from "react";
 import {User} from "@project-types/user/user.ts";
 import {Role} from "@project-types/role/role.ts";
-import {deleteUserRoles, fetchAllRoles, fetchUserRoles, pushUser, pushUserRoles} from "@api";
+import {
+    deleteUser,
+    deleteUserRoles,
+    fetchAllRoles,
+    fetchUserRoles,
+    pushPasswordReset,
+    pushUser,
+    pushUserRoles
+} from "@api";
 import {useMessage} from "../../hooks/useMessage.ts";
 import {fetchAllUsers} from "@api/endpoints/management/users.ts";
 import {UserRole} from "@project-types/user/userRole.ts";
@@ -18,6 +26,7 @@ import addUserIcon from "@assets/font-awesome/solid/user-plus.svg"
 import deleteUserIcon from "@assets/font-awesome/solid/trash-can.svg"
 import resetPasswordIcon from "@assets/font-awesome/solid/key.svg"
 import TokenExpiryInfo from "./TokenExpiryInfo.tsx";
+import {ConfirmDialog} from "../ConfirmDialog.tsx";
 
 export function UserManagement() {
     const session = useSession();
@@ -28,6 +37,9 @@ export function UserManagement() {
     const [allRoles, setAllRoles] = useState<Role[]>([]);
     const {showMessage} = useMessage();
     const [isSaving, setIsSaving] = useState(false);
+    const [isResettingPassword, setIsResettingPassword] = useState(false);
+    const [isDeletingUser, setIsDeletingUser] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     useEffect(() => {
         if (!validateAccess(session, AccessId.EDIT_USER)) return;
@@ -156,8 +168,41 @@ export function UserManagement() {
     }
 
 
-    function handleResetUserPassword() {
+    async function handleResetUserPassword() {
+        setIsResettingPassword(true);
+        if (selectedUser) {
+            const resetRes = await pushPasswordReset(selectedUser);
+            if (resetRes && resetRes.success) {
+                setSelectedUser({
+                    ...selectedUser,
+                    passwordResetExpiry: resetRes.users[0].passwordResetExpiry,
+                });
+                showMessage("User password reset initialized", "success");
+            } else {
+                console.error("Unable to create password reset: ", resetRes);
+                showMessage("Resetting user failed! Please check logs", "error");
+            }
+        }
+        setIsResettingPassword(false);
+    }
 
+    async function handleDeleteUser() {
+        setIsDeletingUser(true);
+        try {
+            if (selectedUser) {
+                const userRes = await deleteUser(selectedUser.id)
+                if (userRes && userRes.success) {
+                    setSelectedUser(null)
+                    showMessage(`User "${userRes.users[0].login}" deleted`, "success");
+                } else {
+                    console.error("Unable to delete user: ", userRes);
+                    showMessage(`Unable to delete user "${userRes.users[0].login}"`, "error");
+                }
+            }
+        } catch (e) {
+            console.error("Error while deleting user: ", e);
+        }
+        setIsDeletingUser(false);
     }
 
     if (selectedUser) {
@@ -167,14 +212,42 @@ export function UserManagement() {
                 <>
                     <h2>User details</h2>
                     <button
-                        className="imageButton"
+                        className={isResettingPassword ? "imageButtonDisabled" : "imageButton"}
+                        disabled={isResettingPassword}
                         onClick={() => handleResetUserPassword()}
                     >
-                        <img src={resetPasswordIcon} alt="reset password"/>
+                        {isResettingPassword && (
+                            <span className="loader"/>
+                        )}
+
+                        {!isResettingPassword && (
+                            <img src={resetPasswordIcon} alt="reset password"/>
+                        )}
+
                     </button>
-                    <button className="imageButton">
-                        <img src={deleteUserIcon} alt="delete user"/>
+                    <button
+                        className="imageButton"
+                        onClick={() => {
+                            setShowDeleteDialog(true)
+                        }}
+                    >
+                        {isDeletingUser && (
+                            <span className="loader"/>
+                        )}
+
+                        {!isDeletingUser && (
+                            <img src={deleteUserIcon} alt="delete user"/>
+                        )}
                     </button>
+                    <ConfirmDialog
+                        open={showDeleteDialog}
+                        onClose={() => setShowDeleteDialog(false)}
+                        onConfirm={() => handleDeleteUser()}
+                        title={`Delete user ${selectedUser.login}`}
+                        message="Are you sure you want to delete this user? This can not be undone!"
+                        requireConfirmationInput={true}
+                        confirmationText="DELETE"
+                    />
                 </>
             )
         } else {
@@ -186,7 +259,7 @@ export function UserManagement() {
 
         userDetails = (
             <>
-                <div>
+                <div className={style.userDetailsInfoBlock}>
                     <table>
                         <tbody>
                         <tr>

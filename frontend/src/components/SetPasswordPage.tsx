@@ -48,7 +48,7 @@ export function SetPasswordPage() {
         if (username && token && username.length > 0 && token.length > 0) {
             const base64Password = encodeBase64(password);
             const apiResult = await pushUserPassword(username, token, base64Password);
-            if (apiResult && apiResult.success) {
+            if (apiResult) {
                 setResetSuccess(true);
             } else {
 

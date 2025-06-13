@@ -1,3 +1,8 @@
+.defaultIcon {
+    width: 1em;
+    height: 1em;
+}
+
 .shadowButton,
 .shadowButtonConfirm,
 .shadowButtonCancel,
