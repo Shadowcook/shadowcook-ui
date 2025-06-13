@@ -1,24 +1,24 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {transformIdIfValid, validateAccess} from "../utilities/validate.ts";
+import {transformIdIfValid, validateAccess} from "../../utilities/validate.ts";
 import {deleteRecipe, fetchRecipe, fetchRecipeCategories, fetchUomList, pushRecipe, pushRecipeCategories} from "@api";
-import {Recipe} from "../types/recipe/recipe.ts";
+import {Recipe} from "@project-types/recipe/recipe.ts";
 import style from "./RecipeView.module.css"
-import './Modules.css';
-import shadowCookLogo from "../assets/shadowcook._alpha.png";
-import backIcon from "../assets/font-awesome/solid/turn-up.svg";
+import '../Modules.css';
+import shadowCookLogo from "@assets/shadowcook._alpha.png";
+import backIcon from "@assets/font-awesome/solid/turn-up.svg";
 import {RecipeCardRead} from "./RecipeCardRead.tsx";
 import {useEffect, useState} from "react";
-import editImg from "../assets/font-awesome/solid/pen.svg"
-import deleteImg from "../assets/font-awesome/solid/trash-can.svg"
-import saveImg from "../assets/font-awesome/solid/floppy-disk.svg"
-import closeImg from "../assets/font-awesome/solid/circle-xmark.svg"
+import editImg from "@assets/font-awesome/solid/pen.svg"
+import deleteImg from "@assets/font-awesome/solid/trash-can.svg"
+import saveImg from "@assets/font-awesome/solid/floppy-disk.svg"
+import closeImg from "@assets/font-awesome/solid/circle-xmark.svg"
 import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
-import {Uom} from "../types/recipe/uom.ts";
-import {useMessage} from "../hooks/useMessage.ts";
-import categoryEditorIcon from "../assets/font-awesome/solid/folder-tree.svg"
-import ModalCategorySelector from "./ModalCategorySelector.tsx";
-import {createEmptyRecipe} from "../types/recipe/createEmptyRecipe.ts";
-import {useSession} from "../session/SessionContext.tsx";
+import {Uom} from "@project-types/recipe/uom.ts";
+import {useMessage} from "../../hooks/useMessage.ts";
+import categoryEditorIcon from "@assets/font-awesome/solid/folder-tree.svg"
+import ModalCategorySelector from "../navigation/ModalCategorySelector.tsx";
+import {createEmptyRecipe} from "@project-types/recipe/createEmptyRecipe.ts";
+import {useSession} from "../../session/SessionContext.tsx";
 import {AccessId} from "@project-types/role/accessId.ts";
 import DeleteRecipeModal from "./DeleteRecipeModal.tsx";
 

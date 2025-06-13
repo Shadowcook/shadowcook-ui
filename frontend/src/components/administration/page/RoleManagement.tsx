@@ -1,5 +1,5 @@
-import {useSession} from "../../session/SessionContext.tsx";
-import {validateAccess} from "../../utilities/validate.ts";
+import {useSession} from "../../../session/SessionContext.tsx";
+import {validateAccess} from "../../../utilities/validate.ts";
 import {AccessId} from "@project-types/role/accessId.ts";
 import {useEffect, useState} from "react";
 import {deleteRole, deleteRoleAccess, fetchAllAccessIDs, fetchFullRoleAccess, saveAccess, saveRoles} from "@api";
@@ -9,9 +9,9 @@ import {Role} from "@project-types/role/role.ts";
 import {RoleAccessFull} from "@project-types/role/roleAccessFull.ts";
 import saveIcon from "@assets/font-awesome/solid/floppy-disk.svg"
 import deleteIcon from "@assets/font-awesome/solid/trash-can.svg"
-import {useMessage} from "../../hooks/useMessage.ts";
+import {useMessage} from "../../../hooks/useMessage.ts";
 import {RoleAccess} from "@project-types/role/roleAccess.ts";
-import {DeleteRoleModal} from "./DeleteRoleModal.tsx";
+import {DeleteRoleModal} from "../DeleteRoleModal.tsx";
 import addRoleIcon from "@assets/font-awesome/solid/plus.svg";
 import roleIcon from "@assets/font-awesome/solid/id-card.svg";
 

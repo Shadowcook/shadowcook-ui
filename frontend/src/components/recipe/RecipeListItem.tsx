@@ -1,6 +1,6 @@
 import style from "./RecipeListItem.module.css"
 import {Link} from 'react-router-dom';
-import no_thumbnail from "../assets/no_thumbnail.png";
+import no_thumbnail from "@assets/no_thumbnail.png";
 
 type RecipeCardProps = {
     id: number;

@@ -2,7 +2,7 @@ import '../App.css';
 import {Outlet} from "react-router-dom";
 import {MessageProvider} from '../context/MessageProvider.tsx';
 import {DefaultHeader} from "./elements/DefaultHeader.tsx";
-import {ManagementNavigation} from "../components/administration/ManagementNavigation.tsx";
+import {ManagementNavigation} from "../components/administration/page/ManagementNavigation.tsx";
 
 export default function ManagementLayout() {
 
@@ -16,7 +16,7 @@ export default function ManagementLayout() {
                             <ManagementNavigation/>
                         </div>
                     </div>
-                    <div id="recipeFrame">
+                    <div id="managementFrame">
                         <Outlet/>
                     </div>
                 </div>

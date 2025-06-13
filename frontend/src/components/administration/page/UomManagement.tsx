@@ -1,5 +1,5 @@
-import {useSession} from "../../session/SessionContext.tsx";
-import {validateAccess} from "../../utilities/validate.ts";
+import {useSession} from "../../../session/SessionContext.tsx";
+import {validateAccess} from "../../../utilities/validate.ts";
 import {AccessId} from "@project-types/role/accessId.ts";
 
 

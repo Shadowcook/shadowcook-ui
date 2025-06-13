@@ -1,11 +1,11 @@
-import {useSession} from "../../session/SessionContext.tsx";
-import {validateAccess, validateAnyAccess} from "../../utilities/validate.ts";
+import {useSession} from "../../../session/SessionContext.tsx";
+import {validateAccess, validateAnyAccess} from "../../../utilities/validate.ts";
 import {AccessId, MANAGEMENT_ACCESS_IDS} from "@project-types/role/accessId.ts";
 import {Link} from "react-router-dom";
-import userManagementIcon from "../../assets/font-awesome/solid/users.svg";
-import roleManagementIcon from "../../assets/font-awesome/solid/id-card.svg";
-import uomManagementIcon from "../../assets/font-awesome/solid/scale-balanced.svg";
-import categoryManagementIcon from "../../assets/font-awesome/solid/folder-tree.svg";
+import userManagementIcon from "@assets/font-awesome/solid/users.svg";
+import roleManagementIcon from "@assets/font-awesome/solid/id-card.svg";
+import uomManagementIcon from "@assets/font-awesome/solid/scale-balanced.svg";
+import categoryManagementIcon from "@assets/font-awesome/solid/folder-tree.svg";
 
 // import React from "react";
 

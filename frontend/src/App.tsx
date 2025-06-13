@@ -1,19 +1,19 @@
 import {Route, Routes} from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import LogoutLayout from "./layouts/LogoutLayout";
-import {RecipeListView} from "./components/RecipeListView";
-import {RecipeView} from "./components/RecipeView";
+import {RecipeListView} from "./components/recipe/RecipeListView.tsx";
+import {RecipeView} from "./components/recipe/RecipeView.tsx";
 import {SessionProvider} from "./session/SessionContext.tsx";
 import './Global.css';
-import {LogoutSuccessPage} from "./components/LogoutSuccessPage.tsx";
+import {LogoutSuccessPage} from "./components/user/LogoutSuccessPage.tsx";
 import ManagementLayout from "./layouts/ManagementLayout.tsx";
-import {ManagementHome} from "./components/administration/ManagementHome.tsx";
-import {UserManagement} from "./components/administration/UserManagement.tsx";
-import {RoleManagement} from "./components/administration/RoleManagement.tsx";
-import {UomManagement} from "./components/administration/UomManagement.tsx";
-import {CategoryManagement} from "./components/administration/CategoryManagement.tsx";
-import {SetPasswordPage} from "./components/SetPasswordPage.tsx";
-import {InvalidPage} from "./components/InvalidPage.tsx";
+import {ManagementHome} from "./components/administration/page/ManagementHome.tsx";
+import {UserManagement} from "./components/administration/page/UserManagement.tsx";
+import {RoleManagement} from "./components/administration/page/RoleManagement.tsx";
+import {UomManagement} from "./components/administration/page/UomManagement.tsx";
+import {CategoryManagement} from "./components/administration/page/CategoryManagement.tsx";
+import {SetPasswordPage} from "./components/user/SetPasswordPage.tsx";
+import {InvalidPage} from "./components/error/InvalidPage.tsx";
 
 
 export default function App() {

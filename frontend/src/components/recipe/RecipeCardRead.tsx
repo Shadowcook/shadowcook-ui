@@ -1,6 +1,6 @@
 import React, {type JSX} from "react";
-import {StepIngredient} from "../types/recipe/stepIngredient.ts";
-import {Recipe} from "../types/recipe/recipe.ts";
+import {StepIngredient} from "@project-types/recipe/stepIngredient.ts";
+import {Recipe} from "@project-types/recipe/recipe.ts";
 import "./RecipeCard.css";
 
 interface RecipeCardReadProps {

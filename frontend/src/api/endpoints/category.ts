@@ -20,6 +20,7 @@ export async function fetchRecipeCategories(recipeId: number): Promise<RecipeCat
 export async function fetchCategories(): Promise<Category[]> {
     console.log("fetching categories");
     const res = await apiClient.get<CategoriesResponse>('/getAllCategories');
+    console.log("fetched categories: ", res);
     console.log("fetched " + res.data.length + " categories");
     return res.data.categories;
 }

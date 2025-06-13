@@ -1,22 +1,22 @@
 import React from "react";
-import {Recipe} from "../types/recipe/recipe.ts";
-import {StepIngredient} from "../types/recipe/stepIngredient.ts";
+import {Recipe} from "@project-types/recipe/recipe.ts";
+import {StepIngredient} from "@project-types/recipe/stepIngredient.ts";
 import {
     EditableNumberField,
     EditableTextareaField,
     EditableTextField,
     EditableUomSelect
-} from "../utilities/InputFieldLibrary.tsx";
-import {Uom} from "../types/recipe/uom.ts";
+} from "../../utilities/InputFieldLibrary.tsx";
+import {Uom} from "@project-types/recipe/uom.ts";
 import style from "./RecipeCardEdit.module.css";
-import moveUpStep from "../assets/font-awesome/solid/circle-up.svg";
-import moveDownStep from "../assets/font-awesome/solid/circle-down.svg";
-import deleteStep from "../assets/font-awesome/solid/trash-can.svg"
-import deleteIngredient from "../assets/font-awesome/solid/trash-can.svg"
-import addStep from "../assets/font-awesome/solid/plus.svg";
-import addIngredient from "../assets/font-awesome/solid/plus.svg";
-import moveUpIngredient from "../assets/font-awesome/solid/up-long.svg";
-import moveDownIngredient from "../assets/font-awesome/solid/down-long.svg";
+import moveUpStep from "@assets/font-awesome/solid/circle-up.svg";
+import moveDownStep from "@assets/font-awesome/solid/circle-down.svg";
+import deleteStep from "@assets/font-awesome/solid/trash-can.svg"
+import deleteIngredient from "@assets/font-awesome/solid/trash-can.svg"
+import addStep from "@assets/font-awesome/solid/plus.svg";
+import addIngredient from "@assets/font-awesome/solid/plus.svg";
+import moveUpIngredient from "@assets/font-awesome/solid/up-long.svg";
+import moveDownIngredient from "@assets/font-awesome/solid/down-long.svg";
 
 
 // import {useMessage} from "../hooks/useMessage.ts";

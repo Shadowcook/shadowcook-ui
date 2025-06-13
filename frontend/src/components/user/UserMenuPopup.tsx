@@ -3,10 +3,10 @@ import style from "./UserMenuPopup.module.css";
 import {LoginResult, LoginResultID} from "@project-types/user/session/loginResultID.ts";
 import {LoginErrorMessages} from "@project-types/user/session/loginErrorMessages.ts";
 import {SessionState} from "@project-types/user/session/sessionState.ts";
-import {validateAnyAccess} from "../utilities/validate.ts";
+import {validateAnyAccess} from "../../utilities/validate.ts";
 import {AccessId} from "@project-types/role/accessId.ts";
 import {Link} from "react-router-dom";
-import adminIcon from "../assets/font-awesome/solid/wrench.svg";
+import adminIcon from "@assets/font-awesome/solid/wrench.svg";
 
 interface LoginProps {
     onLogin: (username: string, password: string) => Promise<LoginResultID>;

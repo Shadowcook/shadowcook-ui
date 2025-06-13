@@ -1,8 +1,8 @@
-import {RecipeHeader} from "../types/recipe/recipeHeader.ts";
+import {RecipeHeader} from "@project-types/recipe/recipeHeader.ts";
 import {RecipeListItem} from "./RecipeListItem.tsx";
 import {useOutletContext} from "react-router-dom";
-import './Modules.css';
-import shadowCookLogo from "../assets/shadowcook._alpha.png"
+import '../Modules.css';
+import shadowCookLogo from "@assets/shadowcook._alpha.png"
 
 type ContextType = {
     recipes: RecipeHeader[];

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {MessageOverlay} from "../components/MessageOverlay";
+import {MessageOverlay} from "../components/tools/MessageOverlay.tsx";
 import { MessageContext, MessageType } from "./messageContext.ts";
 
 export const MessageProvider = ({ children }: { children: React.ReactNode }) => {

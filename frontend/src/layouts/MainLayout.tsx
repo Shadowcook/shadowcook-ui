@@ -1,7 +1,7 @@
 import '../App.css';
 import {Outlet, useLocation, useParams} from "react-router-dom";
-import {Breadcrumbs} from "../components/Breadcrumbs.tsx";
-import {CategoryBrowser} from "../components/CategoryBrowser.tsx";
+import {Breadcrumbs} from "../components/navigation/Breadcrumbs.tsx";
+import {CategoryBrowser} from "../components/navigation/CategoryBrowser.tsx";
 import {Category} from "../types/category/category.ts";
 import {useEffect, useState} from "react";
 import {RecipeHeader} from "../types/recipe/recipeHeader.ts";
@@ -81,7 +81,7 @@ export default function MainLayout() {
                 <div className="main">
                     <div id="categoryFrame">
                         <div className="categoryFrame">
-                            <CategoryBrowser categories={categories}/>
+                            <CategoryBrowser categories={categories} stateLess={true}/>
                         </div>
                     </div>
                     <div id="recipeFrame">

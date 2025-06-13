@@ -1,3 +1,4 @@
+.categoryLinkFrame,
 .categoryItemFrame {
     display: flex;
     flex-direction: row;
@@ -19,24 +20,32 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 1.25rem;
+    cursor: pointer;
 }
 
 .categoryBackFrame img,
+.categoryBackFrame div img,
 .categoryItemFrame img {
     margin-top: .2rem;
-    height: 1em; /* skaliert proportional zur Schriftgröße */
+    height: 1em;
     width: auto;
-    vertical-align: middle; /* bessere Ausrichtung zum Text */
+    vertical-align: middle;
 }
 
+.categoryLinkFrame {
+    cursor: pointer;
+}
+
+.categoryLinkFrame,
 .categoryLink:link,
 .categoryLink:visited {
     text-decoration: none;
     color: inherit;
 }
 
+.categoryLinkFrame:hover,
 .categoryLink:hover,
 .categoryBackFrame:hover,
-.categoryItemFrame:hover{
+.categoryItemFrame:hover {
     background-color: #d9d9d9;
 }

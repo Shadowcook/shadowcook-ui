@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import ShadowCookIcon from "../../assets/icon.png";
 import ShadowCookTextLogo from "../../assets/ShadowCook_text_alpha.png";
-import {UserMenu} from "../../components/UserMenu.tsx";
+import {UserMenu} from "../../components/user/UserMenu.tsx";
 import React from "react";
 
 interface DefaultHeaderProps {

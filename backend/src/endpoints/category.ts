@@ -34,14 +34,14 @@ router.get('/GetRecipeFromCategory/:id', async (req, res) => {
         const id = req.params.id;
 
         if (id === null) {
-            return res.status(400).json({error: "Invalid category ID."});
+            return res.status(400).json({error: "Invalid navigation ID."});
         }
 
         try {
             const data = await apiGet<any>(`/recipe/get/category/${id}`);
             res.json(data);
         } catch {
-            res.status(500).json({error: 'Error while getting recipes from category.'});
+            res.status(500).json({error: 'Error while getting recipes from navigation.'});
         }
     }
 });

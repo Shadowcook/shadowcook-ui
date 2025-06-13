@@ -1,7 +1,7 @@
 import style from "./SetPasswordPage.module.css"
 import {useEffect, useState} from "react";
-import {calculatePasswordEntropy, encodeBase64} from "../utilities/tools.ts";
-import {PasswordStrengthBar} from "./PasswordStrengthBar.tsx";
+import {calculatePasswordEntropy, encodeBase64} from "../../utilities/tools.ts";
+import {PasswordStrengthBar} from "../tools/PasswordStrengthBar.tsx";
 import CheckMarkIcon from '@assets/font-awesome/solid/check.svg?react';
 import XMarkIcon from '@assets/font-awesome/solid/xmark.svg?react';
 import {useParams} from "react-router-dom";

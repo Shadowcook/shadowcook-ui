@@ -1,5 +1,5 @@
-import {useSession} from "../../session/SessionContext.tsx";
-import {validateAccess} from "../../utilities/validate.ts";
+import {useSession} from "../../../session/SessionContext.tsx";
+import {validateAccess} from "../../../utilities/validate.ts";
 import {AccessId} from "@project-types/role/accessId.ts";
 import style from "./UserManagement.module.css";
 import {useEffect, useState} from "react";
@@ -14,7 +14,7 @@ import {
     pushUser,
     pushUserRoles
 } from "@api";
-import {useMessage} from "../../hooks/useMessage.ts";
+import {useMessage} from "../../../hooks/useMessage.ts";
 import {fetchAllUsers} from "@api/endpoints/management/users.ts";
 import {UserRole} from "@project-types/user/userRole.ts";
 import {UserRoleRequest} from "@project-types/user/userRoleRequest.ts";
@@ -25,8 +25,8 @@ import roleInactiveIcon from "@assets/font-awesome/solid/xmark.svg"
 import addUserIcon from "@assets/font-awesome/solid/user-plus.svg"
 import deleteUserIcon from "@assets/font-awesome/solid/trash-can.svg"
 import resetPasswordIcon from "@assets/font-awesome/solid/key.svg"
-import TokenExpiryInfo from "./TokenExpiryInfo.tsx";
-import {ConfirmDialog} from "../ConfirmDialog.tsx";
+import TokenExpiryInfo from "../TokenExpiryInfo.tsx";
+import {ConfirmDialog} from "../../tools/ConfirmDialog.tsx";
 
 export function UserManagement() {
     const session = useSession();
