@@ -1,7 +1,10 @@
-import router from "./roleManagement.js";
+
 import {sessionRouteWrapper} from "../../utils/sessionRouterWrapper.js";
 import {apiGet, apiGetFull, apiRequest} from "../../utils/apiHelpers.js";
 import {isValidId} from "../../utils/validate.js";
+import express from "express";
+
+const router = express.Router();
 
 router.get('/getAllUsers', sessionRouteWrapper(async (cookie, req, res) => {
     console.log('Getting all users for this instance');

@@ -76,12 +76,15 @@ export default function MainLayout() {
                     <Breadcrumbs
                         categories={categories}
                         categoryId={sanitizedCategoryId}
+                        isStateLess={true}
                     />
                 </div>
                 <div className="main">
                     <div id="categoryFrame">
                         <div className="categoryFrame">
-                            <CategoryBrowser categories={categories} stateLess={true}/>
+                            <CategoryBrowser categories={categories} stateLess={true}
+                                             onCategorySelect={() => {
+                                             }}/>
                         </div>
                     </div>
                     <div id="recipeFrame">

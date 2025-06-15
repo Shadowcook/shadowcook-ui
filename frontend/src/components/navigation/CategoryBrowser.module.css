@@ -1,7 +1,7 @@
 .categoryLinkFrame,
 .categoryItemFrame {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 1rem;
     padding: 2rem;
     background-color: #f9f9f9;
@@ -10,10 +10,27 @@
     margin: 1.25rem;
 }
 
+.categoryLinkFrame > div,
+.categoryItemFrame > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.imageContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.categoryBackFrame span {
+    display: block;
+}
 
 .categoryBackFrame {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 1rem;
     padding: 1rem;
     background-color: #f9f9f9;
@@ -22,6 +39,7 @@
     margin: 1.25rem;
     cursor: pointer;
 }
+
 
 .categoryBackFrame img,
 .categoryBackFrame div img,
@@ -48,4 +66,20 @@
 .categoryBackFrame:hover,
 .categoryItemFrame:hover {
     background-color: #d9d9d9;
+}
+
+.imageContainer img {
+    margin-top: -.2rem !important;
+    margin-right: .5rem;
+}
+
+.categoryListColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.browserWrapper {
+    display: block;
+    width: 100%;
 }

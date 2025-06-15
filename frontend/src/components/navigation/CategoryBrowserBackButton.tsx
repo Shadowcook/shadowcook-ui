@@ -23,7 +23,7 @@ export function CategoryBrowserBackButton(props: {
                     className={style.categoryBackFrame}
                     onClick={props.onClick}
                 >
-                    <div>
+                    <div className={style.imageContainer}>
                         <img src={backIcon} alt="navigate back"/> <span>{props.parentCategory.name}</span>
                     </div>
                 </div>

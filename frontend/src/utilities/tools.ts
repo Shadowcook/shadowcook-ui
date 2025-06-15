@@ -15,7 +15,7 @@ export function calculatePasswordEntropy(password: string): { entropy: number, b
     const bitsPerChar = Math.log2(charsetSize || 1);
     const entropy = bitsPerChar * password.length;
 
-    return { entropy, bitsPerChar };
+    return {entropy, bitsPerChar};
 }
 
 export function encodeBase64(str: string): string {
@@ -36,4 +36,29 @@ export function formatUtcIsoString(input: string): string {
     const sec = String(date.getUTCSeconds()).padStart(2, "0");
 
     return `${yyyy}-${mm}-${dd} ${hh}:${min}:${sec}`;
+}
+
+export function sortByField<T>(
+    array: T[],
+    field: keyof T,
+    direction: "asc" | "desc" = "asc"
+): T[] {
+    return [...array].sort((a, b) => {
+        const aValue = a[field];
+        const bValue = b[field];
+
+        if (typeof aValue === "string" && typeof bValue === "string") {
+            const result = aValue.localeCompare(bValue, undefined, {
+                numeric: true,
+                sensitivity: "base"
+            });
+            return direction === "asc" ? result : -result;
+        }
+
+        if (typeof aValue === "number" && typeof bValue === "number") {
+            return direction === "asc" ? aValue - bValue : bValue - aValue;
+        }
+
+        return 0;
+    });
 }

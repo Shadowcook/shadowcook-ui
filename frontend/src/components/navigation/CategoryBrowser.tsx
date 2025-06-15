@@ -4,16 +4,19 @@ import {useEffect, useState} from "react";
 import {isValidId, transformIdIfValid} from "../../utilities/validate.ts";
 import {CategoryBrowserBackButton} from "./CategoryBrowserBackButton.tsx";
 import {CategoryBrowserItemList} from "./CategoryBrowserItemList.tsx";
+import style from "./CategoryBrowser.module.css"
 
 type CategoryBrowserProps = {
     categories: Category[];
     stateLess: boolean;
+    selectedCategory?: Category | null;
     onCategorySelect: (category: Category) => void;
 };
 
 export function CategoryBrowser({
                                     categories,
                                     stateLess,
+                                    selectedCategory,
                                     onCategorySelect,
                                 }: CategoryBrowserProps) {
     const {categoryId} = useParams();
@@ -24,12 +27,19 @@ export function CategoryBrowser({
     const [parentCategory, setParentCategory] = useState<Category>();
 
     useEffect(() => {
+        if (!isStateLess && selectedCategory) {
+            setCurrentCategory(selectedCategory);
+        }
+    }, [selectedCategory, isStateLess]);
+
+    useEffect(() => {
         let id = 0;
         if (isStateLess) {
             id = !isValidId(categoryId) ? 0 : Number(transformIdIfValid(categoryId));
         } else {
             id = currentCategory ? currentCategory.id : 0;
         }
+
         const current = categories.find(cat => cat.id === id);
         setCurrentCategory(current);
         setParentCategory(categories.find(cat => cat.id === current?.parent));
@@ -37,7 +47,7 @@ export function CategoryBrowser({
     }, [currentCategory, categories, isStateLess, categoryId]);
 
     return (
-        <div className="flex flex-col space-y-2">
+        <div className={style.browserWrapper}>
             <CategoryBrowserBackButton
                 currentCategory={currentCategory}
                 parentCategory={parentCategory}

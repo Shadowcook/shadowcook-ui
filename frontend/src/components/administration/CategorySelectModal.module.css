@@ -1,0 +1,44 @@
+.backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding: 1rem;
+    gap: 1rem;
+    width: 90%;
+    height: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+
+.browserFrame {
+    overflow: auto;
+    height: 80%;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.actions button {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+.browserWrapper {
+    display: block;
+    width: 100%;
+}
+
