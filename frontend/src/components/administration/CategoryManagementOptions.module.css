@@ -3,6 +3,32 @@
     flex-wrap: wrap;
 }
 
+.categoryHead {
+    display: flex;
+}
+
+.categoryHead input {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    height: 1.5em;
+    font-size: 1em;
+}
+
+.categoryHead button {
+    margin-left: 0.5rem;
+    margin-top: 1.3rem;
+}
+
+.categoryHead button,
+.categoryHead button img {
+    height: 1.2em;
+    width: 1.2em;
+}
+
+.categoryHead button img {
+    margin-top: -0.3em;
+}
+
 .categoryMaintenance div {
     display: flex;
     flex-wrap: wrap;

@@ -114,6 +114,26 @@ export function CategoryManagement() {
         }
     }
 
+    async function handleUpdateCategory(cat: Category) {
+        console.log("Updating category: ", cat);
+        try {
+            const res = await pushCategory(cat);
+            if (res.success) {
+                const updatedCategories = categories.map((category) =>
+                    category.id === cat.id ? {...category, name: cat.name} : category
+                );
+                setCategories(updatedCategories);
+                showMessage("Category updated");
+            } else {
+                console.error("Unable to update category", res);
+                showMessage("Failed to update category. Please check log file", "error");
+            }
+        } catch (err) {
+            console.error("Server error while updating category", err);
+            showMessage("Failed to update category. Please check log file", "error");
+        }
+    }
+
 
     function confirmMoveCategory(cat) {
 
@@ -161,7 +181,9 @@ export function CategoryManagement() {
                                                        categories={categories}
                                                        onClickNew={(cat) => handleAddCategory(cat)}
                                                        onClickDelete={() => confirmDeleteCategory()}
-                                                       onClickMove={(cat) => confirmMoveCategory(cat)}/>
+                                                       onClickMove={(cat) => confirmMoveCategory(cat)}
+                                                       onClickRename={(cat: Category) => handleUpdateCategory(cat)
+                                                       }/>
                         </>
                     ) : (
                         <>

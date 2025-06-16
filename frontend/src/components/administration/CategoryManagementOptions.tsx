@@ -3,19 +3,27 @@ import style from "./CategoryManagementOptions.module.css";
 import addCategoryIcon from "@assets/font-awesome/solid/folder-plus.svg";
 import deleteCategoryIcon from "@assets/font-awesome/solid/folder-minus.svg";
 import moveCategoryIcon from "@assets/font-awesome/solid/arrows-up-down-left-right.svg";
+import editCategoryIcon from "@assets/font-awesome/solid/pen.svg";
+import saveCategoryIcon from "@assets/font-awesome/solid/floppy-disk.svg";
 import {Category} from "@project-types/category/category.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export function CategoryManagementOptions(props: {
     selectedCategory: Category,
     categories: Category[],
     onClickNew: (category: Category) => void,
     onClickDelete: (categoryToDelete: Category) => void,
-    onClickMove: (cat: Category) => void
+    onClickMove: (cat: Category) => void,
+    onClickRename: (cat: Category) => void
 }) {
     const [selectedCategory, setSelectedCategory] = useState<Category>(props.selectedCategory);
     const [modalHeadline, setModalHeadline] = useState<string>("");
     const [showCategorySelection, setShowCategorySelection] = useState(false);
+    const [isEditMode, setEditMode] = useState(false);
+
+    useEffect(() => {
+        setSelectedCategory(props.selectedCategory);
+    }, [props.selectedCategory]);
 
     return (
         <div className={style.categoryMaintenanceFrame}>
@@ -25,22 +33,61 @@ export function CategoryManagementOptions(props: {
                     headline={modalHeadline}
                     actionCategory={selectedCategory}
                     onConfirm={(cat) => {
-                        props.onClickDelete(props.selectedCategory, cat);
+                        props.onClickDelete(cat);
                         setShowCategorySelection(false);
                     }}
                     onCancel={() => setShowCategorySelection(false)}
                 />
             )}
-            <h2>{props.selectedCategory.name}</h2>
+            <div className={style.categoryHead}>
+
+                {isEditMode ? (
+                    <>
+                        <input
+                            type="text"
+                            value={selectedCategory.name}
+                            onChange={(e) => {
+                                const updatedCategory = {
+                                    ...selectedCategory,
+                                    name: e.target.value
+                                };
+                                setSelectedCategory(updatedCategory);
+                            }}
+                        />
+                        <button
+                            className="imageButton"
+                            onClick={() => {
+                                props.onClickRename(selectedCategory);
+                                setEditMode(false)
+                            }}
+                        >
+                            <img src={saveCategoryIcon} alt="save"/>
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <h2>{selectedCategory.name}</h2>
+                        <button
+                            className={selectedCategory.id > 0 ? "imageButton" : "imageButtonDisabled"}
+                            disabled={selectedCategory.id < 1}
+                            onClick={() => {
+                                setEditMode(true)
+                            }}
+                        >
+                            <img src={editCategoryIcon} alt="edit"/>
+                        </button>
+                    </>
+                )}
+            </div>
             <div className={style.categoryMaintenance}>
                 <div className={style.newCategory}>
                     <input
                         type="text"
                         onChange={(e) => {
-                            if (!props.selectedCategory) return;
+                            if (!selectedCategory) return;
 
                             const updatedCategory = {
-                                ...props.selectedCategory,
+                                ...selectedCategory,
                                 name: e.target.value
                             };
                             setSelectedCategory(updatedCategory);
@@ -58,11 +105,12 @@ export function CategoryManagementOptions(props: {
                     </button>
                 </div>
                 <div className={style.categoryOperations}>
-                    {props.selectedCategory.id > 0 ? (
+                    {selectedCategory.id > 0 ? (
                         <>
                             <button
                                 className="imageButton"
-                                onClick={() => {props.onClickDelete(selectedCategory);
+                                onClick={() => {
+                                    props.onClickDelete(selectedCategory);
                                 }}>
                                 <img src={deleteCategoryIcon} alt="delete category"/> Delete
                                 Category

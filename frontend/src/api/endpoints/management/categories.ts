@@ -6,7 +6,7 @@ import {CategoryRequest} from "@project-types/category/categoryRequest.ts";
 export async function pushCategory(category: Category): Promise<CategoriesResponse> {
     console.log("Saving category: ", category);
     const rq: CategoryRequest = {
-        id: -1,
+        id: category.id,
         name: category.name,
         parent: category.parent
     }
