@@ -135,9 +135,9 @@ export function CategoryManagement() {
     }
 
 
-    function confirmMoveCategory(cat) {
-
-    }
+    // function confirmMoveCategory(cat) {
+    //
+    // }
 
     return (
         <>
@@ -181,7 +181,7 @@ export function CategoryManagement() {
                                                        categories={categories}
                                                        onClickNew={(cat) => handleAddCategory(cat)}
                                                        onClickDelete={() => confirmDeleteCategory()}
-                                                       onClickMove={(cat) => confirmMoveCategory(cat)}
+                                                       // onClickMove={(cat) => confirmMoveCategory(cat)}
                                                        onClickRename={(cat: Category) => handleUpdateCategory(cat)
                                                        }/>
                         </>
