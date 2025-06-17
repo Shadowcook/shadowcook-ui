@@ -1,4 +1,5 @@
 export interface Uom {
     id: number;
-    name:string;
+    name: string;
+    deleted: boolean;
 }

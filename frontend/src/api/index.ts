@@ -5,3 +5,4 @@ export * from './endpoints/uom';
 export * from './endpoints/management/roles'
 export * from './endpoints/management/users'
 export * from './endpoints/management/categories'
+export * from './endpoints/management/uom'

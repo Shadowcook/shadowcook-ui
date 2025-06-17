@@ -1,0 +1,25 @@
+.uomManagementFrame {
+    display: flex;
+    flex-direction: row;
+}
+
+.uomElementFrame {
+    display: block;
+}
+
+.uomOptionsFrame,
+.uomListFrame {
+    padding: 2em;
+}
+
+.uomListFrame button img {
+    margin-right: .5em;
+}
+
+.uomListFrame button {
+    margin-bottom: 1em;
+}
+
+.uomElementDeleted {
+
+}

@@ -7,6 +7,7 @@ import uomRoutes from './endpoints/uom.js';
 import admRolesRoutes from './endpoints/administration/roleManagement.js';
 import admUsersRoutes from './endpoints/administration/userManagement.js';
 import admCategoriesRoutes from './endpoints/administration/categoryManagement.js';
+import admUomRoutes from './endpoints/administration/uomManagement.js';
 import {config} from './config.js';
 import cors from 'cors';
 
@@ -26,6 +27,7 @@ app.use('/api', uomRoutes);
 app.use('/api', admRolesRoutes);
 app.use('/api', admUsersRoutes);
 app.use('/api', admCategoriesRoutes);
+app.use('/api', admUomRoutes);
 
 
 app.listen(config.port, async () => {
