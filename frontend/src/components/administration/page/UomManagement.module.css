@@ -1,25 +1,58 @@
+.uomManagementOuter {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .uomManagementFrame {
+    flex: 1;
     display: flex;
     flex-direction: row;
+    overflow: hidden;
 }
 
-.uomElementFrame {
-    display: block;
-}
-
-.uomOptionsFrame,
 .uomListFrame {
-    padding: 2em;
+    flex: 0 0 18rem; /* ≈ 288px bei 16px root font size */
+    overflow-y: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+    border-right: 0.0625rem solid #ccc; /* 1px in rem */
+}
+
+.uomListItem {
+    margin-bottom: 1rem;
+}
+
+.uomOptionsFrame {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    box-sizing: border-box;
 }
 
 .uomListFrame button img {
-    margin-right: .5em;
+    margin-right: 0.5rem;
 }
 
-.uomListFrame button {
-    margin-bottom: 1em;
+.uomDetailsTable {
+    margin: 2rem;
 }
 
-.uomElementDeleted {
+.uomDetailsTable td {
+    padding: 0.2rem;
+}
 
+.saveButtonFrame button img {
+    margin-right: 0.5rem;
+    margin-top: -0.2rem;
+}
+
+.uomNameHeadline {
+    margin: 1.5rem;
+}
+
+.placeholder {
+    padding: 2rem;
+    font-style: italic;
+    color: #888;
 }

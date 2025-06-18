@@ -9,3 +9,14 @@ export async function fetchAllUom(): Promise<Uom[]> {
     console.log("fetched " + res.data.length + " uoms");
     return res.data.uoms;
 }
+
+export async function pushUom(uom: Uom): Promise<UomResponse> {
+    const res = await apiClient.post('/pushUom', {uom: uom}, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        withCredentials: true
+    });
+    console.log("Uom saved: ", res.data);
+    return res.data;
+}
