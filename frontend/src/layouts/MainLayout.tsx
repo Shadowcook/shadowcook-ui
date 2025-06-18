@@ -9,6 +9,7 @@ import {fetchCategories, fetchRecipeList} from "@api";
 import {isValidId, transformIdIfValid} from "../utilities/validate.ts";
 import {MessageProvider} from '../context/MessageProvider.tsx';
 import {DefaultHeader} from "./elements/DefaultHeader.tsx";
+import {DefaultFooter} from "./elements/DefaultFooter.tsx";
 
 
 export default function MainLayout() {
@@ -91,7 +92,9 @@ export default function MainLayout() {
                         <Outlet context={{recipes, categoryId: sanitizedCategoryId}}/>
                     </div>
                 </div>
-                <div id="footerFrame">&copy; 2019-{new Date().getFullYear()} by Shadowsoft</div>
+                <div id="footerFrame">
+                    <DefaultFooter/>
+                </div>
             </div>
         </MessageProvider>
     )

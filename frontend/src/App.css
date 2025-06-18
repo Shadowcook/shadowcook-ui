@@ -50,11 +50,16 @@ body {
 }
 
 #footerFrame {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     height: 40px;
     background-color: #ccc;
-    text-align: left;
-    padding: 1rem;
+    padding: 0 1rem;
+    font-size: 0.9rem;
+    box-sizing: border-box;
 }
+
 
 .main {
     flex: 1;
@@ -99,4 +104,30 @@ body {
     background-color: #fff;
     padding: 1rem;
     overflow-y: auto;
+}
+
+.footerLink {
+    color: #000;
+    text-decoration: none;
+}
+
+.footerLink:hover {
+    text-decoration: underline;
+}
+
+.footerLeft {
+    text-align: left;
+}
+
+.footerRight {
+    text-align: right;
+}
+
+.footerLink {
+    color: #000;
+    text-decoration: none;
+}
+
+.footerLink:hover {
+    text-decoration: underline;
 }

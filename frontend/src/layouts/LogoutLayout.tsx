@@ -1,6 +1,7 @@
 import {Outlet} from "react-router-dom";
 import '../App.css';
 import {DefaultHeader} from "./elements/DefaultHeader.tsx";
+import {DefaultFooter} from "./elements/DefaultFooter.tsx";
 
 
 export default function Logout() {
@@ -15,7 +16,9 @@ export default function Logout() {
                     <Outlet/>
                 </div>
             </div>
-            <div id="footerFrame">&copy; 2019-{new Date().getFullYear()} by Shadowsoft</div>
+            <div id="footerFrame">
+                <DefaultFooter/>
+            </div>
         </div>
     );
 }
