@@ -14,7 +14,6 @@ import {UomManagement} from "./components/administration/page/UomManagement.tsx"
 import {CategoryManagement} from "./components/administration/page/CategoryManagement.tsx";
 import {SetPasswordPage} from "./components/user/SetPasswordPage.tsx";
 import {InvalidPage} from "./components/error/InvalidPage.tsx";
-// import {ConfigurationManagement} from "./components/administration/page/ConfigurationManagement.tsx";
 import {DataProtection} from "./components/legal/DataProtection.tsx";
 
 
@@ -39,7 +38,6 @@ export default function App() {
                     <Route path="users" element={<UserManagement/>}/>
                     <Route path="uoms" element={<UomManagement/>}/>
                     <Route path="categories" element={<CategoryManagement/>}/>
-                    {/*<Route path="configuration" element={<ConfigurationManagement/>}/>*/}
                 </Route>
                 <Route path="/" element={<MainLayout/>}>
                     <Route index element={<RecipeListView/>}/>
