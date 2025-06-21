@@ -1,12 +1,30 @@
 import {sessionRouteWrapper} from "../utils/sessionRouterWrapper.js";
 import express from "express";
 import {apiGet, apiGetFull} from "../utils/apiHelpers.js";
+import {config} from '../config.js';
 
 const router = express.Router();
 
 router.get('/session/validate', sessionRouteWrapper(async (cookie, req, res) => {
     const data = await apiGet<any>('/auth/validate', cookie);
     console.log('Validated with cookie:', cookie);
+    if (data.session?.user?.login === config.username) {
+        return {
+            session: {
+                valid: false,
+                user: {
+                    active: false,
+                    email: '',
+                    id: -1,
+                    login: '',
+                    passwordResetExpiry: ''
+                },
+                accesses: [],
+                roles: [],
+            }
+        };
+    }
+
     return data;
 }));
 

@@ -3,7 +3,17 @@ import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import path from 'path';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+    server: {
+        host: '0.0.0.0',
+        allowedHosts: true,
+        hmr: command === 'serve' ? {
+            protocol: 'wss',
+            host: 'cook.shadowsoft.test',
+            // port: 443,
+            clientPort: 443
+        } : undefined
+    },
     plugins: [
         react(),
         svgr(),
@@ -15,4 +25,4 @@ export default defineConfig({
             '@assets': path.resolve(__dirname, 'src/assets'),
         },
     },
-});
+}));
