@@ -1,12 +1,7 @@
 import React from "react";
 import {Recipe} from "@project-types/recipe/recipe.ts";
 import {StepIngredient} from "@project-types/recipe/stepIngredient.ts";
-import {
-    EditableNumberField,
-    EditableTextareaField,
-    EditableTextField,
-    EditableUomSelect
-} from "../../utilities/InputFieldLibrary.tsx";
+import {EditableNumberField, EditableTextField, EditableUomSelect} from "../../utilities/InputFieldLibrary.tsx";
 import {Uom} from "@project-types/recipe/uom.ts";
 import style from "./RecipeCardEdit.module.css";
 import moveUpStep from "@assets/font-awesome/solid/circle-up.svg";
@@ -17,6 +12,7 @@ import addStep from "@assets/font-awesome/solid/plus.svg";
 import addIngredient from "@assets/font-awesome/solid/plus.svg";
 import moveUpIngredient from "@assets/font-awesome/solid/up-long.svg";
 import moveDownIngredient from "@assets/font-awesome/solid/down-long.svg";
+import MentionInput from "./MentionInput.tsx";
 
 
 // import {useMessage} from "../hooks/useMessage.ts";
@@ -103,7 +99,7 @@ export const RecipeCardEdit: React.FC<RecipeCardEditProps>
                 {
                     name: "",
                     value: 0,
-                    uom: {id: 0, name: ""},
+                    uom: {id: 0, name: "", deleted: false},
                     order: 1,
                 },
             ],
@@ -186,7 +182,11 @@ export const RecipeCardEdit: React.FC<RecipeCardEditProps>
         return {
             name: "",
             value: 0,
-            uom: {id: 0, name: ""},
+            uom: {
+                id: 0,
+                name: "",
+                deleted: false
+            },
             order,
         };
     }
@@ -370,7 +370,7 @@ export const RecipeCardEdit: React.FC<RecipeCardEditProps>
                                 </td>
                                 <td className={style.editStepDescription}>
 
-                                    <EditableTextareaField
+                                    <MentionInput
                                         value={step.description}
                                         onChange={(val) => updateStepDescription(stepIndex, val)}
                                         className={style.editStepDescriptionInput}

@@ -21,6 +21,31 @@ router.get('/GetFullRecipe/:id', async (req, res) => {
     }
 });
 
+router.get('/GetRecipeFromString/:search', async (req, res) => {
+    const search = req.params.search;
+    if (search) {
+        try {
+            const data = await apiGet<any>(`/recipe/get/search/${encodeURIComponent(search)}`);
+            res.json(data);
+        } catch {
+            res.status(500).json({error: 'Error while fetching recipe list from search.'});
+        }
+    }
+});
+
+router.get('/GetRecipesFromIds/:ids', async (req, res) => {
+    const ids = req.params.ids;
+    if (ids) {
+        try {
+            const data = await apiGet<any>(`/recipe/get/list/${ids}`);
+            res.json(data);
+        } catch {
+            res.status(500).json({error: 'Error while fetching recipes from id list.'});
+        }
+    }
+});
+
+
 router.post('/saveRecipe', sessionRouteWrapper(async (cookie, req, res) => {
     const recipe = req.body;
 

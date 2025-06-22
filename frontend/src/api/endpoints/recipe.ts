@@ -9,7 +9,18 @@ export async function fetchRecipeList(categoryId: number): Promise<RecipeHeader[
     if (categoryId != null) {
         console.log(`fetching recipes for category ${categoryId}`);
         const res = await apiClient.get<RecipeListResponse>(`/GetRecipeFromCategory/${categoryId}`);
-        console.log("fetched " + res.data.length + " recipes");
+        console.log("fetched " + res.data.recipes.length + " recipes");
+        return res.data.recipes;
+    } else {
+        return [];
+    }
+}
+
+export async function fetchRecipeHeads(search: string): Promise<RecipeHeader[]> {
+    if (search && search.length > 0) {
+        console.log(`fetching recipes with ${search}`);
+        const res = await apiClient.get<RecipeListResponse>(`/GetRecipeFromString/${search}`);
+        console.log("fetched " + res.data.recipes.length + " recipes");
         return res.data.recipes;
     } else {
         return [];
@@ -90,3 +101,15 @@ export async function deleteRecipe(recipeId: number): Promise<boolean> {
     }
     return false;
 }
+
+export async function fetchRecipeHeadersByIds(ids: number[]): Promise<RecipeHeader[]> {
+    if (ids && ids.length > 0) {
+        console.log(`fetching recipe ids `, ids);
+        const res = await apiClient.get<RecipeListResponse>(`/GetRecipesFromIds/${ids.map(id => encodeURIComponent(id)).join(',')}`);
+        console.log("fetched " + res.data.recipes.length + " recipes");
+        return res.data.recipes;
+    } else {
+        return [];
+    }
+}
+
