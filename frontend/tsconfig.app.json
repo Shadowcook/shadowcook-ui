@@ -27,7 +27,8 @@
       "@api/*": ["api/*"],
       "@api": ["api/index.ts"],
       "@project-types/*": ["types/*"],
-      "@assets/*": ["assets/*"]
+      "@assets/*": ["assets/*"],
+      "@hooks/*": ["hooks/*"]
     }
   },
   "include": ["src"]

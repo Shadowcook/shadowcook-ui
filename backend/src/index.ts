@@ -17,7 +17,8 @@ const app = express();
 app.use(express.json());
 app.use(cors({
     origin: 'https://cook.shadowsoft.test',
-    credentials: true
+    credentials: true,
+    exposedHeaders: ['Set-Cookie'],
 }));
 
 app.use('/api', recipeRoutes);

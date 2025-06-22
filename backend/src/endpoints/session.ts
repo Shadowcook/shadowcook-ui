@@ -6,8 +6,10 @@ import {config} from '../config.js';
 const router = express.Router();
 
 router.get('/session/validate', sessionRouteWrapper(async (cookie, req, res) => {
+    console.log('Cookie received in validateSession:', cookie);
     const data = await apiGet<any>('/auth/validate', cookie);
-    console.log('Validated with cookie:', cookie);
+
+
     if (data.session?.user?.login === config.username) {
         return {
             session: {
@@ -23,8 +25,9 @@ router.get('/session/validate', sessionRouteWrapper(async (cookie, req, res) => 
                 roles: [],
             }
         };
+    } else {
+        console.log('Validated with cookie: ', cookie);
     }
-
     return data;
 }));
 
@@ -44,8 +47,14 @@ router.get('/login/:username/:password', async (req, res) => {
         const response = await apiGetFull<any>(`/auth/login/${username}/${password}`);
         console.log(response);
         const setCookie = response.headers['set-cookie'];
-        if (setCookie) {
+        if (Array.isArray(setCookie)) {
+            console.log("array cookie set: ", setCookie);
             res.setHeader('Set-Cookie', setCookie);
+        } else if (setCookie) {
+            console.log("single cookie set: ", [setCookie]);
+            res.setHeader('Set-Cookie', [setCookie]);
+        } else {
+            console.log("Unknown cookie: ", setCookie);
         }
         res.json(response.data);
     } catch (e) {

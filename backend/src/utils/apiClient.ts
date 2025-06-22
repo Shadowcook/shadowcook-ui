@@ -1,15 +1,20 @@
-import axios, { AxiosInstance } from 'axios';
-import { wrapper } from 'axios-cookiejar-support';
-import { CookieJar } from 'tough-cookie';
-import { LoginResponse } from './types.js';
+import axios from 'axios';
+import {wrapper} from 'axios-cookiejar-support';
+import {CookieJar} from 'tough-cookie';
+import {LoginResponse} from './types.js';
+import {config} from '../config.js';
 
-import { config } from '../config.js';
 
 console.log(`Using endpoint: ${config.baseUrl}`);
 
 const defaultJar = new CookieJar();
 
-export const defaultClient: AxiosInstance = wrapper(axios.create({
+
+const isDev = process.env.NODE_ENV !== 'production';
+console.log(`Is dev?: ${isDev}`);
+
+
+export const defaultClient = wrapper(axios.create({
     baseURL: config.baseUrl,
     jar: defaultJar,
     withCredentials: true,

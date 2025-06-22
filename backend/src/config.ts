@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
-dotenv.config();
+
+dotenv.config({path: `.env`});
 
 export class Config {
     readonly port: number;
@@ -12,6 +13,7 @@ export class Config {
         this.baseUrl = process.env.BASE_URL || '';
         this.username = process.env.SC_USER || '';
         this.password = process.env.SC_PASS || '';
+
         if (!this.baseUrl || !this.username || !this.password) {
             throw new Error('Missing required environment variables!');
         }

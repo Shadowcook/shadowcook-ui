@@ -6,7 +6,7 @@ export function sessionRouteWrapper(handler: Handler) {
     return async (req: Request, res: Response) => {
         try {
             const cookie = req.headers.cookie;
-            console.log('[sessionRouteWrapper] Incoming Cookie:', cookie);
+            // console.log('[sessionRouteWrapper] Incoming Cookie:', cookie);
             const result = await handler(cookie, req, res);
             if (!res.headersSent) {
                 res.json(result);

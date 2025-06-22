@@ -23,6 +23,7 @@ export default defineConfig(({ command }) => ({
             '@api': path.resolve(__dirname, 'src/api'),
             '@project-types': path.resolve(__dirname, 'src/types'),
             '@assets': path.resolve(__dirname, 'src/assets'),
+            '@hooks': path.resolve(__dirname, 'src/hooks'),
         },
     },
 }));
