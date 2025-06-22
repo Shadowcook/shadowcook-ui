@@ -6,7 +6,7 @@ import AddRecipeIcon from "@assets/font-awesome/solid/plus.svg"
 import style from "./UserMenu.module.css";
 import {LoginResult, LoginResultID} from "@project-types/user/session/loginResultID.ts";
 import {loginUser, logout} from "@api";
-import {useSession} from "../../session/SessionContext.tsx";
+import {useSession} from "../../contexts/SessionContext.tsx";
 import {useMessage} from "../../hooks/useMessage.ts";
 import {createEmptyRecipe} from "@project-types/recipe/createEmptyRecipe.ts";
 import {useNavigate} from 'react-router-dom';

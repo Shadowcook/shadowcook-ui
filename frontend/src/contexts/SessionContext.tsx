@@ -45,7 +45,7 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({childr
             console.log("New Session: ", newSession);
             setSession(newSession);
         } catch (e) {
-            console.log("Unable to validate session: ", e)
+            console.log("Unable to validate contexts: ", e)
             setSession(defaultSession);
         } finally {
             setLoading(false);

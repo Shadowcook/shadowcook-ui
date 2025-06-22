@@ -22,12 +22,12 @@ export function transformIdIfValid(input: unknown): number | undefined {
     }
 }
 
-// Returns true, if requiredAccess-ID is found in the session
+// Returns true, if requiredAccess-ID is found in the contexts
 export function validateAccess(session: SessionState, requiredAccess: number): boolean {
     return validateAnyAccess(session, [requiredAccess, AccessId.ADMIN])
 }
 
-// Returns true, if ANY ONE of the requiredAccess-IDs is found in the session
+// Returns true, if ANY ONE of the requiredAccess-IDs is found in the contexts
 export function validateAnyAccess(session: SessionState, requiredAccess: number[]): boolean {
     return requiredAccess.some(required =>
         session.accesses.some(access => access.accessId === required)

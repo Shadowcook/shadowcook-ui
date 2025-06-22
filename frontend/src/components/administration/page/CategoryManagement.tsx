@@ -1,4 +1,4 @@
-import {useSession} from "../../../session/SessionContext.tsx";
+import {useSession} from "../../../contexts/SessionContext.tsx";
 import {validateAccess} from "../../../utilities/validate.ts";
 import {AccessId} from "@project-types/role/accessId.ts";
 import {useEffect, useState} from "react";
@@ -7,10 +7,11 @@ import {CategoryBrowser} from "../../navigation/CategoryBrowser.tsx";
 import style from "./CategoryManagement.module.css"
 import {Breadcrumbs} from "../../navigation/Breadcrumbs.tsx";
 import {CategoryManagementOptions} from "../CategoryManagementOptions.tsx";
-import {useMessage} from "../../../hooks/useMessage.ts";
+import {useMessage} from "@hooks/useMessage.ts";
 import {sortByField} from "../../../utilities/tools.ts";
 import {Category} from "@project-types/category/category.ts";
 import {ConfirmDialog} from "../../tools/ConfirmDialog.tsx";
+import {usePageTitle} from "../../../contexts/pageTitleContext.tsx";
 
 
 export function CategoryManagement() {
@@ -19,6 +20,7 @@ export function CategoryManagement() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    usePageTitle("Category Management");
 
 
     useEffect(() => {

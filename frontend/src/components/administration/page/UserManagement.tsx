@@ -1,4 +1,4 @@
-import {useSession} from "../../../session/SessionContext.tsx";
+import {useSession} from "../../../contexts/SessionContext.tsx";
 import {validateAccess} from "../../../utilities/validate.ts";
 import {AccessId} from "@project-types/role/accessId.ts";
 import style from "./UserManagement.module.css";
@@ -14,7 +14,7 @@ import {
     pushUser,
     pushUserRoles
 } from "@api";
-import {useMessage} from "../../../hooks/useMessage.ts";
+import {useMessage} from "@hooks/useMessage.ts";
 import {fetchAllUsers} from "@api/endpoints/management/users.ts";
 import {UserRole} from "@project-types/user/userRole.ts";
 import {UserRoleRequest} from "@project-types/user/userRoleRequest.ts";
@@ -27,8 +27,10 @@ import deleteUserIcon from "@assets/font-awesome/solid/trash-can.svg"
 import resetPasswordIcon from "@assets/font-awesome/solid/key.svg"
 import TokenExpiryInfo from "../TokenExpiryInfo.tsx";
 import {ConfirmDialog} from "../../tools/ConfirmDialog.tsx";
+import {usePageTitle} from "../../../contexts/pageTitleContext.tsx";
 
 export function UserManagement() {
+    usePageTitle("User Management");
     const session = useSession();
     const [users, setUsers] = useState<User[]>([]);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);

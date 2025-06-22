@@ -14,14 +14,14 @@ import saveImg from "@assets/font-awesome/solid/floppy-disk.svg"
 import closeImg from "@assets/font-awesome/solid/circle-xmark.svg"
 import {RecipeCardEdit} from "./RecipeCardEdit.tsx";
 import {Uom} from "@project-types/recipe/uom.ts";
-import {useMessage} from "../../hooks/useMessage.ts";
+import {useMessage} from "@hooks/useMessage.ts";
 import categoryEditorIcon from "@assets/font-awesome/solid/folder-tree.svg"
 import ModalCategorySelector from "../navigation/ModalCategorySelector.tsx";
 import {createEmptyRecipe} from "@project-types/recipe/createEmptyRecipe.ts";
-import {useSession} from "../../session/SessionContext.tsx";
+import {useSession} from "../../contexts/SessionContext.tsx";
 import {AccessId} from "@project-types/role/accessId.ts";
 import DeleteRecipeModal from "./DeleteRecipeModal.tsx";
-
+import {usePageTitle} from "../../contexts/pageTitleContext.tsx";
 export function RecipeView() {
 
     const {recipeId, categoryId} = useParams();
@@ -39,6 +39,7 @@ export function RecipeView() {
     const navigate = useNavigate();
     const session = useSession();
 
+    usePageTitle(recipe?.recipe.name, 10);
 
     useEffect(() => {
         if (editMode && pendingCategories === undefined && recipe !== null && recipe !== undefined) {
@@ -103,7 +104,7 @@ export function RecipeView() {
 
     if (!recipe) return (
         <div className="loadingLogoFrame">
-            <img src={shadowCookLogo} alt="No recipes so far in here."/>
+            <img src={shadowCookLogo} alt="No recipes in here so far."/>
         </div>
     );
 

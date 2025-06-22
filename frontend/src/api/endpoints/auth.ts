@@ -6,14 +6,14 @@ import {UserResponse} from "@project-types/user/userResponse.ts";
 import {ApiBaseResponse} from "@project-types/apiBaseResponse.ts";
 
 export async function validateLogin(): Promise<SessionValidationResponse> {
-    console.log("Validating session");
+    console.log("Validating contexts");
     const res = await apiClient.get<SessionValidationResponse>('/session/validate');
-    console.log('validateLogin → /session/validate responded with: ', res.data);
+    console.log('validateLogin → /contexts/validate responded with: ', res.data);
     return res.data;
 }
 
 export async function logout(): Promise<SessionValidationResponse> {
-    console.log("Logging out of session");
+    console.log("Logging out of contexts");
     const res = await apiClient.get<SessionValidationResponse>('/logout');
     return res.data;
 }
@@ -30,7 +30,7 @@ export async function loginUser(username: string, password: string): Promise<Aut
 export async function validateUserToken(username: string, token: string): Promise<User | null> {
     if (username != null && token != null) {
         const res = await apiClient.get<UserResponse>(`/validateUserToken/${username}/${token}`);
-        console.log('validateUserToken <UNK> /session/validate', res);
+        console.log('validateUserToken <UNK> /contexts/validate', res);
         return res.data.users[0];
     } else {
         return null;

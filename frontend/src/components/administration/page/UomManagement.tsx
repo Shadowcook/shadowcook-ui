@@ -1,4 +1,4 @@
-import {useSession} from "../../../session/SessionContext.tsx";
+import {useSession} from "../../../contexts/SessionContext.tsx";
 import {validateAccess} from "../../../utilities/validate.ts";
 import {AccessId} from "@project-types/role/accessId.ts";
 import style from "./UomManagement.module.css"
@@ -9,9 +9,11 @@ import uomIcon from "@assets/font-awesome/solid/scale-balanced.svg";
 import uomIconDeleted from "@assets/font-awesome/solid/ban.svg";
 import uomSaveIcon from "@assets/font-awesome/solid/floppy-disk.svg";
 import addIcon from "@assets/font-awesome/solid/plus.svg";
-import {useMessage} from "../../../hooks/useMessage.ts";
+import {useMessage} from "@hooks/useMessage.ts";
+import {usePageTitle} from "../../../contexts/pageTitleContext.tsx";
 
 export function UomManagement() {
+    usePageTitle("Uom Management");
     const session = useSession();
     const {showMessage} = useMessage();
     const [uoms, setUoms] = useState<Uom[]>([]);

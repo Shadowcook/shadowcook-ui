@@ -3,7 +3,7 @@ import MainLayout from "./layouts/MainLayout";
 import LogoutLayout from "./layouts/LogoutLayout";
 import {RecipeListView} from "./components/recipe/RecipeListView.tsx";
 import {RecipeView} from "./components/recipe/RecipeView.tsx";
-import {SessionProvider} from "./session/SessionContext.tsx";
+import {SessionProvider} from "./contexts/SessionContext.tsx";
 import './Global.css';
 import {LogoutSuccessPage} from "./components/user/LogoutSuccessPage.tsx";
 import ManagementLayout from "./layouts/ManagementLayout.tsx";

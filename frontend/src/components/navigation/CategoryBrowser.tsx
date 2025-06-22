@@ -5,6 +5,7 @@ import {isValidId, transformIdIfValid} from "../../utilities/validate.ts";
 import {CategoryBrowserBackButton} from "./CategoryBrowserBackButton.tsx";
 import {CategoryBrowserItemList} from "./CategoryBrowserItemList.tsx";
 import style from "./CategoryBrowser.module.css"
+import {usePageTitle} from "../../contexts/pageTitleContext.tsx";
 
 type CategoryBrowserProps = {
     categories: Category[];
@@ -26,6 +27,10 @@ export function CategoryBrowser({
     const [currentCategory, setCurrentCategory] = useState<Category>();
     const [parentCategory, setParentCategory] = useState<Category>();
 
+
+    usePageTitle(currentCategory?.name);
+
+
     useEffect(() => {
         if (!isStateLess && selectedCategory) {
             setCurrentCategory(selectedCategory);
@@ -41,6 +46,7 @@ export function CategoryBrowser({
         }
 
         const current = categories.find(cat => cat.id === id);
+
         setCurrentCategory(current);
         setParentCategory(categories.find(cat => cat.id === current?.parent));
         setChildren(categories.filter((cat) => cat.parent === id))
