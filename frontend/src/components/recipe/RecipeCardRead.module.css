@@ -1,0 +1,15 @@
+.ingredientIcon {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin: .5em;
+}
+
+.ingredientWorkStepFrame {
+    display: flex;
+    align-items: center;
+    vertical-align: center;
+}
+
+.ingredientWorkStepGeneric {
+    font-style: italic;
+}

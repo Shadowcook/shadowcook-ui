@@ -4,6 +4,15 @@ import {Recipe} from "@project-types/recipe/recipe.ts";
 import "./RecipeCard.css";
 import {fetchRecipeHeadersByIds} from "@api";
 import {RecipeHeader} from "@project-types/recipe/recipeHeader.ts";
+import importantIcon from "@assets/font-awesome/solid/triangle-exclamation.svg";
+import infoIcon from "@assets/font-awesome/solid/circle-info.svg";
+import heatIcon from "@assets/font-awesome/solid/fire-burner.svg";
+import waitIcon from "@assets/font-awesome/solid/clock.svg";
+import cookIcon from "@assets/font-awesome/solid/spoon.svg";
+import coolIcon from "@assets/font-awesome/solid/snowflake.svg";
+import defaultIcon from "@assets/font-awesome/solid/screwdriver-wrench.svg";
+
+import style from "./RecipeCardRead.module.css";
 
 interface RecipeCardReadProps {
     recipe: Recipe;
@@ -33,18 +42,46 @@ function renderIngredient(ing: StepIngredient, key: number): JSX.Element {
             <span className="ingredient">{ing.value} {ing.uom.name} {ing.name}</span>
         );
     } else {
+        let uomIcon;
+        let uomAltName: string;
         switch (ing.uom.id) {
-            case 0:
-                content = (
-                    <span className="ingredientWorkStepGeneric">{ing.name}</span>
-                );
+            case -6:
+                uomIcon = infoIcon;
+                uomAltName = "Info";
+                break;
+            case -5:
+                uomIcon = importantIcon;
+                uomAltName = "Important";
+                break;
+            case -4:
+                uomIcon = cookIcon;
+                uomAltName = "Cook";
+                break;
+            case -3:
+                uomIcon = coolIcon;
+                uomAltName = "Cool";
+                break;
+            case -2:
+                uomIcon = heatIcon;
+                uomAltName = "Heat";
+                break;
+            case -1:
+                uomIcon = waitIcon;
+                uomAltName = "Wait";
                 break;
             default:
-                content = (
-                    <span className="ingredientWorkStepUndefined">{ing.name}</span>
-                );
+                uomIcon = defaultIcon;
+                uomAltName = "Work step";
+                break;
         }
+        content = (
+            <div className={style.ingredientWorkStepFrame}>
+                <img className={style.ingredientIcon} src={uomIcon} alt={uomAltName}/>
+                <span className={style.ingredientWorkStepGeneric}>{ing.name}</span>
+            </div>
+        );
     }
+
     return <p key={key}>{content}</p>;
 }
 
