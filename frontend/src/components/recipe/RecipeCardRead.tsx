@@ -10,6 +10,8 @@ import heatIcon from "@assets/font-awesome/solid/fire-burner.svg";
 import waitIcon from "@assets/font-awesome/solid/clock.svg";
 import cookIcon from "@assets/font-awesome/solid/spoon.svg";
 import coolIcon from "@assets/font-awesome/solid/snowflake.svg";
+import addIcon from "@assets/font-awesome/solid/plus.svg";
+import removeIcon from "@assets/font-awesome/solid/minus.svg";
 import defaultIcon from "@assets/font-awesome/solid/screwdriver-wrench.svg";
 
 import style from "./RecipeCardRead.module.css";
@@ -43,8 +45,16 @@ function renderIngredient(ing: StepIngredient, key: number): JSX.Element {
         );
     } else {
         let uomIcon;
-        let uomAltName: string;
+        let uomAltName: string = "";
         switch (ing.uom.id) {
+            case -8:
+                uomIcon = removeIcon;
+                uomAltName = "Remove";
+                break;
+            case -7:
+                uomIcon = addIcon;
+                uomAltName = "Add";
+                break;
             case -6:
                 uomIcon = infoIcon;
                 uomAltName = "Info";
@@ -69,14 +79,15 @@ function renderIngredient(ing: StepIngredient, key: number): JSX.Element {
                 uomIcon = waitIcon;
                 uomAltName = "Wait";
                 break;
-            default:
+
+            case 0:
                 uomIcon = defaultIcon;
                 uomAltName = "Work step";
                 break;
         }
         content = (
             <div className={style.ingredientWorkStepFrame}>
-                <img className={style.ingredientIcon} src={uomIcon} alt={uomAltName}/>
+                {uomIcon ? <img className={style.ingredientIcon} src={uomIcon} alt={uomAltName}/> : " "}
                 <span className={style.ingredientWorkStepGeneric}>{ing.name}</span>
             </div>
         );
