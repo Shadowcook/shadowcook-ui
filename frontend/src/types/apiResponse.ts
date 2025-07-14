@@ -4,9 +4,9 @@ export interface ApiResponse<T> {
     success: boolean;
     responseTime: number;
     messages: string[];
-    errorCodes: string[];
+    errorCodes: number[];
     errorHexCodes: string[];
-    errors: string[];
+    errors: number[];
     time: number;
     [key: string]: unknown | T;
 }

@@ -7,12 +7,13 @@ export default defineConfig(({ command }) => ({
     server: {
         host: '0.0.0.0',
         allowedHosts: true,
-        hmr: command === 'serve' ? {
-            protocol: 'wss',
-            host: 'cook.shadowsoft.test',
-            // port: 443,
-            clientPort: 443
-        } : undefined
+        hmr: command === 'serve'
+            ? {
+                protocol: 'ws',   // ✅ ungesicherter WebSocket
+                host: 'localhost',
+                port: 5173,
+            }
+            : undefined,
     },
     plugins: [
         react(),

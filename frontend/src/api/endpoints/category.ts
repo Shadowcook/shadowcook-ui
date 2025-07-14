@@ -1,15 +1,15 @@
 import {RecipeCategory} from "../../types/category/recipeCategory.ts";
-import apiClient from "../axios.ts";
 import {RecipeCategoryResponse} from "../../types/category/recipeCategoryResponse.ts";
 import {Category} from "../../types/category/category.ts";
 import {CategoriesResponse} from "../../types/category/categoriesResponse.ts";
+import {apiGet} from "@api/apiRequest.ts";
 
 export async function fetchRecipeCategories(recipeId: number): Promise<RecipeCategory[]> {
     try {
         console.log("fetching recipe categories");
-        const res = await apiClient.get<RecipeCategoryResponse>(`/getRecipeCategories/${recipeId}`);
-        console.log(`fetched recipe categories: ${res.data.recipeCategory.length}`);
-        return res.data.recipeCategory;
+        const res = await apiGet<RecipeCategoryResponse>(`/getRecipeCategories/${recipeId}`);
+        console.log(`fetched recipe categories: ${res.recipeCategory.length}`);
+        return res.recipeCategory;
     } catch (error) {
         console.log(error);
     }
@@ -19,8 +19,8 @@ export async function fetchRecipeCategories(recipeId: number): Promise<RecipeCat
 
 export async function fetchCategories(): Promise<Category[]> {
     console.log("fetching categories");
-    const res = await apiClient.get<CategoriesResponse>('/getAllCategories');
+    const res = await apiGet<CategoriesResponse>('/getAllCategories');
     console.log("fetched categories: ", res);
-    console.log("fetched " + res.data.length + " categories");
-    return res.data.categories;
+    console.log("fetched " + res.length + " categories");
+    return res.categories;
 }

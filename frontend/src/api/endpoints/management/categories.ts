@@ -1,4 +1,4 @@
-import apiClient from "@api/axios.ts";
+import apiClient from "@api/apiClient.ts";
 import {Category} from "@project-types/category/category.ts";
 import {CategoriesResponse} from "@project-types/category/categoriesResponse.ts";
 import {CategoryRequest} from "@project-types/category/categoryRequest.ts";

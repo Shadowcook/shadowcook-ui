@@ -1,93 +1,105 @@
 import {sessionRouteWrapper} from "../utils/sessionRouterWrapper.js";
 import express from "express";
-import {apiGet, apiGetFull} from "../utils/apiHelpers.js";
 import {config} from '../config.js';
+import {userClientRequest} from "../utils/userClient.js";
+import axios from "axios";
 
 const router = express.Router();
 
-router.get('/session/validate', sessionRouteWrapper(async (cookie, req, res) => {
-    console.log('Cookie received in validateSession:', cookie);
-    const data = await apiGet<any>('/auth/validate', cookie);
-
-
-    if (data.session?.user?.login === config.username) {
-        return {
-            session: {
-                valid: false,
-                user: {
-                    active: false,
-                    email: '',
-                    id: -1,
-                    login: '',
-                    passwordResetExpiry: ''
-                },
-                accesses: [],
-                roles: [],
-            }
-        };
-    } else {
-        console.log('Validated with cookie: ', cookie);
+router.get('/session/validate', sessionRouteWrapper({
+    configFactory: () => ({
+        method: 'GET',
+        url: '/auth/validate',
+    }),
+    transformResponse: (data, req) => {
+        if (data.session?.user?.login === config.username) {
+            return {
+                session: {
+                    valid: false,
+                    user: {
+                        active: false,
+                        email: '',
+                        id: -1,
+                        login: '',
+                        passwordResetExpiry: ''
+                    },
+                    accesses: [],
+                    roles: [],
+                }
+            };
+        }
+        return data;
     }
-    return data;
 }));
 
-router.get('/logout', sessionRouteWrapper(async (cookie, req, res) => {
-    const data = await apiGet<any>('/auth/logout', cookie);
-    console.log(data);
-    res.setHeader('Set-Cookie', [
-        'activeSession=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax'
-    ]);
-    return data;
-}));
+
+router.get('/logout', sessionRouteWrapper(() => ({
+    method: 'GET',
+    url: '/auth/logout',
+})));
 
 router.get('/login/:username/:password', async (req, res) => {
+    const {username, password} = req.params;
+
     try {
-        const username = req.params.username;
-        const password = req.params.password;
-        const response = await apiGetFull<any>(`/auth/login/${username}/${password}`);
-        console.log(response);
-        const setCookie = response.headers['set-cookie'];
-        if (Array.isArray(setCookie)) {
-            console.log("array cookie set: ", setCookie);
-            res.setHeader('Set-Cookie', setCookie);
-        } else if (setCookie) {
-            console.log("single cookie set: ", [setCookie]);
-            res.setHeader('Set-Cookie', [setCookie]);
-        } else {
-            console.log("Unknown cookie: ", setCookie);
+        const response = await axios.get(`${config.baseUrl}/auth/login/${username}/${password}`, {
+            withCredentials: true,
+        });
+
+        const setCookieHeader = response.headers['set-cookie'];
+        if (setCookieHeader) {
+            res.setHeader('Set-Cookie', setCookieHeader);
         }
+        console.log("User tried to login: ", response.data);
         res.json(response.data);
-    } catch (e) {
-        console.log(`API ERROR in user login: ${e}`)
-        res.status(500).json({error: 'Internal server error while login'});
+    } catch (err) {
+        console.error('Login failed:', err);
+        res.status(401).json({error: 'Login failed'});
     }
 });
 
-router.get('/validateUserToken/:username/:token', async (req, res) => {
+router.get('/refresh', async (req, res) => {
     try {
-        const username = req.params.username;
-        const token = req.params.token;
-        const response = await apiGetFull<any>(`/user/validateToken/${username}/${token}`);
-        console.log(response);
+        const cookie = req.headers.cookie;
+
+        const response = await axios.get(`${config.baseUrl}/auth/refresh`, {
+            withCredentials: true,
+            headers: {
+                ...(cookie ? {Cookie: cookie} : {}),
+            },
+        });
+
+        const setCookie = response.headers['set-cookie'];
+        if (setCookie) {
+            res.setHeader('Set-Cookie', setCookie);
+        }
+
         res.json(response.data);
-    } catch (e) {
-        console.log(`API ERROR in token validation: ${e}`)
-        res.status(500).json({error: 'Internal server error while validating token'});
+    } catch (err) {
+        console.error('Refresh failed:', err);
+        res.status(401).json({error: 'Refresh failed'});
     }
 });
+
+
+router.get('/validateUserToken/:username/:token', sessionRouteWrapper(req => {
+    const username = req.params.username;
+    const token = req.params.token;
+    return {
+        method: 'GET',
+        url: `/user/validateToken/${username}/${token}`,
+    };
+}));
 
 router.get('/resetUserPassword/:username/:token/:base64Password', async (req, res) => {
-    try {
-        const username = req.params.username;
-        const token = req.params.token;
-        const base64Password = req.params.base64Password;
-        const response = await apiGetFull<any>(`/user/resetPassword/${username}/${token}/${base64Password}`);
-        console.log(response);
-        res.json(response.data);
-    } catch (e) {
-        console.log(`API ERROR in resetting password: ${e}`)
-        res.status(500).json({error: 'Internal server error while resetting password'});
-    }
+    const username = req.params.username;
+    const token = req.params.token;
+    const base64Password = req.params.base64Password;
+
+    return {
+        method: 'GET',
+        url: `/user/resetPassword/${username}/${token}/${base64Password}`,
+    };
 });
 
 export default router;

@@ -1,4 +1,4 @@
-import apiClient from "@api/axios.ts";
+import apiClient from "@api/apiClient.ts";
 import {User} from "@project-types/user/user.ts";
 import {UserResponse} from "@project-types/user/userResponse.ts";
 import {generateRandomString, isValidId} from "../../../utilities/validate.ts";

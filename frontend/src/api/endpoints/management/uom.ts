@@ -1,4 +1,4 @@
-import apiClient from "@api/axios.ts";
+import apiClient from "@api/apiClient.ts";
 import {Uom} from "@project-types/recipe/uom.ts";
 import {UomResponse} from "@project-types/recipe/uomResponse.ts";
 

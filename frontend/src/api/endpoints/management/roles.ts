@@ -1,5 +1,5 @@
 import {Role} from "@project-types/role/role.ts";
-import apiClient from "@api/axios.ts";
+import apiClient from "@api/apiClient.ts";
 import {RoleResponse} from "@project-types/role/roleResponse.ts";
 import {RoleAccessFull} from "@project-types/role/roleAccessFull.ts";
 import {RoleAccessFullResponse} from "@project-types/role/roleAccessFullResponse.ts";

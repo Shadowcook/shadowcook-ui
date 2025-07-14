@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from 'axios';
-import {defaultClient} from './apiClient.js';
+import {defaultClient} from './defaultClient.js';
 import {sanitizeUrl} from './toolbox.js';
 import {config} from '../config.js'
 

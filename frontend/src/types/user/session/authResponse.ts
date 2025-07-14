@@ -1,6 +1,5 @@
 import {ApiResponse} from "../../apiResponse.ts";
-import {Auth} from "./auth.ts";
 
-export interface AuthResponse extends ApiResponse<Auth> {
-    auth: Auth;
+export interface AuthResponse extends ApiResponse<string> {
+    accessToken: string;
 }

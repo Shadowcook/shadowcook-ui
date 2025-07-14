@@ -1,5 +1,4 @@
 import express from 'express';
-import {loginDefault} from './utils/apiClient.js';
 import recipeRoutes from './endpoints/recipe.js';
 import categoryRoutes from './endpoints/category.js';
 import sessionRoutes from './endpoints/session.js';
@@ -15,8 +14,12 @@ const app = express();
 
 
 app.use(express.json());
+const isDev = process.env.NODE_ENV !== 'production';
+
 app.use(cors({
-    origin: 'https://cook.shadowsoft.test',
+    origin: isDev
+        ? ['http://localhost:5173', 'http://cook.shadowsoft.test']
+        : 'http://cook.shadowsoft.de',
     credentials: true,
     exposedHeaders: ['Set-Cookie'],
 }));
@@ -31,19 +34,6 @@ app.use('/api', admCategoriesRoutes);
 app.use('/api', admUomRoutes);
 
 
-app.listen(config.port, async () => {
-    await loginWithRetry();
+app.listen(config.port, () => {
     console.log(`Proxy listening on port ${config.port}`);
 });
-
-async function loginWithRetry(intervalMs = 5000): Promise<void> {
-    let loggedIn = false;
-    while (!loggedIn) {
-        console.log('Attempting default login...');
-        loggedIn = await loginDefault();
-        if (!loggedIn) {
-            console.warn(`Login failed. Retrying in ${intervalMs / 1000}s...`);
-            await new Promise(resolve => setTimeout(resolve, intervalMs));
-        }
-    }
-}
