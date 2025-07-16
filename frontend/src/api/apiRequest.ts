@@ -17,10 +17,25 @@ function hasInvalidTokenError(data: unknown): data is ApiErrorResponse {
     );
 }
 
-async function tryRefresh(): Promise<boolean> {
+let refreshInProgress: Promise<boolean> | null = null;
+
+export async function tryRefresh(): Promise<boolean> {
+    if (!refreshInProgress) {
+        refreshInProgress = doRefresh();
+    }
+
+    try {
+        return await refreshInProgress;
+    } finally {
+        refreshInProgress = null;
+    }
+}
+
+async function doRefresh(): Promise<boolean> {
     try {
         const res = await apiClient.get<AuthResponse>('/refresh', {withCredentials: true});
         const authData = res.data;
+        console.log({action: 'tryRefresh', payload: authData, result: res});
 
         if (authData?.success && authData.accessToken) {
             setAccessToken(authData.accessToken);
@@ -34,6 +49,7 @@ async function tryRefresh(): Promise<boolean> {
     clearAccessToken();
     return false;
 }
+
 
 export async function apiGet<T>(url: string): Promise<T> {
     const attempt = async (): Promise<T> => {

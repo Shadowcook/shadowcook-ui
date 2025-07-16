@@ -1,7 +1,6 @@
 import {sessionRouteWrapper} from "../utils/sessionRouterWrapper.js";
 import express from "express";
 import {config} from '../config.js';
-import {userClientRequest} from "../utils/userClient.js";
 import axios from "axios";
 
 const router = express.Router();
@@ -61,7 +60,7 @@ router.get('/login/:username/:password', async (req, res) => {
 router.get('/refresh', async (req, res) => {
     try {
         const cookie = req.headers.cookie;
-
+        console.log("Sending cookie for session: ", cookie);
         const response = await axios.get(`${config.baseUrl}/auth/refresh`, {
             withCredentials: true,
             headers: {
@@ -69,7 +68,10 @@ router.get('/refresh', async (req, res) => {
             },
         });
 
-        const setCookie = response.headers['set-cookie'];
+        const setCookie =
+            response.headers?.['set-cookie'] ?? response.headers?.['Set-Cookie'];
+        console.log("Refresh cookie for session: ", setCookie);
+        console.log("Refresh-Response: ", response);
         if (setCookie) {
             res.setHeader('Set-Cookie', setCookie);
         }
