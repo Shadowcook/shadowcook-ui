@@ -21,6 +21,27 @@ router.get('/GetFullRecipe/:id', async (req, res) => {
     }
 });
 
+router.get('/GetFullRecipeJson/:id', async (req, res) => {
+    if (isValidId(req.params.id)) {
+        const id = req.params.id;
+
+        if (id === null) {
+            return res.status(400).json({error: "Invalid recipe ID."});
+        }
+        try {
+            const data = await apiGet<any>(`/recipe/getfull/${id}`);
+            const recipe = Array.isArray(data?.recipes) ? data.recipes[0] : data?.recipe ?? data;
+            const publicRecipe = toPublicRecipe(recipe);
+            if (!publicRecipe) {
+                return res.status(404).json({error: 'Recipe not found.'});
+            }
+            res.json(publicRecipe);
+        } catch {
+            res.status(500).json({error: 'Error while fetching recipe.'});
+        }
+    }
+});
+
 router.get('/GetRecipeFromString/:search', async (req, res) => {
     const search = req.params.search;
     if (search) {
@@ -79,3 +100,34 @@ router.get('/deleteRecipe/:id', sessionRouteWrapper(async (cookie, req, res) => 
 }));
 
 export default router
+
+function toPublicRecipe(raw: any) {
+    if (!raw || !raw.recipe) return null;
+
+    const header = raw.recipe;
+    const steps = Array.isArray(raw.steps) ? raw.steps : [];
+
+    return {
+        recipe: {
+            id: header.id,
+            name: header.name,
+            description: header.description,
+            thumbnail: header.thumbnail,
+        },
+        steps: steps.map((step: any) => ({
+            order: step?.order,
+            description: step?.description,
+            ingredients: Array.isArray(step?.ingredients)
+                ? step.ingredients.map((ing: any) => ({
+                    name: ing?.name,
+                    value: ing?.value,
+                    order: ing?.order,
+                    uom: ing?.uom ? {
+                        id: ing.uom.id,
+                        name: ing.uom.name,
+                    } : undefined,
+                }))
+                : [],
+        })),
+    };
+}
